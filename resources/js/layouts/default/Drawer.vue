@@ -30,18 +30,24 @@
     </div>
 
     <template #append>
-      <div class="pa-4 text-center">
-        <app-btn
+      <div class="pa-4 ml-3 text-left">
+        <div @click="logout()">
+          <v-icon>power_settings_new</v-icon>
+        </div>
+        <!-- <app-btn
           class="text-none mb-4"
           color="white"
           href="https://vuetifyjs.com"
           small
           text
         >
-          Documentation
-        </app-btn>
 
-        <app-btn
+          Documentation
+        </app-btn> -->
+        <!-- <div class="poweroff">
+        <i class="fas fa-power-off"></i>
+        </div> -->
+        <!-- <app-btn
           block
           class="text-none"
           color="secondary"
@@ -52,7 +58,7 @@
           </v-icon>
 
           Upgrade to Pro
-        </app-btn>
+        </app-btn> -->
       </div>
     </template>
 
@@ -63,6 +69,8 @@
 <script>
   // Utilities
   import { get, sync } from 'vuex-pathify'
+  import axios from 'axios';
+  import router from 'vue-router'
 
   export default {
     name: 'DefaultDrawer',
@@ -77,7 +85,21 @@
         './List'
       ),
     },
-
+    methods: {
+      logout(){
+        console.log("Vadder");
+        axios.post('/logout', { withCredentials: true }).then( () => {
+          location.reload()
+          // console.log(response)
+        })
+        // .then(response => {
+        //   console.log(response);
+        // //   console.log(response.msg);
+        // })
+        // router.push({ path: "/login" });
+        // location.reload();
+      },
+    },
     computed: {
       ...get('user', [
         'dark',

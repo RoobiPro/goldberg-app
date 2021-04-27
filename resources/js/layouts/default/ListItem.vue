@@ -14,7 +14,7 @@
       v-if="!item.icon"
       class="text-caption text-uppercase justify-center ml-1 my-2 align-self-center"
     >
-      {{ title }}
+      <!-- {{ title }} -->
     </v-list-item-icon>
 
     <v-list-item-avatar v-if="item.avatar">

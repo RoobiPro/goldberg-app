@@ -34,11 +34,20 @@
         <app-bar-item
           v-else
           :key="`item-${i}`"
-          to="/"
+          to="/dashboard"
         >
           <v-list-item-title v-text="p.title" />
         </app-bar-item>
       </template>
+
+      <template >
+
+        <app-bar-item
+          to="/">
+              <!-- <v-list-item-title v-text="Logout" /> -->
+        </app-bar-item>
+      </template>
+
     </v-list>
   </v-menu>
 </template>
@@ -52,8 +61,14 @@
         { title: 'Profile' },
         { title: 'Settings' },
         { divider: true },
-        { title: 'Log out' },
+        // { title: 'Log out' },
       ],
+      // menuItem: {title: "Logout"},
     }),
+    methods: {
+          logout() {
+            console.log("Logout Test")
+        }
+    }
   }
 </script>

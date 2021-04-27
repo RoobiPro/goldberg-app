@@ -1,18 +1,15 @@
 <template>
-  <v-list-item class="mb-0 justify-space-between pl-3">
+  <v-list-item class="mb-0 justify-space-between pa-3">
     <v-list-item-avatar>
       <v-img
-        :src="
-          require('../../../assets/vmd.svg')"
+        src="http://goldberg.local/images/favicon.png"
       />
     </v-list-item-avatar>
 
-    <v-list-item-content class="pl-2">
-      <v-list-item-title class="text-h3">
-        <strong class="mr-1 font-weight-black">VMD</strong>
-
-        <span class="primary--text">FREE</span>
-      </v-list-item-title>
+    <v-list-item-content class="pa-6 pl-0">
+      <v-img
+        src="http://goldberg.local/images/goldberg_font.png"
+      />
     </v-list-item-content>
   </v-list-item>
 </template>
@@ -25,5 +22,10 @@
     name: 'DefaultDrawerHeader',
 
     computed: { version: get('app/version') },
+    // data() {
+    //   return {
+    //     logoPath: path.join(__dirname, 'src', 'main', 'resources', 'assets', 'logo.png')
+    //   }
+    // }
   }
 </script>
