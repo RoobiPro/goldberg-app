@@ -1,0 +1,136 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use App\Models\ChemicalElement;
+
+class ChemicalElementsSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+      ChemicalElement::create(['name'=>'Actinium','symbol'=>'Ac','atomic_number'=>'89']);
+      ChemicalElement::create(['name'=>'Aluminum','symbol'=>'Al','atomic_number'=>'13']);
+      ChemicalElement::create(['name'=>'Americium','symbol'=>'Am','atomic_number'=>'95']);
+      ChemicalElement::create(['name'=>'Antimony','symbol'=>'Sb','atomic_number'=>'51']);
+      ChemicalElement::create(['name'=>'Argon','symbol'=>'Ar','atomic_number'=>'18']);
+      ChemicalElement::create(['name'=>'Arsenic','symbol'=>'As','atomic_number'=>'33']);
+      ChemicalElement::create(['name'=>'Astatine','symbol'=>'At','atomic_number'=>'85']);
+      ChemicalElement::create(['name'=>'Barium','symbol'=>'Ba','atomic_number'=>'56']);
+      ChemicalElement::create(['name'=>'Berkelium','symbol'=>'Bk','atomic_number'=>'97']);
+      ChemicalElement::create(['name'=>'Beryllium','symbol'=>'Be','atomic_number'=>'4']);
+      ChemicalElement::create(['name'=>'Bismuth','symbol'=>'Bi','atomic_number'=>'83']);
+      ChemicalElement::create(['name'=>'Bohrium','symbol'=>'Bh','atomic_number'=>'107']);
+      ChemicalElement::create(['name'=>'Boron','symbol'=>'B','atomic_number'=>'5']);
+      ChemicalElement::create(['name'=>'Bromine','symbol'=>'Br','atomic_number'=>'35']);
+      ChemicalElement::create(['name'=>'Cadmium','symbol'=>'Cd','atomic_number'=>'48']);
+      ChemicalElement::create(['name'=>'Calcium','symbol'=>'Ca','atomic_number'=>'20']);
+      ChemicalElement::create(['name'=>'Californium','symbol'=>'Cf','atomic_number'=>'98']);
+      ChemicalElement::create(['name'=>'Carbon','symbol'=>'C','atomic_number'=>'6']);
+      ChemicalElement::create(['name'=>'Cerium','symbol'=>'Ce','atomic_number'=>'58']);
+      ChemicalElement::create(['name'=>'Cesium','symbol'=>'Cs','atomic_number'=>'55']);
+      ChemicalElement::create(['name'=>'Chlorine','symbol'=>'Cl','atomic_number'=>'17']);
+      ChemicalElement::create(['name'=>'Chromium','symbol'=>'Cr','atomic_number'=>'24']);
+      ChemicalElement::create(['name'=>'Cobalt','symbol'=>'Co','atomic_number'=>'27']);
+      ChemicalElement::create(['name'=>'Copernicium','symbol'=>'Cn','atomic_number'=>'112']);
+      ChemicalElement::create(['name'=>'Copper','symbol'=>'Cu','atomic_number'=>'29']);
+      ChemicalElement::create(['name'=>'Curium','symbol'=>'Cm','atomic_number'=>'96']);
+      ChemicalElement::create(['name'=>'Darmstadtium','symbol'=>'Ds','atomic_number'=>'110']);
+      ChemicalElement::create(['name'=>'Dubnium','symbol'=>'Db','atomic_number'=>'105']);
+      ChemicalElement::create(['name'=>'Dysprosium','symbol'=>'Dy','atomic_number'=>'66']);
+      ChemicalElement::create(['name'=>'Einsteinium','symbol'=>'Es','atomic_number'=>'99']);
+      ChemicalElement::create(['name'=>'Erbium','symbol'=>'Er','atomic_number'=>'68']);
+      ChemicalElement::create(['name'=>'Europium','symbol'=>'Eu','atomic_number'=>'63']);
+      ChemicalElement::create(['name'=>'Fermium','symbol'=>'Fm','atomic_number'=>'100']);
+      ChemicalElement::create(['name'=>'Flerovium','symbol'=>'Fl','atomic_number'=>'114']);
+      ChemicalElement::create(['name'=>'Fluorine','symbol'=>'F','atomic_number'=>'9']);
+      ChemicalElement::create(['name'=>'Francium','symbol'=>'Fr','atomic_number'=>'87']);
+      ChemicalElement::create(['name'=>'Gadolinium','symbol'=>'Gd','atomic_number'=>'64']);
+      ChemicalElement::create(['name'=>'Gallium','symbol'=>'Ga','atomic_number'=>'31']);
+      ChemicalElement::create(['name'=>'Germanium','symbol'=>'Ge','atomic_number'=>'32']);
+      ChemicalElement::create(['name'=>'Gold','symbol'=>'Au','atomic_number'=>'79']);
+      ChemicalElement::create(['name'=>'Hafnium','symbol'=>'Hf','atomic_number'=>'72']);
+      ChemicalElement::create(['name'=>'Hassium','symbol'=>'Hs','atomic_number'=>'108']);
+      ChemicalElement::create(['name'=>'Helium','symbol'=>'He','atomic_number'=>'2']);
+      ChemicalElement::create(['name'=>'Holmium','symbol'=>'Ho','atomic_number'=>'67']);
+      ChemicalElement::create(['name'=>'Hydrogen','symbol'=>'H','atomic_number'=>'1']);
+      ChemicalElement::create(['name'=>'Indium','symbol'=>'In','atomic_number'=>'49']);
+      ChemicalElement::create(['name'=>'Iodine','symbol'=>'I','atomic_number'=>'53']);
+      ChemicalElement::create(['name'=>'Iridium','symbol'=>'Ir','atomic_number'=>'77']);
+      ChemicalElement::create(['name'=>'Iron','symbol'=>'Fe','atomic_number'=>'26']);
+      ChemicalElement::create(['name'=>'Krypton','symbol'=>'Kr','atomic_number'=>'36']);
+      ChemicalElement::create(['name'=>'Lanthanum','symbol'=>'La','atomic_number'=>'57']);
+      ChemicalElement::create(['name'=>'Lawrencium','symbol'=>'Lr','atomic_number'=>'103']);
+      ChemicalElement::create(['name'=>'Lead','symbol'=>'Pb','atomic_number'=>'82']);
+      ChemicalElement::create(['name'=>'Lithium','symbol'=>'Li','atomic_number'=>'3']);
+      ChemicalElement::create(['name'=>'Livermorium ','symbol'=>'Lv','atomic_number'=>'116']);
+      ChemicalElement::create(['name'=>'Lutetium','symbol'=>'Lu','atomic_number'=>'71']);
+      ChemicalElement::create(['name'=>'Magnesium','symbol'=>'Mg','atomic_number'=>'12']);
+      ChemicalElement::create(['name'=>'Manganese','symbol'=>'Mn','atomic_number'=>'25']);
+      ChemicalElement::create(['name'=>'Meitnerium','symbol'=>'Mt','atomic_number'=>'109']);
+      ChemicalElement::create(['name'=>'Mendelevium','symbol'=>'Md','atomic_number'=>'101']);
+      ChemicalElement::create(['name'=>'Mercury','symbol'=>'Hg','atomic_number'=>'80']);
+      ChemicalElement::create(['name'=>'Molybdenum','symbol'=>'Mo','atomic_number'=>'42']);
+      ChemicalElement::create(['name'=>'Moscovium','symbol'=>'Mc','atomic_number'=>'115']);
+      ChemicalElement::create(['name'=>'Neodymium','symbol'=>'Nd','atomic_number'=>'60']);
+      ChemicalElement::create(['name'=>'Neon','symbol'=>'Ne','atomic_number'=>'10']);
+      ChemicalElement::create(['name'=>'Neptunium','symbol'=>'Np','atomic_number'=>'93']);
+      ChemicalElement::create(['name'=>'Nickel','symbol'=>'Ni','atomic_number'=>'28']);
+      ChemicalElement::create(['name'=>'Nihonium','symbol'=>'Nh','atomic_number'=>'113']);
+      ChemicalElement::create(['name'=>'Niobium','symbol'=>'Nb','atomic_number'=>'41']);
+      ChemicalElement::create(['name'=>'Nitrogen','symbol'=>'N','atomic_number'=>'7']);
+      ChemicalElement::create(['name'=>'Nobelium','symbol'=>'No','atomic_number'=>'102']);
+      ChemicalElement::create(['name'=>'Oganesson ','symbol'=>'Og','atomic_number'=>'118']);
+      ChemicalElement::create(['name'=>'Osmium','symbol'=>'Os','atomic_number'=>'76']);
+      ChemicalElement::create(['name'=>'Oxygen','symbol'=>'O','atomic_number'=>'8']);
+      ChemicalElement::create(['name'=>'Palladium','symbol'=>'Pd','atomic_number'=>'46']);
+      ChemicalElement::create(['name'=>'Phosphorus','symbol'=>'P','atomic_number'=>'15']);
+      ChemicalElement::create(['name'=>'Platinum','symbol'=>'Pt','atomic_number'=>'78']);
+      ChemicalElement::create(['name'=>'Plutonium','symbol'=>'Pu','atomic_number'=>'94']);
+      ChemicalElement::create(['name'=>'Polonium','symbol'=>'Po','atomic_number'=>'84']);
+      ChemicalElement::create(['name'=>'Potassium','symbol'=>'K','atomic_number'=>'19']);
+      ChemicalElement::create(['name'=>'Praseodymium','symbol'=>'Pr','atomic_number'=>'59']);
+      ChemicalElement::create(['name'=>'Promethium','symbol'=>'Pm','atomic_number'=>'61']);
+      ChemicalElement::create(['name'=>'Protactinium','symbol'=>'Pa','atomic_number'=>'91']);
+      ChemicalElement::create(['name'=>'Radium','symbol'=>'Ra','atomic_number'=>'88']);
+      ChemicalElement::create(['name'=>'Radon','symbol'=>'Rn','atomic_number'=>'86']);
+      ChemicalElement::create(['name'=>'Rhenium','symbol'=>'Re','atomic_number'=>'75']);
+      ChemicalElement::create(['name'=>'Rhodium','symbol'=>'Rh','atomic_number'=>'45']);
+      ChemicalElement::create(['name'=>'Roentgenium','symbol'=>'Rg','atomic_number'=>'111']);
+      ChemicalElement::create(['name'=>'Rubidium','symbol'=>'Rb','atomic_number'=>'37']);
+      ChemicalElement::create(['name'=>'Ruthenium','symbol'=>'Ru','atomic_number'=>'44']);
+      ChemicalElement::create(['name'=>'Rutherfordium','symbol'=>'Rf','atomic_number'=>'104']);
+      ChemicalElement::create(['name'=>'Samarium','symbol'=>'Sm','atomic_number'=>'62']);
+      ChemicalElement::create(['name'=>'Scandium','symbol'=>'Sc','atomic_number'=>'21']);
+      ChemicalElement::create(['name'=>'Seaborgium','symbol'=>'Sg','atomic_number'=>'106']);
+      ChemicalElement::create(['name'=>'Selenium','symbol'=>'Se','atomic_number'=>'34']);
+      ChemicalElement::create(['name'=>'Silicon','symbol'=>'Si','atomic_number'=>'14']);
+      ChemicalElement::create(['name'=>'Silver','symbol'=>'Ag','atomic_number'=>'47']);
+      ChemicalElement::create(['name'=>'Sodium','symbol'=>'Na','atomic_number'=>'11']);
+      ChemicalElement::create(['name'=>'Strontium','symbol'=>'Sr','atomic_number'=>'38']);
+      ChemicalElement::create(['name'=>'Sulfur','symbol'=>'S','atomic_number'=>'16']);
+      ChemicalElement::create(['name'=>'Tantalum','symbol'=>'Ta','atomic_number'=>'73']);
+      ChemicalElement::create(['name'=>'Technetium','symbol'=>'Tc','atomic_number'=>'43']);
+      ChemicalElement::create(['name'=>'Tellurium','symbol'=>'Te','atomic_number'=>'52']);
+      ChemicalElement::create(['name'=>'Tennessine','symbol'=>'Ts','atomic_number'=>'117']);
+      ChemicalElement::create(['name'=>'Terbium','symbol'=>'Tb','atomic_number'=>'65']);
+      ChemicalElement::create(['name'=>'Thallium','symbol'=>'Tl','atomic_number'=>'81']);
+      ChemicalElement::create(['name'=>'Thorium','symbol'=>'Th','atomic_number'=>'90']);
+      ChemicalElement::create(['name'=>'Thulium','symbol'=>'Tm','atomic_number'=>'69']);
+      ChemicalElement::create(['name'=>'Tin','symbol'=>'Sn','atomic_number'=>'50']);
+      ChemicalElement::create(['name'=>'Titanium','symbol'=>'Ti','atomic_number'=>'22']);
+      ChemicalElement::create(['name'=>'Tungsten','symbol'=>'W','atomic_number'=>'74']);
+      ChemicalElement::create(['name'=>'Uranium','symbol'=>'U','atomic_number'=>'92']);
+      ChemicalElement::create(['name'=>'Vanadium','symbol'=>'V','atomic_number'=>'23']);
+      ChemicalElement::create(['name'=>'Xenon','symbol'=>'Xe','atomic_number'=>'54']);
+      ChemicalElement::create(['name'=>'Ytterbium','symbol'=>'Yb','atomic_number'=>'70']);
+      ChemicalElement::create(['name'=>'Yttrium','symbol'=>'Y','atomic_number'=>'39']);
+      ChemicalElement::create(['name'=>'Zinc','symbol'=>'Zn','atomic_number'=>'30']);
+      ChemicalElement::create(['name'=>'Zirconium','symbol'=>'Zr','atomic_number'=>'40']);
+    }
+}
