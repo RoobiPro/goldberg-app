@@ -1,6 +1,6 @@
 // Imports
 import { kebabCase } from 'lodash'
-import { leadingSlash, trailingSlash } from '@/util/helpers'
+import { leadingSlash, trailingSlash } from './helpers'
 
 export function abort (code = 404) {
   return {
@@ -13,7 +13,7 @@ export function abort (code = 404) {
 export function error (code = 404) {
   return import(
     /* webpackChunkName: "error-[request]" */
-    `@/views/${code}.vue`
+    `../views/${code}.vue`
   )
 }
 
@@ -24,7 +24,7 @@ export function layout (layout = 'Default', children, path = '') {
     children,
     component: () => import(
       /* webpackChunkName: "layout-[request]" */
-      `@/layouts/${dir}/Index`
+      `../layouts/${dir}/Index`
     ),
     path,
   }
@@ -62,7 +62,7 @@ export function route (name, component, path = '') {
   for (const [key, value] of Object.entries(component)) {
     components[key] = () => import(
       /* webpackChunkName: "views-[request]" */
-      `@/views/${value}`
+      `../views/${value}`
     )
   }
 

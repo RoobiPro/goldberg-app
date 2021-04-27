@@ -5,8 +5,9 @@
 </template>
 
 <script>
+
   // Styles
-  import '@/styles/overrides.sass'
+  import './styles/overrides.sass'
 
   export default {
     name: 'App',

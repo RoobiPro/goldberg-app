@@ -1,7 +1,7 @@
 // Vue
 import Vue from 'vue'
 import Vuex from 'vuex'
-import pathify from '@/plugins/vuex-pathify'
+import pathify from '../plugins/vuex-pathify'
 
 // Modules
 import * as modules from './modules'

@@ -1,11 +1,11 @@
 // Imports
 import Vue from 'vue'
 import Router from 'vue-router'
-import { trailingSlash } from '@/util/helpers'
+import { trailingSlash } from '../util/helpers'
 import {
   layout,
   route,
-} from '@/util/routes'
+} from '../util/routes'
 
 Vue.use(Router)
 
