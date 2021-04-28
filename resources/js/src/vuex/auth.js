@@ -43,11 +43,18 @@ export default {
     })
     },
 
-    // async signOut ({ dispatch }) {
-    //   await axios.post('/logout')
-    //
-    //   return dispatch('me')
-    // },
+    async signOut ({ commit }) {
+      await axios.post('/logout').then((response) => {
+        console.log(response.data)
+        commit('SET_AUTHENTICATED', false)
+        commit('SET_USER', null)
+        axios.get('/api/users').then((response) => {
+          console.log(response.data)
+        })
+      })
+
+      // return dispatch('me')
+    },
 
     refresh ({ commit }) {
       return axios.get('/api/refresh').then((response) => {

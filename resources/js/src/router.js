@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '@/vuex/store'
 
 Vue.use(Router)
 
@@ -15,6 +16,7 @@ const routes = [
     },
     {
       path: '/',
+      redirect: '/dashboard',
       component: () => import('@/views/dashboard/Index'),
       props: true,
       meta: {
@@ -24,83 +26,131 @@ const routes = [
         // Dashboard
         {
           name: 'Dashboard',
-          path: '/',
+          path: 'dashboard',
           component: () => import('@/views/dashboard/Dashboard'),
+          props: true,
+          meta: {
+            requiresAuth: true
+          },
         },
         // Pages
         {
           name: 'User Profile',
           path: 'pages/user',
           component: () => import('@/views/dashboard/pages/UserProfile'),
+          props: true,
+          meta: {
+            requiresAuth: true
+          },
         },
         {
           name: 'Notifications',
           path: 'components/notifications',
           component: () => import('@/views/dashboard/component/Notifications'),
+          props: true,
+          meta: {
+            requiresAuth: true
+          },
         },
         {
           name: 'Icons',
           path: 'components/icons',
           component: () => import('@/views/dashboard/component/Icons'),
+          props: true,
+          meta: {
+            requiresAuth: true
+          },
         },
         {
           name: 'Typography',
           path: 'components/typography',
           component: () => import('@/views/dashboard/component/Typography'),
+          props: true,
+          meta: {
+            requiresAuth: true
+          },
         },
         // Tables
         {
           name: 'Regular Tables',
           path: 'tables/regular-tables',
           component: () => import('@/views/dashboard/tables/RegularTables'),
+          props: true,
+          meta: {
+            requiresAuth: true
+          },
         },
         // Maps
         {
           name: 'Google Maps',
           path: 'maps/google-maps',
           component: () => import('@/views/dashboard/maps/GoogleMaps'),
+          props: true,
+          meta: {
+            requiresAuth: true
+          },
         },
         // Upgrade
         {
           name: 'Upgrade',
           path: 'upgrade',
           component: () => import('@/views/dashboard/Upgrade'),
+          props: true,
+          meta: {
+            requiresAuth: true
+          },
         },
       ],
     },
+    { path: '*', redirect: { name: 'Dashboard' }}
   ]
 const router = new Router({
+  routes: [
+    { path: '/', redirect: '/dashboard' }
+  ],
   mode: 'history',
   base: process.env.BASE_URL,
   routes
 })
-//
-// router.beforeEach((to, from, next) => {
-//   if (to.matched.some(record => record.meta.requiresAuth)) {
-//       // var token = store.getters.loggedIn;
-//       // const loggedIn = localStorage.getItem('user')
-//       var loggedIn = localStorage.getItem('access_token')
-//       //     // this route requires auth, check if logged in
-//       //     // if not, redirect to login page.
-//       if (!loggedIn ) {
-//         next({
-//           path: '/login',
-//         })
-//       } else {
-//         next()
-//       }
-//     }else if (to.matched.some(record => record.meta.guest)) {
-//       var loggedIn = localStorage.getItem('access_token')
-//       if (loggedIn) {
-//         next({
-//           path: '/dashboard',
-//           // query: { redirect: to.fullPath }
-//         })
-//       } else {
-//         next()
-//       }
-//     }
-// })
+
+router.beforeEach((to, from, next) => {
+  const authenticated = store.getters["auth/authenticated"];
+
+  const reqAuth = to.matched.some(record => record.meta.requiresAuth);
+
+  // console.log(record.meta);
+  console.log(authenticated)
+  console.log(reqAuth)
+
+  // const loginQuery = { path: "/login", query: { redirect: to.fullPath } };
+
+  if (reqAuth && !authenticated) {
+    // store.dispatch("auth/refresh").then(() => {
+      console.log(store.getters["auth/authenticated"])
+      // if (!store.getters["auth/authenticated"]) {
+        next(
+          {path: '/login'}
+        );
+      // }
+      // else {
+      //   next();
+      // }
+    // });
+  }
+  else if (to.matched.some(record => record.meta.guest)){
+    if(authenticated){
+      next(
+        {path: '/'}
+      );
+    }
+    else {
+      next(); // make sure to always call next()!
+    }
+  }
+  else {
+    next(); // make sure to always call next()!
+  }
+});
 
 
 

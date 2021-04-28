@@ -82,8 +82,8 @@
 
 
     <template #append>
-      <div class="pa-4 ml-3 text-left">
-        <div @click="logout()">
+      <div class="pa-4 ml-3 text-left mouseover">
+        <div @click="signOut()">
           <v-icon>power_settings_new</v-icon>
         </div>
       </div>
@@ -96,6 +96,7 @@
   // Utilities
   import {
     mapState,
+    mapActions,
   } from 'vuex'
 
   export default {
@@ -113,7 +114,7 @@
         {
           icon: 'mdi-view-dashboard',
           title: 'dashboard',
-          to: '/',
+          to: '/dashboard',
         },
         {
           icon: 'mdi-account',
@@ -170,6 +171,14 @@
     },
 
     methods: {
+      ...mapActions({
+        signOutAction: 'auth/signOut'
+      }),
+      async signOut () {
+        await this.signOutAction()
+
+        this.$router.replace({ name: 'Login' })
+      },
       mapItem (item) {
         return {
           ...item,
@@ -192,6 +201,9 @@
   @import '~vuetify/src/styles/tools/_rtl.sass'
 
   #core-navigation-drawer
+    .mouseover
+      cursor: pointer
+      
     .v-list-group__header.v-list-item--active:before
       opacity: .24
 

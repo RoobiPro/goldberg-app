@@ -22,11 +22,14 @@ class AuthController extends Controller
   // Logout Function
   public function logout(Request $request)
   {
-    // Auth::logout();
-
+    // return 'vaddder';
+    Auth::guard('web')->logout();
+    // return $request;
     $request->session()->invalidate();
-
+    //
     $request->session()->regenerateToken();
+
+    return response(["success" => true], 200);
   }
 
 
