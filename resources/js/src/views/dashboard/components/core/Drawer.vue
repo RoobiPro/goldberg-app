@@ -118,6 +118,11 @@
         },
         {
           icon: 'mdi-account',
+          title: 'User Management',
+          to: '/management/user',
+        },
+        {
+          icon: 'mdi-account',
           title: 'user',
           to: '/pages/user',
         },
@@ -203,7 +208,7 @@
   #core-navigation-drawer
     .mouseover
       cursor: pointer
-      
+
     .v-list-group__header.v-list-item--active:before
       opacity: .24
 

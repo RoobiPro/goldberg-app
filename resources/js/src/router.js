@@ -35,6 +35,15 @@ const routes = [
         },
         // Pages
         {
+          name: 'User Management',
+          path: 'management/user',
+          component: () => import('@/views/dashboard/pages/Users'),
+          props: true,
+          meta: {
+            requiresAuth: true
+          },
+        },
+        {
           name: 'User Profile',
           path: 'pages/user',
           component: () => import('@/views/dashboard/pages/UserProfile'),
