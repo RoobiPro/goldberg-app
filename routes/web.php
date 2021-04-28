@@ -18,11 +18,11 @@ use Illuminate\Support\Facades\Route;
 //     return view('vuedashboard');
 // })->where('any', '.*');
 
-Route::get('/{any}', function () {
-    return view('vuedashboard');
-})->where('any', '.*')->middleware(['auth'])->name('dashboard');
-
-require __DIR__.'/auth.php';
+// Route::get('/{any}', function () {
+//     return view('vuedashboard');
+// })->where('any', '.*')->middleware(['auth'])->name('dashboard');
+//
+// require __DIR__.'/auth.php';
 
 
 // Route::get('/test', function () {
