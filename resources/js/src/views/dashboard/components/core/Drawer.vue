@@ -24,22 +24,16 @@
       dense
       nav
     >
-      <v-list-item>
-        <v-list-item-avatar
-          class="align-self-center"
-          color="white"
-          contain
-        >
+      <v-list-item mb-0 justify-space-between pa-3>
+        <v-list-item-avatar>
           <v-img
-            src="https://demos.creative-tim.com/vuetify-material-dashboard/favicon.ico"
-            max-height="30"
+            src="http://goldberg.local/images/favicon.png"
           />
         </v-list-item-avatar>
 
-        <v-list-item-content>
-          <v-list-item-title
-            class="display-1"
-            v-text="profile.title"
+        <v-list-item-content class="pa-6 pl-0">
+          <v-img
+            src="http://goldberg.local/images/goldberg_font.png"
           />
         </v-list-item-content>
       </v-list-item>
@@ -76,7 +70,7 @@
       <div />
     </v-list>
 
-    <template v-slot:append>
+    <!-- <template v-slot:append>
       <base-item
         :item="{
           title: $t('upgrade'),
@@ -84,6 +78,16 @@
           to: '/upgrade',
         }"
       />
+    </template> -->
+
+
+    <template #append>
+      <div class="pa-4 ml-3 text-left">
+        <div @click="logout()">
+          <v-icon>power_settings_new</v-icon>
+        </div>
+      </div>
+
     </template>
   </v-navigation-drawer>
 </template>
@@ -173,6 +177,13 @@
           title: this.$t(item.title),
         }
       },
+      logout(){
+        console.log("Vadder");
+        // axios.post('/logout', { withCredentials: true }).then( () => {
+        //   location.reload()
+          // console.log(response)
+        // })
+      }
     },
   }
 </script>

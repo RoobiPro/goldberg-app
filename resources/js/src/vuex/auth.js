@@ -51,7 +51,7 @@ export default {
 
     refresh ({ commit }) {
       return axios.get('/api/refresh').then((response) => {
-        console.log(response.data)
+        // console.log(response.data)
         commit('SET_AUTHENTICATED', true)
         commit('SET_USER', response.data)
       }).catch(() => {

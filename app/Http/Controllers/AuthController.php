@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
+
+  // Login Function
   public function login(Request $request)
   {
      if (Auth::attempt($request->only(['email', 'password']))) {
@@ -17,6 +19,7 @@ class AuthController extends Controller
      }
   }
 
+  // Logout Function
   public function logout(Request $request)
   {
     // Auth::logout();
@@ -26,8 +29,12 @@ class AuthController extends Controller
     $request->session()->regenerateToken();
   }
 
+
+  // Refresh the User
   public function refresh(Request $request){
+
     return response()->json([ "success" => true, "user" => Auth::user() ], 200);
+
   }
 
 }

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import createPersistedState from "vuex-persistedstate";
+// import createPersistedState from "vuex-persistedstate";
 import auth from './auth'
 import hs from './hs'
 // import Cookies from 'js-cookie';
@@ -23,6 +23,19 @@ const store = new Vuex.Store({
   //     removeItem: key => Cookies.remove(key)
   //   }
   // })],
+  state: {
+    barColor: 'rgba(0, 0, 0, .8), rgba(0, 0, 0, .8)',
+    barImage: 'https://demos.creative-tim.com/material-dashboard/assets/img/sidebar-1.jpg',
+    drawer: null,
+  },
+  mutations: {
+    SET_BAR_IMAGE (state, payload) {
+      state.barImage = payload
+    },
+    SET_DRAWER (state, payload) {
+      state.drawer = payload
+    },
+  },
 });
 
 export default store

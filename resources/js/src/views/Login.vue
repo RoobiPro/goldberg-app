@@ -67,7 +67,7 @@
       async submit () {
         await this.signIn(this.form)
         console.log("looged in")
-        // this.$router.replace({ name: 'home' })
+        this.$router.replace({ name: 'Dashboard' })
       }
     }
   }

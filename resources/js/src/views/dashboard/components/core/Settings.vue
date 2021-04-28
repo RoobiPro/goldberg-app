@@ -11,7 +11,7 @@
       style="position: fixed; top: 115px; right: -35px; border-radius: 8px;"
     >
       <v-icon large>
-        mdi-settings
+        mdi-arrow-bottom-left
       </v-icon>
     </v-card>
 
@@ -32,7 +32,7 @@
         width="300"
       >
         <v-card-text>
-          <strong class="mb-3 d-inline-block">SIDEBAR FILTERS</strong>
+          <strong class="mb-3 d-inline-block">Settings</strong>
 
           <v-item-group v-model="color">
             <v-item
@@ -126,17 +126,6 @@
             </v-item>
           </v-item-group>
 
-          <v-btn
-            block
-            class="mb-3"
-            color="success"
-            href="https://www.creative-tim.com/product/vuetify-material-dashboard"
-            default
-            rel="noopener"
-            target="_blank"
-          >
-            Free Download
-          </v-btn>
 
           <v-btn
             block
@@ -153,31 +142,10 @@
 
           <div class="my-12" />
 
-          <div>
-            <strong class="mb-3 d-inline-block">THANK YOU FOR SHARING!</strong>
-          </div>
 
-          <v-btn
-            class="ma-1"
-            color="#55acee"
-            dark
-            default
-            rounded
-          >
-            <v-icon>mdi-twitter</v-icon>
-            - 45
-          </v-btn>
 
-          <v-btn
-            class="ma-1"
-            color="#3b5998"
-            dark
-            default
-            rounded
-          >
-            <v-icon>mdi-facebook</v-icon>
-            - 50
-          </v-btn>
+
+
         </v-card-text>
       </v-card>
     </v-menu>
