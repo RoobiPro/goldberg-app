@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,21 +14,25 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::get('/{any}', function () {
-    return view('vuedashboard');
-})->where('any', '.*');
 
 // Route::get('/login', function () {
 //     // return view('welcome');
 //     return view('vuedashboard');
 // });
-
+// Route::apiResource('users', UserController::class);
 
 // Route::post('/login', 'AuthController@login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
+
 // ->where('any', '.*');
+
+
+Route::get('/{any}', function () {
+    return view('vuedashboard');
+})->where('any', '.*');
+
 
 // Route::get('/{any}', function () {
 //     return view('vuedashboard');

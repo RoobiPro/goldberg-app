@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 
 
 /*
@@ -28,6 +28,13 @@ use App\Http\Controllers\UserController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('users', UserController::class);
+    // Route::get('/refresh',function () {
+    //   return "HURENSOHN";
+    // });
+
+    Route::get('/refresh', [AuthController::class, 'refresh']);
+    // Route::get('user', [UserController::class, 'getLoggedInUser']);
+    // Route::apiResource('user', UserController::class);
 });
 
 // Route::apiResource('users', UserController::class);

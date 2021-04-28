@@ -3,23 +3,23 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-export default new Router({
-  mode: 'hash',
-  base: process.env.BASE_URL,
-  mode: 'history',
-  routes: [
+const routes = [
     {
       path: '/login',
       name: 'Login',
       component: () => import('@/views/Login'),
       props: true,
       meta: {
-      guest: true
+        guest: true
       },
     },
     {
       path: '/',
       component: () => import('@/views/dashboard/Index'),
+      props: true,
+      meta: {
+        requiresAuth: true
+      },
       children: [
         // Dashboard
         {
@@ -68,5 +68,40 @@ export default new Router({
         },
       ],
     },
-  ],
+  ]
+const router = new Router({
+  mode: 'history',
+  base: process.env.BASE_URL,
+  routes
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+      // var token = store.getters.loggedIn;
+      // const loggedIn = localStorage.getItem('user')
+      var loggedIn = localStorage.getItem('access_token')
+      //     // this route requires auth, check if logged in
+      //     // if not, redirect to login page.
+      if (!loggedIn ) {
+        next({
+          path: '/login',
+        })
+      } else {
+        next()
+      }
+    }else if (to.matched.some(record => record.meta.guest)) {
+      var loggedIn = localStorage.getItem('access_token')
+      if (loggedIn) {
+        next({
+          path: '/dashboard',
+          // query: { redirect: to.fullPath }
+        })
+      } else {
+        next()
+      }
+    }
+})
+
+
+
+export default router

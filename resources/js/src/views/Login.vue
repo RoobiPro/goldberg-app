@@ -14,14 +14,15 @@
 
                   <div class="col-lg-12 login-form">
                       <div class="col-lg-12 login-form">
-                          <form>
+                          <form action="#" @submit.prevent="submit">
+
                               <div class="form-group">
                                   <label class="form-control-label">USERNAME</label>
-                                  <input type="text" class="form-control">
+                                  <input type="text" class="form-control" name="email" id="email" v-model="form.email">
                               </div>
                               <div class="form-group">
                                   <label class="form-control-label">PASSWORD</label>
-                                  <input type="password" class="form-control" i>
+                                  <input type="password" class="form-control" name="password" id="password" v-model="form.password">
                               </div>
 
                               <div class="col-lg-12 loginbttm">
@@ -40,46 +41,36 @@
           </div>
       </div>
 
-
-
-
-
-
 </template>
 
 <script>
+  import axios from 'axios'
+  import { mapActions } from 'vuex'
 
-// import { mapGetters } from 'vuex'
+  export default {
+    name: 'SignIn',
 
+    data () {
+      return {
+        form: {
+          email: '',
+          password: '',
+        }
+      }
+    },
 
-// export default {
-//   data () {
-//     return {
-//       username: '',
-//       password: ''
-//     }
-//   },
-//   // computed: {
-//   //   ...mapGetters([
-//   //   'isLoggedIn'
-//   //   ])
-//   // },
-//   methods: {
-//     login () {
-//       this.$store.dispatch('login', {
-//           username: this.username,
-//           password: this.password
-//         })
-//         // .then(() => {
-//         //   this.$router.push({ name: 'Home' })
-//         // })
-//         .catch(err => {
-//           console.log(err)
-//         })
-//     }
-//   },
-// }
+    methods: {
+      ...mapActions({
+        signIn: 'auth/signIn'
+      }),
 
+      async submit () {
+        await this.signIn(this.form)
+        console.log("looged in")
+        // this.$router.replace({ name: 'home' })
+      }
+    }
+  }
 </script>
 
 <style lang="scss" scoped>

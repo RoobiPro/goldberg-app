@@ -11,10 +11,11 @@
 //
 // * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 // require('./bootstrap');
+import axios from 'axios'
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from './store'
+import store from './vuex/store'
 import './plugins/base'
 import './plugins/chartist'
 import './plugins/vee-validate'
@@ -23,18 +24,22 @@ import i18n from './i18n'
 // import 'vuetify/dist/vuetifymin.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
+axios.defaults.withCredentials = true
+axios.defaults.baseURL = 'http://goldberg.local/'
+
 Vue.config.productionTip = false
 
 Vue.use(vuetify);
 
-new Vue({
-  router,
-  store,
-  vuetify,
-  i18n,
-  render: h => h(App),
-}).$mount('#app')
-
+store.dispatch('auth/refresh').then(() => {
+  new Vue({
+    router,
+    store,
+    vuetify,
+    i18n,
+    render: h => h(App),
+  }).$mount('#app')
+})
 //
 // new Vue({
 //   el: '#app',

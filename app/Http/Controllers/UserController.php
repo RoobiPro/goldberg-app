@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-
+use Illuminate\Facades\Auth;
 
 
 class UserController extends Controller
@@ -26,6 +26,8 @@ class UserController extends Controller
           return UserResource::collection(User::paginate(10));
     }
 
+
+
     /**
      * Store a newly created resource in storage.
      *
@@ -43,9 +45,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $req)
     {
-        //
+        return $req->user();
+
     }
 
     /**
