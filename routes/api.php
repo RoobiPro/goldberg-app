@@ -26,9 +26,9 @@ use App\Http\Controllers\UserController;
 //     return $request->user();
 // });
 
-// Route::middleware('auth:sanctum')->group(function () {
-//     Route::apiResource('users', UserController::class);
-// });
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('users', UserController::class);
+});
 
 // Route::apiResource('users', UserController::class);
 
