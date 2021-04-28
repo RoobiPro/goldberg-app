@@ -11,11 +11,21 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
+ // mix
+
+mix.js('resources/js/src/app.js', 'public/js')
     .vue()
-    // .sourceMaps()
+    .sourceMaps()
+    .webpackConfig({
+     resolve: {
+       extensions: ['.js', '.vue', '.json', '.scss', '.sass'],
+       alias: {
+         '@': __dirname + '/resources/js/src'
+        }
+      }
+    })
     .postCss('resources/css/app.css', 'public/css', [
     require('postcss-import'),
     require('tailwindcss'),
-    require('autoprefixer')
-]);
+    require('autoprefixer'),
+    ]);

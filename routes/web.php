@@ -14,11 +14,14 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-    // return view('vuedashboard');
-});
+Route::get('/{any}', function () {
+    return view('vuedashboard');
+})->where('any', '.*');
 
+// Route::get('/login', function () {
+//     // return view('welcome');
+//     return view('vuedashboard');
+// });
 
 
 // Route::post('/login', 'AuthController@login');
