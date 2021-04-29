@@ -3,6 +3,9 @@ import Vuex from 'vuex'
 // import createPersistedState from "vuex-persistedstate";
 import auth from './auth'
 import hs from './hs'
+import usersmod from './modules/users-module'
+// import proejctmod from './modules/projects-module'
+
 // import Cookies from 'js-cookie';
 
 Vue.use(Vuex)
@@ -14,7 +17,9 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   modules: {
     auth,
-    hs
+    hs,
+    usersmod
+    // proejctmod
   },
   // plugins: [createPersistedState({
   //   storage: {
