@@ -23,6 +23,7 @@
       </v-icon>
     </v-btn>
 
+
     <v-toolbar-title
       class="hidden-sm-and-down font-weight-light"
       v-text="$route.name"
@@ -30,7 +31,7 @@
 
     <v-spacer />
 
-    <v-text-field
+    <!-- <v-text-field
       :label="$t('search')"
       color="secondary"
       hide-details
@@ -49,7 +50,7 @@
           <v-icon>mdi-magnify</v-icon>
         </v-btn>
       </template>
-    </v-text-field>
+    </v-text-field> -->
 
     <div class="mx-3" />
 

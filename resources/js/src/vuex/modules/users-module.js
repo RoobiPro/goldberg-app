@@ -52,7 +52,6 @@ const actions = {
 
 const getters = {
   list: state => state.list,
-  listTotal: state => state.meta.page.total,
   user: state => state.user,
   meta: state => state.meta
 

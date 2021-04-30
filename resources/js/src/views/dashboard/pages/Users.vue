@@ -1,88 +1,184 @@
 <template>
-  <section class="container container--fluid" id="regular-tables">
-    <v-card >
+  <v-container
+    fluid
+    tag="section"
+    style="margin-top:10vh;"
+  >
+    <!-- <base-v-component
+      heading="User Management"
+      link="components/simple-tables"
+    /> -->
 
-      <v-card-title class="pl-5">
-      Users Table
-      <v-spacer></v-spacer>
-      <v-text-field
-        v-model="search"
-        label="Search"
-        append-icon="mdi-magnify"
-        class="mx-4"
-        single-line
-        hide-details
-
-      ></v-text-field>
-    </v-card-title>
 
       <v-data-table
         :headers="headers"
         :items="users"
-        item-key="name"
-        class="elevation-1 pa-3"
         :search="search"
+        class="elevation-1"
       >
-      <!-- loading
-      loading-text="Loading... Please wait" -->
-        <!-- <template v-slot:top>
+        <template v-slot:top>
+          <v-toolbar
+            flat
+          >
 
-        </template> -->
-        <template v-slot:item.actions="{ item }">
-            <v-icon
-              small
-              class="mr-2"
-              @click="editItem(item)"
+            <div class="v-application primary mr-4 text-start v-card--material__heading mb-n6 v-sheet theme--dark elevation-6 pa-7 d-none d-sm-flex d-md-flex"
+              style="max-height: 90px; width: auto;">
+              <i aria-hidden="true" class="v-icon notranslate mdi mdi-clipboard-text theme--dark" style="font-size: 32px;">
+              </i>
+            </div>
+
+            <v-toolbar-title>User Management</v-toolbar-title>
+            <v-divider
+              class="mx-4"
+              inset
+              vertical
+            ></v-divider>
+            <v-spacer></v-spacer>
+            <v-text-field
+              v-model="search"
+              label="Search"
+              append-icon="mdi-magnify"
+              class="mx-4"
+              single-line
+              hide-details
+
+            ></v-text-field>
+            <v-spacer></v-spacer>
+            <v-dialog
+              v-model="dialog"
+              max-width="500px"
             >
-              mdi-pencil
-            </v-icon>
-            <v-icon
-              small
-              @click="deleteItem(item)"
-            >
-              mdi-delete
-            </v-icon>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  color="primary"
+                  dark
+                  class="mb-2"
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  New User
+                </v-btn>
+              </template>
+              <v-card>
+                <v-card-title>
+                  <span class="headline">{{ formTitle }}</span>
+                </v-card-title>
+
+                <v-card-text>
+                  <v-container>
+                    <v-row>
+                      <v-col
+                        cols="12"
+                        sm="6"
+                        md="4"
+                      >
+                        <v-text-field
+                          v-model="editedItem.name"
+                          label="Dessert name"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col
+                        cols="12"
+                        sm="6"
+                        md="4"
+                      >
+                        <v-text-field
+                          v-model="editedItem.calories"
+                          label="Calories"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col
+                        cols="12"
+                        sm="6"
+                        md="4"
+                      >
+                        <v-text-field
+                          v-model="editedItem.fat"
+                          label="Fat (g)"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col
+                        cols="12"
+                        sm="6"
+                        md="4"
+                      >
+                        <v-text-field
+                          v-model="editedItem.carbs"
+                          label="Carbs (g)"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col
+                        cols="12"
+                        sm="6"
+                        md="4"
+                      >
+                        <v-text-field
+                          v-model="editedItem.protein"
+                          label="Protein (g)"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-card-text>
+
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    color="blue darken-1"
+                    text
+                    @click="close"
+                  >
+                    Cancel
+                  </v-btn>
+                  <v-btn
+                    color="blue darken-1"
+                    text
+                    @click="save"
+                  >
+                    Save
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+            <v-dialog v-model="dialogDelete" max-width="400px">
+              <v-card>
+                <v-card-title class="text-heading-5">Are you sure you want to delete this User?</v-card-title>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
+                  <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+                  <v-spacer></v-spacer>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-toolbar>
         </template>
-
+        <template  v-slot:item.actions="{ item }">
+          <v-icon v-if="item.role!=2"
+            small
+            class="mr-2"
+            @click="editItem(item)"
+          >
+            mdi-pencil
+          </v-icon>
+          <v-icon v-if="item.role!=2"
+            small
+            @click="deleteItem(item)"
+          >
+            mdi-delete
+          </v-icon>
+        </template>
+        <template v-slot:no-data>
+          <v-btn
+            color="primary"
+            @click="getList"
+          >
+            Reset
+          </v-btn>
+        </template>
       </v-data-table>
-    </v-card>
 
-    <!-- <template>
-        <v-footer
-       dark
-       padless
-     >
-       <v-card
-         class="flex"
-         flat
-         tile
-       >
-         <v-card-title class="teal">
-           <strong class="subheading">Get connected with us on social networks!</strong>
-
-           <v-spacer></v-spacer>
-
-           <v-btn
-             v-for="icon in icons"
-             :key="icon"
-             class="mx-4"
-             dark
-             icon
-           >
-             <v-icon size="24px">
-               {{ icon }}
-             </v-icon>
-           </v-btn>
-         </v-card-title>
-
-         <v-card-text class="py-2 white--text text-center">
-           {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
-         </v-card-text>
-       </v-card>
-     </v-footer>
-    </template> -->
-
-  </section>
+</v-container>
 </template>
 
 <script>
@@ -92,162 +188,112 @@ export default {
   components: {
     // pagination: Pagination,
   },
-  data () {
-    return {
+  data: () => ({
       users: [],
       search: '',
-      calories: '',
-      icons: [
-        'mdi-facebook',
-        'mdi-twitter',
-        'mdi-linkedin',
-        'mdi-instagram',
-      ],
+      dialog: false,
+      dialogDelete: false,
+      desserts: [],
+      editedIndex: -1,
+      editedItem: {
+        name: '',
+        calories: 0,
+        fat: 0,
+        carbs: 0,
+        protein: 0,
+      },
+      defaultItem: {
+        name: '',
+        calories: 0,
+        fat: 0,
+        carbs: 0,
+        protein: 0,
+      },
+    }),
 
-    }
-  },
-  computed: {
-    headers () {
-      return [
-        { text: 'ID', align: 'start', value: 'id', },
-        { text: 'Name', value: 'name' },
-        { text: 'E-mail', value: 'email' },
-        { text: 'Role', value: 'role_name' },
-        { text: 'Actions', value: 'actions', sortable: false },
-      ]
+    computed: {
+      formTitle () {
+        return this.editedIndex === -1 ? 'New User' : 'Edit User'
+      },
+      headers () {
+        return [
+          { text: 'ID', align: 'start', value: 'id', },
+          { text: 'Name', value: 'name' },
+          { text: 'E-mail', value: 'email' },
+          { text: 'Role', value: 'role_name' },
+          { text: 'Actions', value: 'actions', sortable: false },
+        ]
+      },
     },
-  },
-  created(){
-    console.log(this.desserts);
-    this.getList()
 
-  },
-  methods: {
-    filterOnlyCapsText (value, search, item) {
-      return value != null &&
-        search != null &&
-        typeof value === 'string' &&
-        value.toString().toLocaleUpperCase().indexOf(search) !== -1
+    watch: {
+      dialog (val) {
+        val || this.close()
+      },
+      dialogDelete (val) {
+        val || this.closeDelete()
+      },
     },
-    async getList() {
-      await this.$store.dispatch("usersmod/list");
-      this.users = await this.$store.getters["usersmod/list"];
-      console.log(this.users);
-      // console.log(this.table);
-      // this.meta = await this.$store.getters["usersmod/meta"];
-      // this.total = this.meta.page.total;
+
+    created () {
+      this.getList()
     },
-  },
+
+    methods: {
+     async getList () {
+       await this.$store.dispatch("usersmod/list");
+       this.users = await this.$store.getters["usersmod/list"];
+       console.log(this.users);
+      },
+
+      editItem (item) {
+        this.editedIndex = this.users.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+        this.dialog = true
+      },
+
+      deleteItem (item) {
+         console.log(item)
+        this.editedIndex = this.users.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+        this.dialogDelete = true
+      },
+
+      deleteItemConfirm () {
+        console.log(this.editedItem)
+        this.users.splice(this.editedIndex, 1)
+        this.$store.dispatch("usersmod/destroy", this.editedItem.id).then((response) => {
+          console.log(response.data)
+        })
+
+        this.closeDelete()
+
+      },
+
+      close () {
+        this.dialog = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      },
+
+      closeDelete () {
+        this.dialogDelete = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      },
+
+      save () {
+        if (this.editedIndex > -1) {
+          Object.assign(this.desserts[this.editedIndex], this.editedItem)
+        } else {
+          this.desserts.push(this.editedItem)
+        }
+        this.close()
+      },
+    },
 }
-  // data: () => ({
-  //   searchedUser: "",
-  //   table: [],
-  //   calories: "",
-  //   headers: [
-  //      {
-  //        text: 'Dessert (100g serving)',
-  //        align: 'start',
-  //        sortable: false,
-  //        value: 'name',
-  //      },
-  //      { text: 'ID', value: 'ID' },
-  //      { text: 'Name', value: 'name' },
-  //      { text: 'Email', value: 'email' },
-  //      { text: 'Protein (g)', value: 'protein' },
-  //      { text: 'Iron (%)', value: 'iron' },
-  //    ],
-  //   footerTable: ["Name", "Email", "Role", "Created At", "Actions"],
-  //
-  //   query: null,
-  //
-  //   sortation: {
-  //     field: "created_at",
-  //     order: "asc",
-  //   },
-  //
-  //   pagination: {
-  //     perPage: 5,
-  //     currentPage: 1,
-  //     perPageOptions: [5, 10, 25, 50],
-  //   },
-  //
-  //   total: 0,
-  // }),
-  //
-  // computed: {
-    //   sort() {
-    //     if (this.sortation.order === "desc") {
-    //       return `-${this.sortation.field}`;
-    //     }
-    //
-    //     return this.sortation.field;
-    //   },
-    //
-    //   from() {
-    //     this.getList();
-    //     return this.pagination.perPage * (this.pagination.currentPage - 1);
-    //
-    //   },
-    //
-    //   to() {
-    //     let highBound = this.from + this.pagination.perPage;
-    //     if (this.total < highBound) {
-    //       highBound = this.total;
-    //     }
-    //     this.getList();
-    //     return highBound;
-    //   },
-//   },
-//
-//   created() {
-//     this.getList();
-//   },
-//
-//   methods: {
-//     typedSearch() {
-//       console.log(this.searchedUser);
-//     },
-//     async getList() {
-//       await this.$store.dispatch("usersmod/list");
-//       this.table = await this.$store.getters["usersmod/list"];
-//       console.log(this.table);
-//
-//
-//       this.meta = await this.$store.getters["usersmod/meta"];
-//       this.total = this.meta.page.total;
-//     },
-//     async deleteUser($id) {
-//       console.log($id);
-//       try {
-//         this.answer = await this.$store.dispatch("usersmod/destroy", $id);
-//         if (this.answer.status = 200) {
-//           this.$store.dispatch("alerts/success", "User deleted");
-//           const myindex = this.table.findIndex(x => x.id === $id);
-//           console.log(myindex);
-//           this.table.splice(myindex, 1);
-//           this.getList();
-//         }
-//       } catch (err) {
-//         // console.log(err.response.data);
-//         this.$store.dispatch("alerts/error", err.response.data);
-//       }
-//
-//     },
-//
-//     onProFeature() {
-//       // this.$store.dispatch("alerts/error", "This is a PRO feature.");
-//       this.$router.push('/components/createuser');
-//     },
-//
-//     customSort() {
-//       return false;
-//     },
-//     filterOnlyCapsText (value, search, item) {
-//   return value != null &&
-//     search != null &&
-//     typeof value === 'string' &&
-//     value.toString().toLocaleUpperCase().indexOf(search) !== -1
-// },
-//   },
-// };
 </script>

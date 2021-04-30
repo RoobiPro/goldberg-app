@@ -14,7 +14,7 @@ export default {
     },
 
     user (state) {
-      return state.user
+      return state.user.user
     },
   },
 

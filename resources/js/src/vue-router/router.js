@@ -44,6 +44,15 @@ const routes = [
           },
         },
         {
+          name: 'Project Management',
+          path: 'management/project',
+          component: () => import('@/views/dashboard/pages/Projects'),
+          props: true,
+          meta: {
+            requiresAuth: true
+          },
+        },
+        {
           name: 'User Profile',
           path: 'pages/user',
           component: () => import('@/views/dashboard/pages/UserProfile'),
@@ -127,24 +136,11 @@ router.beforeEach((to, from, next) => {
 
   const reqAuth = to.matched.some(record => record.meta.requiresAuth);
 
-  // console.log(record.meta);
-  console.log(authenticated)
-  console.log(reqAuth)
-
-  // const loginQuery = { path: "/login", query: { redirect: to.fullPath } };
-
   if (reqAuth && !authenticated) {
-    // store.dispatch("auth/refresh").then(() => {
       console.log(store.getters["auth/authenticated"])
-      // if (!store.getters["auth/authenticated"]) {
         next(
           {path: '/login'}
         );
-      // }
-      // else {
-      //   next();
-      // }
-    // });
   }
   else if (to.matched.some(record => record.meta.guest)){
     if(authenticated){
@@ -160,7 +156,5 @@ router.beforeEach((to, from, next) => {
     next(); // make sure to always call next()!
   }
 });
-
-
 
 export default router

@@ -88,12 +88,12 @@ function update(user) {
 function destroy(id) {
   const options = {
     headers: {
-      'Accept': 'application/vnd.api+json',
-      'Content-Type': 'application/vnd.api+json',
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
     }
   };
 
-  return axios.delete(`${url}/user/delete/${id}`, options);
+  return axios.delete(`${url}/users/${id}`, options);
 }
 
 function upload(user, image) {

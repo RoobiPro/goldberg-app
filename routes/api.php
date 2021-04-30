@@ -28,6 +28,7 @@ use App\Http\Controllers\AuthController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('users', UserController::class);
+    Route::apiResource('projects', ProjectController::class);
     // Route::get('/refresh',function () {
     //   return "HURENSOHN";
     // });

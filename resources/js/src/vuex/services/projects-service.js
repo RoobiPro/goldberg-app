@@ -1,9 +1,10 @@
 import qs from 'qs';
 import axios from 'axios';
-import Jsona from 'jsona';
+// import Jsona from 'jsona';
 
-const url = process.env.VUE_APP_API_BASE_URL;
-const jsona = new Jsona();
+// const url = process.env.VUE_APP_API_BASE_URL;
+const url = 'http://goldberg.local/api'
+// const jsona = new Jsona();
 
 function list(params) {
   const options = {
@@ -13,11 +14,13 @@ function list(params) {
     }
   };
   // options = '?page[number]=1&page[size]=5'
-  return axios.get(`${url}/projects?page[number]=${options.params.currentPage}&page[size]=${options.params.perPage}`, options)
+  return axios.get(`${url}/projects`)
     .then(response => {
-      // console.log(response.data.meta.page);
+      // console.log(response.data.data);
+      // console.log(response.data.meta);
       return {
-        list: jsona.deserialize(response.data),
+        // list: jsona.deserialize(response.data),
+        list: response.data.data,
         meta: response.data.meta
       };
     });
@@ -31,19 +34,24 @@ function get(id) {
     }
   };
 
-  return axios.get(`${url}/projects/${id}`, options)
+  return axios.get(`${url}/users/${id}`, options)
     .then(response => {
-      let user = jsona.deserialize(response.data);
-      delete project.links;
-      return project;
+      // let user = jsona.deserialize(response.data);
+      let user = response.data;
+      delete user.links;
+      return user;
     });
 }
 
-function add(project) {
-  const payload = jsona.serialize({
-    stuff: project,
+function add(user) {
+  // const payload = jsona.serialize({
+  //   stuff: user,
+  //   includeNames: null
+  // });
+  const payload = {
+    stuff: user,
     includeNames: null
-  });
+  };
 
   const options = {
     headers: {
@@ -52,17 +60,17 @@ function add(project) {
     }
   };
 
-  return axios.post(`${url}/project`, payload, options)
+  return axios.post(`${url}/users`, payload, options)
     .then(response => {
-      return jsona.deserialize(response.data);
+      return response.data;
     });
 }
 
-function update(project) {
-  const payload = jsona.serialize({
-    stuff: project,
+function update(user) {
+  const payload = {
+    stuff: user,
     includeNames: []
-  });
+  };
 
   const options = {
     headers: {
@@ -71,9 +79,9 @@ function update(project) {
     }
   };
 
-  return axios.patch(`${url}/project/${user.id}`, payload, options)
+  return axios.patch(`${url}/users/${user.id}`, payload, options)
     .then(response => {
-      return jsona.deserialize(response.data);
+      return response.data;
     });
 }
 
@@ -85,10 +93,10 @@ function destroy(id) {
     }
   };
 
-  return axios.delete(`${url}/project/delete/${id}`, options);
+  return axios.delete(`${url}/user/delete/${id}`, options);
 }
 
-function upload(project, image) {
+function upload(user, image) {
   const bodyFormData = new FormData();
   bodyFormData.append('attachment', image);
 

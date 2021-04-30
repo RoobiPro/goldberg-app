@@ -18,12 +18,6 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->paginationCount) {
-          $paginateCount = $request->paginationCount;
-          // return UserResource::collection(User::paginate($paginateCount));
-          return UserResource::collection(User::all());
-        }
-          // Default PaginationCount = 10
           return UserResource::collection(User::all());
     }
 
@@ -72,6 +66,8 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+      $user = User::find($id);
+      $user->delete();
+      return response()->json('delted', 200);
     }
 }

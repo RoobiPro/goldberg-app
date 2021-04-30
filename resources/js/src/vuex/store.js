@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 import auth from './auth'
 import hs from './hs'
 import usersmod from './modules/users-module'
-// import proejctmod from './modules/projects-module'
+import projectsmod from './modules/projects-module'
 
 // import Cookies from 'js-cookie';
 
@@ -18,8 +18,8 @@ const store = new Vuex.Store({
   modules: {
     auth,
     hs,
-    usersmod
-    // proejctmod
+    usersmod,
+    projectsmod
   },
   // plugins: [createPersistedState({
   //   storage: {
