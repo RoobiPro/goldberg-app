@@ -1,7 +1,21 @@
 <template>
   <section class="container container--fluid" id="regular-tables">
-    <!-- <div class="v-card--material pa-3 px-5 py-3 v-card v-sheet theme--light v-card--material--has-heading"> -->
-    <div>
+    <v-card >
+
+      <v-card-title class="pl-5">
+      Users Table
+      <v-spacer></v-spacer>
+      <v-text-field
+        v-model="search"
+        label="Search"
+        append-icon="mdi-magnify"
+        class="mx-4"
+        single-line
+        hide-details
+
+      ></v-text-field>
+    </v-card-title>
+
       <v-data-table
         :headers="headers"
         :items="users"
@@ -9,16 +23,65 @@
         class="elevation-1 pa-3"
         :search="search"
       >
-        <template v-slot:top>
-          <v-text-field
-            v-model="search"
-            label="Search"
-            class="mx-4"
-          ></v-text-field>
+      <!-- loading
+      loading-text="Loading... Please wait" -->
+        <!-- <template v-slot:top>
+
+        </template> -->
+        <template v-slot:item.actions="{ item }">
+            <v-icon
+              small
+              class="mr-2"
+              @click="editItem(item)"
+            >
+              mdi-pencil
+            </v-icon>
+            <v-icon
+              small
+              @click="deleteItem(item)"
+            >
+              mdi-delete
+            </v-icon>
         </template>
 
       </v-data-table>
-    </div>
+    </v-card>
+
+    <!-- <template>
+        <v-footer
+       dark
+       padless
+     >
+       <v-card
+         class="flex"
+         flat
+         tile
+       >
+         <v-card-title class="teal">
+           <strong class="subheading">Get connected with us on social networks!</strong>
+
+           <v-spacer></v-spacer>
+
+           <v-btn
+             v-for="icon in icons"
+             :key="icon"
+             class="mx-4"
+             dark
+             icon
+           >
+             <v-icon size="24px">
+               {{ icon }}
+             </v-icon>
+           </v-btn>
+         </v-card-title>
+
+         <v-card-text class="py-2 white--text text-center">
+           {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
+         </v-card-text>
+       </v-card>
+     </v-footer>
+    </template> -->
+
   </section>
 </template>
 
@@ -34,30 +97,23 @@ export default {
       users: [],
       search: '',
       calories: '',
+      icons: [
+        'mdi-facebook',
+        'mdi-twitter',
+        'mdi-linkedin',
+        'mdi-instagram',
+      ],
 
     }
   },
   computed: {
     headers () {
       return [
-        {
-          text: 'ID',
-          align: 'start',
-          sortable: false,
-          value: 'id',
-        },
-        {
-          text: 'Name',
-          value: 'name',
-          filter: value => {
-            if (!this.calories) return true
-
-            return value < parseInt(this.calories)
-          },
-        },
+        { text: 'ID', align: 'start', value: 'id', },
+        { text: 'Name', value: 'name' },
         { text: 'E-mail', value: 'email' },
         { text: 'Role', value: 'role_name' },
-
+        { text: 'Actions', value: 'actions', sortable: false },
       ]
     },
   },
