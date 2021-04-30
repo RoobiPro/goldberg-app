@@ -20,10 +20,11 @@ class UserController extends Controller
     {
         if ($request->paginationCount) {
           $paginateCount = $request->paginationCount;
-          return UserResource::collection(User::paginate($paginateCount));
+          // return UserResource::collection(User::paginate($paginateCount));
+          return UserResource::collection(User::all());
         }
           // Default PaginationCount = 10
-          return UserResource::collection(User::paginate(10));
+          return UserResource::collection(User::all());
     }
 
 

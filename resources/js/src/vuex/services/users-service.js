@@ -16,10 +16,11 @@ function list(params) {
   // options = '?page[number]=1&page[size]=5'
   return axios.get(`${url}/users`)
     .then(response => {
-      console.log(response);
+      // console.log(response.data.data);
+      // console.log(response.data.meta);
       return {
         // list: jsona.deserialize(response.data),
-        list: response.data,
+        list: response.data.data,
         meta: response.data.meta
       };
     });
