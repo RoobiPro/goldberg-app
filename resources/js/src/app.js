@@ -24,6 +24,8 @@ import i18n from './vue-i18n/i18n'
 // import 'vuetify/dist/vuetifymin.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
+// Notifications plugin. Used on Notifications page
+
 axios.defaults.withCredentials = true
 axios.defaults.baseURL = 'http://goldberg.local/'
 

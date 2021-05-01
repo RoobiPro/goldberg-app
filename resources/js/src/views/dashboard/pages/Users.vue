@@ -1,4 +1,5 @@
 <template>
+
   <v-container
     fluid
     tag="section"
@@ -240,11 +241,12 @@ export default {
     },
 
     methods: {
+
      async getList () {
        await this.$store.dispatch("usersmod/list");
        this.users = await this.$store.getters["usersmod/list"];
        console.log(this.users);
-      },
+        },
 
       editItem (item) {
         this.editedIndex = this.users.indexOf(item)

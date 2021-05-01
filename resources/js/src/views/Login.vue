@@ -66,7 +66,6 @@
 
       async submit () {
         await this.signIn(this.form)
-        console.log("looged in")
         this.$router.replace({ path: '/dashboard' })
       }
     }

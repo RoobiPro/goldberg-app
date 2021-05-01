@@ -23,7 +23,7 @@
   <v-list dense nav class="d-flex justify-start">
     <div class="d-flex justify-content-center">
       <v-list-item>
-          <v-avatar size="64">
+          <v-avatar size="50">
             <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John">
           </v-avatar>
       </v-list-item>
@@ -86,6 +86,7 @@ export default {
 
   data: () => ({
     user:'',
+    isFetching: true,
     items: [{
         icon: 'mdi-view-dashboard',
         title: 'dashboard',
@@ -163,8 +164,7 @@ export default {
       signOutAction: 'auth/signOut'
     }),
     getUser(){
-      this.user = this.$store.getters["auth/user"];
-      console.log(this.user);
+      this.user = this.$store.getters["auth/user"]
     },
     async signOut() {
       await this.signOutAction()
