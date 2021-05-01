@@ -3,9 +3,10 @@ import Vuex from 'vuex'
 // import createPersistedState from "vuex-persistedstate";
 import auth from './auth'
 import hs from './hs'
-// import alerts from './modules/alerts-module';
+
 import usersmod from './modules/users-module'
 import projectsmod from './modules/projects-module'
+import alerts from './modules/alerts-module'
 
 // import Cookies from 'js-cookie';
 
@@ -19,7 +20,7 @@ const store = new Vuex.Store({
   modules: {
     auth,
     hs,
-    // alerts,
+    alerts,
     usersmod,
     projectsmod
   },
