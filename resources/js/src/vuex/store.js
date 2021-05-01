@@ -24,13 +24,6 @@ const store = new Vuex.Store({
     usersmod,
     projectsmod
   },
-  // plugins: [createPersistedState({
-  //   storage: {
-  //     getItem: key => Cookies.get(key),
-  //     setItem: (key, value) => Cookies.set(key, value, { expires: 3, secure: true }),
-  //     removeItem: key => Cookies.remove(key)
-  //   }
-  // })],
   state: {
     barColor: 'rgba(0, 0, 0, .8), rgba(0, 0, 0, .8)',
     barImage: 'https://demos.creative-tim.com/material-dashboard/assets/img/sidebar-1.jpg',

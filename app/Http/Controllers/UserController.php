@@ -68,6 +68,6 @@ class UserController extends Controller
     {
       $user = User::find($id);
       $user->delete();
-      return response()->json('delted', 200);
+      return response()->json('User was successfully deleted!', 200);
     }
 }

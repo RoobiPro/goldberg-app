@@ -5,11 +5,6 @@
     tag="section"
     style="margin-top:10vh;"
   >
-    <!-- <base-v-component
-      heading="User Management"
-      link="components/simple-tables"
-    /> -->
-
 
       <v-data-table
         :headers="headers"
@@ -29,6 +24,7 @@
             </div>
 
             <v-toolbar-title>User Management</v-toolbar-title>
+
             <v-divider
               class="mx-4"
               inset
@@ -45,6 +41,7 @@
 
             ></v-text-field>
             <v-spacer></v-spacer>
+
             <v-dialog
               v-model="dialog"
               max-width="500px"
@@ -60,6 +57,7 @@
                   New User
                 </v-btn>
               </template>
+
               <v-card>
                 <v-card-title>
                   <span class="headline">{{ formTitle }}</span>
@@ -70,53 +68,93 @@
                     <v-row>
                       <v-col
                         cols="12"
-                        sm="6"
-                        md="4"
+                        sm="12"
+                        md="12"
                       >
                         <v-text-field
                           v-model="editedItem.name"
-                          label="Dessert name"
+                          label="Name"
+                          required
                         ></v-text-field>
                       </v-col>
                       <v-col
                         cols="12"
-                        sm="6"
-                        md="4"
+                        sm="12"
+                        md="12"
                       >
                         <v-text-field
-                          v-model="editedItem.calories"
-                          label="Calories"
+                          v-model="editedItem.email"
+                          label="E-mail"
+                          required
                         ></v-text-field>
                       </v-col>
                       <v-col
                         cols="12"
-                        sm="6"
-                        md="4"
+                        sm="12"
+                        md="12"
                       >
-                        <v-text-field
-                          v-model="editedItem.fat"
-                          label="Fat (g)"
-                        ></v-text-field>
+                      <v-text-field
+                        label="Password"
+                        v-model="password"
+                        :rules="passwordRules"
+                        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                        :type="show1 ? 'text' : 'password'"
+                        name="input-10-1"
+                        hint="At least 8 characters"
+                        counter
+                        @click:append="show1 = !show1"
+                        required>
+                      </v-text-field>
                       </v-col>
                       <v-col
                         cols="12"
-                        sm="6"
-                        md="4"
+                        sm="12"
+                        md="12"
                       >
-                        <v-text-field
-                          v-model="editedItem.carbs"
-                          label="Carbs (g)"
-                        ></v-text-field>
+                      <v-text-field
+                        :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                        v-model="confirmPassword"
+                        :rules="confirmPasswordRules.concat(passwordConfirmationRule)"
+                        :type="show2 ? 'text' : 'password'"
+                        name="input-10-2"
+                        label="Password confirmation"
+                        hint="At least 8 characters"
+                        class="input-group--focused"
+                        @click:append="show2 = !show2"
+                        required
+                        >
+                      </v-text-field>
                       </v-col>
+
+
+
+
+
+
                       <v-col
                         cols="12"
-                        sm="6"
-                        md="4"
+                        sm="12"
+                        md="12"
                       >
-                        <v-text-field
-                          v-model="editedItem.protein"
-                          label="Protein (g)"
-                        ></v-text-field>
+
+                      <v-radio-group v-model="editedItem.role" required>
+                        <v-radio
+                          :key="0"
+                          :label="`User`"
+                          :value="0"
+                        ></v-radio>
+                        <v-radio
+                          :key="1"
+                          :label="`Client`"
+                          :value="1"
+                        ></v-radio>
+                        <v-radio
+                          :key="2"
+                          :label="`Superadmin`"
+                          :value="2"
+                        ></v-radio>
+                      </v-radio-group>
+
                       </v-col>
                     </v-row>
                   </v-container>
@@ -136,7 +174,7 @@
                     text
                     @click="save"
                   >
-                    Save
+                    Create
                   </v-btn>
                 </v-card-actions>
               </v-card>
@@ -190,6 +228,27 @@ export default {
     // pagination: Pagination,
   },
   data: () => ({
+      password: "",
+      confirmPassword: "",
+      passwordRules: [
+      // v => (v && v.length >= 8) || "Password must be 8" ,
+      v => !!v || "Password is required"
+      ],
+      confirmPasswordRules: [
+        // v => (v && v.length >= 8) || "Password must be 8" ,
+        v => !!v || "Password is required"
+      ],
+      show1: false,
+      show2: false,
+      rules: {
+        required: value => !!value || 'Required.',
+        passwordRules: v => !!v || "Password is required",
+        confirmPasswordRule: v => !!v || "Password is required",
+        min: v => v.length >= 8 || 'Min 8 characters',
+        // passwordMatch: () => (`Password confirmation does not match`),
+
+        // emailMatch: () => (`The email and password you entered don't match`),
+      },
       users: [],
       search: '',
       dialog: false,
@@ -198,17 +257,17 @@ export default {
       editedIndex: -1,
       editedItem: {
         name: '',
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0,
+        email: '',
+        password: '',
+        password_confirm: '',
+        role: 0,
       },
       defaultItem: {
         name: '',
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0,
+        email: '',
+        password: '',
+        password_confirm: '',
+        role: 0,
       },
     }),
 
@@ -225,6 +284,13 @@ export default {
           { text: 'Actions', value: 'actions', sortable: false },
         ]
       },
+      // passwordConfirmationRule() {
+      //     return () => (this.editedItem.password === this.editedItem.password_confirm) || 'Password must match'
+      // },
+      passwordConfirmationRule() {
+        return () =>
+          this.password === this.confirmPassword || "Password must match";
+      }
     },
 
     watch: {
@@ -234,14 +300,15 @@ export default {
       dialogDelete (val) {
         val || this.closeDelete()
       },
+
     },
 
     created () {
-      this.getList()
+      // console.log(this.confirmPasswordRules.concat(this.passwordConfirmationRule));
+      this.getList();
     },
 
     methods: {
-
      async getList () {
        await this.$store.dispatch("usersmod/list");
        this.users = await this.$store.getters["usersmod/list"];
@@ -251,6 +318,7 @@ export default {
       editItem (item) {
         this.editedIndex = this.users.indexOf(item)
         this.editedItem = Object.assign({}, item)
+        console.log(this.editedItem)
         this.dialog = true
       },
 
@@ -265,6 +333,9 @@ export default {
         console.log(this.editedItem)
         this.users.splice(this.editedIndex, 1)
         this.$store.dispatch("usersmod/destroy", this.editedItem.id).then((response) => {
+          if(response.status==200){
+            this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
+          }
           console.log(response.data)
         })
 
@@ -288,7 +359,13 @@ export default {
         })
       },
 
-      save () {
+      async save () {
+        if(true){
+          this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: 'Please fill all the fields!'});
+        }
+        console.log(this.editedItem)
+        await this.$store.dispatch("usersmod/add", this.editedItem)
+        this.getList()
         if (this.editedIndex > -1) {
           Object.assign(this.desserts[this.editedIndex], this.editedItem)
         } else {

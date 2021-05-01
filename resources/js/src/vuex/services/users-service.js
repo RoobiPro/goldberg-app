@@ -3,7 +3,7 @@ import axios from 'axios';
 // import Jsona from 'jsona';
 
 // const url = process.env.VUE_APP_API_BASE_URL;
-const url = 'http://goldberg.local/api'
+const url = 'http://goldberg.local'
 // const jsona = new Jsona();
 
 function list(params) {
@@ -14,7 +14,7 @@ function list(params) {
     }
   };
   // options = '?page[number]=1&page[size]=5'
-  return axios.get(`${url}/users`)
+  return axios.get(`${url}/api/users`)
     .then(response => {
       // console.log(response.data.data);
       // console.log(response.data.meta);
@@ -44,6 +44,10 @@ function get(id) {
 }
 
 function add(user) {
+  return axios.post(`${url}/register`, user)
+    .then(response => {
+      return response.data;
+    });
   // const payload = jsona.serialize({
   //   stuff: user,
   //   includeNames: null
@@ -93,7 +97,12 @@ function destroy(id) {
     }
   };
 
-  return axios.delete(`${url}/users/${id}`, options);
+  return axios.delete(`${url}/api/users/${id}`, options)
+    .then(response => {
+      console.log(response);
+
+      return response;
+    });
 }
 
 function upload(user, image) {

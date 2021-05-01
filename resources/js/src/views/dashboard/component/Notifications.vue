@@ -182,6 +182,16 @@
       </v-col>
     </v-row>
 
+    <NotificationPlugin
+      v-model="snackbar"
+      :type="color"
+      v-bind="{
+        [parsedDirection[0]]: true,
+        [parsedDirection[1]]: true
+      }"
+    />
+    <!-- </NotificationPlugin> -->
+<!--
     <base-material-snackbar
       v-model="snackbar"
       :type="color"
@@ -191,7 +201,7 @@
       }"
     >
       Welcome to <span class="font-weight-bold">&nbsp;MATERIAL DASHBOARD&nbsp;</span> — a beautiful admin panel for every web developer.
-    </base-material-snackbar>
+    </base-material-snackbar> -->
 
     <v-dialog
       v-model="dialog"
@@ -364,10 +374,17 @@
   </v-container>
 </template>
 
+
+
 <script>
+
+import NotificationPlugin from "./NotificationPlugin"
+
   export default {
     name: 'DashboardNotifications',
-
+    components: {
+      NotificationPlugin
+    },
     data: () => ({
       color: 'info',
       colors: [
@@ -381,7 +398,7 @@
       dialog3: false,
       direction: 'top center',
       directions: [
-        'top left',
+        'top left 1',
         'top center',
         'top right',
         'bottom left',
@@ -399,7 +416,8 @@
 
     methods: {
       randomColor () {
-        this.color = this.colors[Math.floor(Math.random() * this.colors.length)]
+        this.color = this.colors[Math.floor(Math.random() * this.colors.length)];
+
       },
     },
   }

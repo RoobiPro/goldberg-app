@@ -1,41 +1,40 @@
 import Swal from "sweetalert2";
 
-const state = {};
-
-const mutations = {};
-
-const actions = {
-  // success({commit, dispatch}, message) {
-  //   this.$app.$notify({
-  //     timeout: 2500,
-  //     message: message,
-  //     horizontalAlign: "right",
-  //     verticalAlign: "top",
-  //     icon: "add_alert",
-  //     type: "success"
-  //   });
-  success(){
-    Swal.fire({
-      title: 'Error!',
-      text: 'Do you want to continue',
-      icon: 'error',
-      confirmButtonText: 'Cool'
-    })
-  },
-
-  error({commit, dispatch}, message) {
-    this.$app.$notify({
-      timeout: 2500,
-      message: message,
-      horizontalAlign: "right",
-      verticalAlign: "top",
-      icon: "add_alert",
-      type: "warning"
-    });
+const state = {
+  showNotification: {
+    status: false,
+    type: '',
+    text: ''
   }
 };
 
-const getters = {};
+const mutations = {
+  SET_NOTIFICATIONSTATUS: (state, showNotification) => {
+    state.showNotification.status = showNotification;
+  },
+  SET_TYPE: (state, type) => {
+    state.showNotification.type = type;
+  },
+  SET_TEXT: (state, text) => {
+    state.showNotification.text = text;
+  },
+};
+
+const actions = {
+  setNotificationStatus({commit, dispatch}, payload) {
+
+    // commit('SET_NOTIFICATIONSTATUS', false)
+    commit('SET_NOTIFICATIONSTATUS', true)
+    commit('SET_TYPE', payload.type)
+    console.log(payload.text)
+    commit('SET_TEXT', payload.text)
+    setTimeout(() => {  commit('SET_NOTIFICATIONSTATUS', false); }, 3500);
+  }
+};
+
+const getters = {
+  getNotificationStatus: (state) => { return state.showNotification   }
+};
 
 const alerts = {
   namespaced: true,

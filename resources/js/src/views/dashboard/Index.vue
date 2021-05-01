@@ -1,5 +1,18 @@
 <template>
   <v-app>
+
+    <!-- <v-snackbar
+      :timeout="-1"
+      :value="true"
+      absolute
+      bottom
+      color="primary"
+      left
+      text
+    >
+      Lorem ipsum dolor sit amet consectetur.
+    </v-snackbar> -->
+
     <dashboard-core-app-bar />
 
     <dashboard-core-drawer />

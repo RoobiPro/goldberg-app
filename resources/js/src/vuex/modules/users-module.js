@@ -1,4 +1,5 @@
 import service from '@/vuex/services/users-service';
+import alerts from '@/vuex/modules/alerts-module';
 
 const state = {
   list: {},
@@ -36,6 +37,7 @@ const actions = {
   },
 
   add({commit, dispatch}, params) {
+    console.log(params);
     return service.add(params)
       .then((user) => { commit('SET_RESOURCE', user); });
   },
@@ -46,6 +48,8 @@ const actions = {
   },
 
   destroy({commit, dispatch}, params) {
+    // dispatch('alerts/setNotificationStatus', null, {root:true})
+    // alerts.setNotificationStatus();
     return service.destroy(params);
   }
 };

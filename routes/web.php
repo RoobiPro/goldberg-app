@@ -24,6 +24,7 @@ use App\Http\Controllers\UserController;
 // Route::post('/login', 'AuthController@login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
+Route::post('/register', [AuthController::class, 'register']);
 
 // ->where('any', '.*');
 

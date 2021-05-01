@@ -158,12 +158,12 @@ export default {
   },
   created () {
     this.getUser();
-    this.successAlert()
+    // this.successAlert()
   },
   methods: {
     ...mapActions({
       signOutAction: 'auth/signOut',
-      successAlert: 'alerts/success'
+      // successAlert: 'alerts/success'
     }),
     getUser(){
       this.user = this.$store.getters["auth/user"]
