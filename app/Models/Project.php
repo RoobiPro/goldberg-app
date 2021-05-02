@@ -12,18 +12,21 @@ class Project extends Model
 
     protected $fillable = ['name', 'created_at', 'updated_at'];
 
-    public function users(){
-      return $this->belongsToMany(User::class);
+    public function users()
+    {
+        // return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'project_user', 'project_id', 'user_id')
+        ->withPivot(['role']);;
     }
 
     public function campaings(){
       return $this->hasMany(\App\Models\Campaign::class);
     }
 
-    public function roles()
-    {
-      return $this->belongsToMany('App\Models\Role', 'project_user_role', 'project_id');
-    }
+    // public function users()
+    // {
+    //   return $this->belongsToMany('App\Models\Role', 'project_user_role', 'project_id');
+    // }
 
 
 }

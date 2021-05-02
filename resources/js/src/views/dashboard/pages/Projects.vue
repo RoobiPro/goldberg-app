@@ -9,6 +9,32 @@
       heading="User Management"
       link="components/simple-tables"
     /> -->
+      <v-data-table
+      :headers="headers"
+      :items="users"
+      :single-expand="singleExpand"
+      :expanded.sync="expanded"
+      item-key="name"
+      show-expand
+      class="elevation-1"
+      >
+        <template v-slot:top>
+          <v-toolbar flat>
+            <v-toolbar-title>Expandable Table</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-switch
+              v-model="singleExpand"
+              label="Single expand"
+              class="mt-2"
+            ></v-switch>
+          </v-toolbar>
+        </template>
+        <template v-slot:expanded-item="{ headers, item }">
+          <td :colspan="headers.length">
+            More info about {{ item.users }}
+          </td>
+        </template>
+      </v-data-table>
 
 
       <v-data-table
@@ -190,12 +216,12 @@ export default {
     // pagination: Pagination,
   },
   data: () => ({
+      expanded: [],
       users: [],
       search: '',
-
+      singleExpand: false,
       dialog: false,
       dialogDelete: false,
-      desserts: [],
       editedIndex: -1,
       editedItem: {
         name: '',
@@ -221,9 +247,10 @@ export default {
         return [
           { text: 'ID', align: 'start', value: 'id', },
           { text: 'Name', value: 'name' },
-          { text: 'E-mail', value: 'email' },
-          { text: 'Role', value: 'role_name' },
+          { text: 'E-mail', value: 'created_at' },
+          { text: 'Role', value: 'updated_at' },
           { text: 'Actions', value: 'actions', sortable: false },
+          {text: '', value: 'data-table-expand'},
         ]
       },
     },

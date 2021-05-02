@@ -6,9 +6,12 @@ use Illuminate\Http\Request;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use Illuminate\Facades\Auth;
+use App\Models\User;
 
 class ProjectController extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +19,8 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return ProjectResource::collection(Project::all());
+
+      return ProjectResource::collection(Project::all());
     }
 
     /**
@@ -27,6 +31,13 @@ class ProjectController extends Controller
     public function create()
     {
         //
+    }
+
+    public function testproject(){
+      // $user = User::find(1);
+      // return $user->projects;
+      $project = Project::find(1);
+      return $project->users;
     }
 
     /**

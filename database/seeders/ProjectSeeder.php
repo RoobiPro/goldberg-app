@@ -24,6 +24,15 @@ class ProjectSeeder extends Seeder
       $project->users()->attach(User::find(1), ['role' => 1]);
       $project = Project::find(4);
       $project->users()->attach(User::find(1), ['role' => 2]);
+
+      $project = Project::find(1);
+      $project->users()->attach(User::find(2), ['role' => 0]);
+      $project = Project::find(1);
+      $project->users()->attach(User::find(3), ['role' => 1]);
+      $project = Project::find(1);
+      $project->users()->attach(User::find(4), ['role' => 2]);
+      $project = Project::find(1);
+      $project->users()->attach(User::find(5), ['role' => 3]);
       // foreach(Project::all() as $project){
       //     $users = User::inRandomOrder()->take(rand(1,3))->pluck('id');
       //     $project->users()->attach($users);
