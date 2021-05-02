@@ -44,30 +44,19 @@ function get(id) {
 }
 
 function add(user) {
+  console.log(user);
   return axios.post(`${url}/register`, user)
     .then(response => {
-      return response.data;
+      console.log(response);
+      return response;
+    }).catch(error => {
+      if (error.response.status != 200){
+        console.log(error);
+        return error;
+        // commit('SET_RESPONSE', response);
+      }
     });
-  // const payload = jsona.serialize({
-  //   stuff: user,
-  //   includeNames: null
-  // });
-  const payload = {
-    stuff: user,
-    includeNames: null
-  };
 
-  const options = {
-    headers: {
-      'Accept': 'application/vnd.api+json',
-      'Content-Type': 'application/vnd.api+json',
-    }
-  };
-
-  return axios.post(`${url}/users`, payload, options)
-    .then(response => {
-      return response.data;
-    });
 }
 
 function update(user) {

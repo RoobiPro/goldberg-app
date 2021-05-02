@@ -23,8 +23,13 @@ import vuetify from './plugins/vuetify'
 import i18n from './vue-i18n/i18n'
 // import 'vuetify/dist/vuetifymin.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
-
-// Notifications plugin. Used on Notifications page
+// import { ValidationProvider, extend } from 'vee-validate';
+// import { required } from 'vee-validate/dist/rules';
+//
+// extend('required', {
+//   ...required,
+//   message: 'This field is required'
+// });
 
 axios.defaults.withCredentials = true
 axios.defaults.baseURL = 'http://goldberg.local/'
@@ -35,6 +40,9 @@ Vue.use(vuetify);
 
 store.dispatch('auth/refresh').then(() => {
   new Vue({
+    // components: {
+    //   ValidationProvider
+    // },
     router,
     store,
     vuetify,

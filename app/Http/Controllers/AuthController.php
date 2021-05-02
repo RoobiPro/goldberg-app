@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Facades\Hash;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -43,8 +43,9 @@ class AuthController extends Controller
 
   public function register(Request $request)
   {
+    try {
       if(!Auth::check()){
-        return response()->json("Not authenticated", 401);
+        return response()->json("Yoru are not authenticated", 201);
       }
 
       $loggedUser = Auth::user();
@@ -58,7 +59,7 @@ class AuthController extends Controller
                 'role' => 0,
                 'password' => Hash::make($request->password)
             ]);
-            return response()->json("User created", 200);
+            return response()->json("User was successfully created", 200);
           }
           if($request->role==1){
             User::create([
@@ -67,7 +68,7 @@ class AuthController extends Controller
                 'role' => 1,
                 'password' => Hash::make($request->password)
             ]);
-            return response()->json("Client created", 200);
+            return response()->json("Client was successfully created", 200);
           }
           if($request->role==2){
             User::create([
@@ -76,7 +77,7 @@ class AuthController extends Controller
                 'role' => 2,
                 'password' => Hash::make($request->password)
             ]);
-            return response()->json("Superadmin created", 200);
+            return response()->json("Superadmin was successfully created", 200);
           }
         }
         else{
@@ -86,12 +87,20 @@ class AuthController extends Controller
               'role' => 0,
               'password' => Hash::make($request->password)
           ]);
-          return response()->json("User created", 200);
+          return response()->json("User was successfully created", 200);
         }
       }
       else{
-        return response()->json("No Superadmin", 403);
+        return response()->json("You are not a Superadmin", 201);
       }
+    }
+    catch (\Exception $e) { // It's actually a QueryException but this works too
+     if ($e->getCode() == 23000) {
+         return response()->json('This E-Mail already exists!', 201);
+     }
+      // return response()->json("User created", 200);
+
+    }
   }
 
 }

@@ -4,7 +4,8 @@ import alerts from '@/vuex/modules/alerts-module';
 const state = {
   list: {},
   user: {},
-  meta: {}
+  meta: {},
+  response: {},
 };
 
 const mutations = {
@@ -16,7 +17,10 @@ const mutations = {
   },
   SET_META: (state, meta) => {
     state.meta = meta;
-  }
+  },
+  SET_RESPONSE: (state, resp) => {
+    state.response = resp;
+  },
 };
 
 const actions = {
@@ -39,7 +43,16 @@ const actions = {
   add({commit, dispatch}, params) {
     console.log(params);
     return service.add(params)
-      .then((user) => { commit('SET_RESOURCE', user); });
+      .then((response) => {
+        console.log(response),
+        commit('SET_RESPONSE', response);
+      })
+      .catch(error => {
+        if (error.response.status != 200){
+          console.log(error);
+          commit('SET_RESPONSE', error.response);
+        }
+      });
   },
 
   update({commit, dispatch}, params) {
@@ -57,7 +70,8 @@ const actions = {
 const getters = {
   list: state => state.list,
   user: state => state.user,
-  meta: state => state.meta
+  meta: state => state.meta,
+  response: state => state.response
 
 };
 
