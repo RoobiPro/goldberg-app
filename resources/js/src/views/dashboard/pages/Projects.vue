@@ -5,6 +5,7 @@
       link="components/simple-tables"
     /> -->
   <v-data-table :headers="headers" :items="projects" :search="search" :single-expand="singleExpand" :expanded.sync="expanded" item-key="name" show-expand class="elevation-1">
+
     <template v-slot:top>
       <v-toolbar flat>
         <div class="v-application primary mr-4 text-start v-card--material__heading mb-n6 v-sheet theme--dark elevation-6 pa-7 d-none d-sm-flex d-md-flex"
@@ -20,27 +21,28 @@
         <v-switch v-model="singleExpand" label="Single expand" class="mt-2"></v-switch>
       </v-toolbar>
     </template>
+
     <template v-slot:expanded-item="{ headers, item }">
       <td :colspan="headers.length" style="padding-left: 0px; padding-right: 0px;">
         <v-list subheader style="width:100%">
           <!-- <v-subheader>Recent chat</v-subheader> -->
           <v-list-item class="borderline">
             <v-list-item-content>
-              <div class="text-center">
 
-                <v-list-item-icon style="cursor: pointer; padding: 0; margin: 0;" v-on:click="showAssignUser(item)">
+              <div class="text-center">
+                <v-list-item-icon style="cursor: pointer; padding: 0; margin: 0;" v-on:click="showAssignUser(item, item.id)">
                     <v-icon size=30 :color="'green lighten-2'">
                       mdi-account-plus
                     </v-icon>
                 </v-list-item-icon>
 
-                <v-list-item-icon style="cursor: pointer; padding: 0; margin: 0;" v-on:click="showAssignClient(item)">
+                <v-list-item-icon style="cursor: pointer; padding: 0; margin: 0;" v-on:click="showAssignClient(item, item.id)">
                     <v-icon size=30 :color="'amber accent-2'">
                       mdi-crown
                     </v-icon>
                 </v-list-item-icon>
-
               </div>
+
             </v-list-item-content>
           </v-list-item>
 
@@ -153,8 +155,8 @@
               <v-btn color="blue darken-1" text @click="closeDialog">
                 Cancel
               </v-btn>
-              <v-btn color="blue darken-1" text @click="save">
-                Save
+              <v-btn color="blue darken-1" text @click="saveAssignedUser">
+                Assign
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -198,7 +200,7 @@
               <v-btn color="blue darken-1" text @click="closeDialog">
                 Cancel
               </v-btn>
-              <v-btn color="blue darken-1" text @click="save">
+              <v-btn color="blue darken-1" text @click="saveAssignedClient">
                 Save
               </v-btn>
             </v-card-actions>
@@ -247,6 +249,7 @@ export default {
   },
   data: () => ({
     // usersrole:[],
+    projectToAssing:null,
     selectedClient:[],
     clients:[],
     filteredClients:[],
@@ -385,13 +388,24 @@ export default {
         this.editedIndex = -1
       })
     },
-    save() {
-      console.log(this.users);
-      console.log(this.selectedUser);
-      console.log(this.newrole);
+    saveAssignedUser() {
+
       if(this.selectedUser === null){
         this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: 'Please select a user.'});
+        return false;
       }
+      console.log(this.projectToAssing);
+      console.log(this.selectedUser.id);
+      console.log(this.newrole);
+      this.close()
+    },
+    saveAssignedClient() {
+      if(this.selectedUser === null){
+        this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: 'Please select a user.'});
+        return false;
+      }
+      console.log(this.projectToAssing);
+      console.log(this.selectedUser.id);
       this.close()
     },
     userEdit() {
@@ -405,12 +419,14 @@ export default {
         return 'borderline'
       }
     },
-    showAssignUser(item){
+    showAssignUser(item, project_id){
+      this.projectToAssing = project_id;
       var idsToDelete = item.users.map(function(elt) {return elt.id;});
       this.filteredUsers = this.users.filter(function(elt) {return idsToDelete.indexOf(elt.id) === -1;});
       this.assignUserDialog = true;
     },
-    showAssignClient(item){
+    showAssignClient(item, project_id){
+      this.projectToAssing = project_id;
       // var idsToDelete = item.clients.map(function(elt) {return elt.id;});
       // this.filteredClients = this.clients.filter(function(elt) {return idsToDelete.indexOf(elt.id) === -1;});
       this.assignClientDialog = true;
