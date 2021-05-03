@@ -24,6 +24,7 @@ class ProjectFactory extends Factory
     {
         return [
           'name' => $this->faker->name,
+          // 'client' =>
           'created_at' => now(),
           'updated_at' => now(),
         ];

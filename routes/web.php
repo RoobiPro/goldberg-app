@@ -26,12 +26,16 @@ use App\Http\Controllers\ProjectController;
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
 Route::post('/register', [AuthController::class, 'register']);
-Route::apiResource('projects', ProjectController::class);
+// Route::apiResource('projects', ProjectController::class);
 Route::get('/testproject', [ProjectController::class, 'testproject']);
 
 Route::get('/getUsers', [UserController::class, 'getUsers']);
 Route::get('/getClients', [UserController::class, 'getClients']);
 Route::get('/getAdmins', [UserController::class, 'getAdmins']);
+
+Route::get('/assignuser', [ProjectController::class, 'assignUser']);
+Route::get('/assignclient', [ProjectController::class, 'assignClient']);
+
 
 // ->where('any', '.*');
 
