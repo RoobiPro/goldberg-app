@@ -16,7 +16,7 @@ class Project extends Model
     {
         // return $this->belongsToMany(User::class);
         return $this->belongsToMany(User::class, 'project_user', 'project_id', 'user_id')
-        ->withPivot(['role']);;
+        ->withPivot(['role']);
     }
 
     public function campaings(){

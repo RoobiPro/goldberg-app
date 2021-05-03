@@ -37,7 +37,7 @@ class ProjectController extends Controller
       // $user = User::find(1);
       // return $user->projects;
       $project = Project::find(1);
-      return $project->users;
+      return $project->usersSortedvvv;
     }
 
     /**

@@ -3,8 +3,44 @@ import axios from 'axios';
 // import Jsona from 'jsona';
 
 // const url = process.env.VUE_APP_API_BASE_URL;
-const url = 'http://goldberg.local'
+const url = 'http://goldberg.local';
 // const jsona = new Jsona();
+
+function listClients(params) {
+  console.log("service");
+  const options = {
+    params: params,
+    paramsSerializer: function (params) {
+      return qs.stringify(params, {encode: false});
+    }
+  };
+  // options = '?page[number]=1&page[size]=5'
+  return axios.get(`${url}/getClients`)
+    .then(response => {
+      return {
+        list: response.data.data,
+        meta: response.data.meta
+      };
+    });
+}
+
+function listUsers(params) {
+  console.log("service");
+  const options = {
+    params: params,
+    paramsSerializer: function (params) {
+      return qs.stringify(params, {encode: false});
+    }
+  };
+  // options = '?page[number]=1&page[size]=5'
+  return axios.get(`${url}/getUsers`)
+    .then(response => {
+      return {
+        list: response.data.data,
+        meta: response.data.meta
+      };
+    });
+}
 
 function list(params) {
   const options = {
@@ -105,6 +141,8 @@ function upload(user, image) {
 }
 
 export default {
+  listUsers,
+  listClients,
   list,
   get,
   add,

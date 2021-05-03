@@ -6,6 +6,9 @@ const state = {
   user: {},
   meta: {},
   response: {},
+  users_role: {},
+  clients_role: {},
+  admins_role: {}
 };
 
 const mutations = {
@@ -21,17 +24,37 @@ const mutations = {
   SET_RESPONSE: (state, resp) => {
     state.response = resp;
   },
+  SET_USERSROLE: (state, usersrole) => {
+    state.users_role = usersrole;
+  },
+  SET_CLIENTSROLE: (state, clientsrole) => {
+    state.clients_role = clientsrole;
+  },
+  SET_ADMINSROLE: (state, adminsrole) => {
+    state.admins_role = adminsrole;
+  },
 };
 
 const actions = {
   list({commit, dispatch}, params) {
-    // console.log(params);
-    // console.log(params2);
-
     return service.list(params)
       .then(({list, meta}) => {
         commit('SET_LIST', list);
         commit('SET_META', meta);
+      });
+  },
+
+  getusers({commit, dispatch}, params) {
+    return service.listUsers(params)
+      .then(({list, meta}) => {
+        commit('SET_USERSROLE', list);
+      });
+  },
+
+  getclients({commit, dispatch}, params) {
+    return service.listClients(params)
+      .then(({list, meta}) => {
+        commit('SET_CLIENTSROLE', list);
       });
   },
 
@@ -71,7 +94,10 @@ const getters = {
   list: state => state.list,
   user: state => state.user,
   meta: state => state.meta,
-  response: state => state.response
+  response: state => state.response,
+  users_role: state => state.users_role,
+  clients_role: state => state.clients_role,
+  admins_role: state => state.admins_role,
 
 };
 

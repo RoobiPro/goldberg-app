@@ -18,10 +18,20 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-          return UserResource::collection(User::all());
+      return UserResource::collection(User::all());
     }
 
+    public function getUsers(Request $request){
+      return UserResource::collection(User::all()->where('role', 0));
+    }
 
+    public function getClients(Request $request){
+      return UserResource::collection(User::all()->where('role', 1));
+    }
+
+    public function getAdmins(Request $request){
+      return UserResource::collection(User::all()->where('role', 2));
+    }
 
     /**
      * Store a newly created resource in storage.

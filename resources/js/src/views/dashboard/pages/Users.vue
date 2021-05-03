@@ -121,24 +121,24 @@
                         </v-col>
 
                         <v-col cols="12" sm="12" md="12">
-                        <v-radio-group v-model="user.role" required>
-                        <v-radio
-                          :key="0"
-                          :label="`User`"
-                          :value="0"
-                        ></v-radio>
-                        <v-radio
-                          :key="1"
-                          :label="`Client`"
-                          :value="1"
-                        ></v-radio>
-                        <v-radio
-                          :key="2"
-                          :label="`Superadmin`"
-                          :value="2"
-                        ></v-radio>
-                        </v-radio-group>
-                      </v-col>
+                          <v-radio-group v-model="user.role" required>
+                          <v-radio
+                            :key="0"
+                            :label="`User`"
+                            :value="0"
+                          ></v-radio>
+                          <v-radio
+                            :key="1"
+                            :label="`Client`"
+                            :value="1"
+                          ></v-radio>
+                          <v-radio
+                            :key="2"
+                            :label="`Superadmin`"
+                            :value="2"
+                          ></v-radio>
+                          </v-radio-group>
+                        </v-col>
 
                     </v-form>
                     </v-row>
