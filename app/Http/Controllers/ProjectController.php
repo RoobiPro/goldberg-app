@@ -23,21 +23,11 @@ class ProjectController extends Controller
       return ProjectResource::collection(Project::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     public function testproject(){
       // $user = User::find(1);
       // return $user->projects;
       $project = Project::find(1);
-      return $project->usersSortedvvv;
+      return $project->usersSorted;
     }
 
     /**
@@ -62,16 +52,6 @@ class ProjectController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -83,6 +63,28 @@ class ProjectController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+    public function assignUser(Request $request)
+    {
+        $project = Project::find($request->projectId);
+        $project->users()->attach(User::find($request->id), ['role' => $request->role]);
+        // $project->client_id = $request->client_id;
+        $project->save();
+
+        return response()->json("User successfully assigned!", 200);
+
+    }
+
+    public function assignClient(Request $request)
+    {
+        $project = Project::find($request->projectId);
+        // $project->users()->attach(User::find($request->id), ['role' => 2]);
+        $project->client_id = $request->client_id;
+        $project->save();
+
+        return response()->json("Client successfully assigned!", 200);
+
     }
 
     /**
