@@ -38,7 +38,13 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $project = new Project;
+        $project->name = $request->name;
+        if ($request->has('client_id')){
+          $project->client_id = $request->client_id;
+        }
+        $project->save();
+        return response()->json("Project successfully created!", 200);
     }
 
     /**
@@ -84,6 +90,13 @@ class ProjectController extends Controller
         $project->save();
 
         return response()->json("Client successfully assigned!", 200);
+    }
+
+    public function unassignUser(Request $request){
+        $user = User::find($request->user_id);
+        $project = Project::find($request->project_id);
+        $project->users()->detach($user);
+        return response()->json("User successfully unassigned!", 200);
 
     }
 
@@ -95,6 +108,9 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $project = Project::find($id);
+        $project->users()->detach();
+        $project->delete();
+        return response()->json("Project successfully deleted!", 200);
     }
 }

@@ -33,8 +33,12 @@ Route::get('/getUsers', [UserController::class, 'getUsers']);
 Route::get('/getClients', [UserController::class, 'getClients']);
 Route::get('/getAdmins', [UserController::class, 'getAdmins']);
 
-Route::get('/assignuser', [ProjectController::class, 'assignUser']);
-Route::get('/assignclient', [ProjectController::class, 'assignClient']);
+Route::post('/assignuser', [ProjectController::class, 'assignUser']);
+Route::post('/assignclient', [ProjectController::class, 'assignClient']);
+
+Route::post('/unassignUser', [ProjectController::class, 'unassignUser']);
+
+// Route::get('projects', ProjectController::class);
 
 
 // ->where('any', '.*');

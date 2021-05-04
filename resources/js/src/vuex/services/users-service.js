@@ -7,7 +7,6 @@ const url = 'http://goldberg.local';
 // const jsona = new Jsona();
 
 function listClients(params) {
-  console.log("service");
   const options = {
     params: params,
     paramsSerializer: function (params) {
@@ -25,7 +24,6 @@ function listClients(params) {
 }
 
 function listUsers(params) {
-  console.log("service");
   const options = {
     params: params,
     paramsSerializer: function (params) {

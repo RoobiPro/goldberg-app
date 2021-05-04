@@ -22,7 +22,9 @@ class ProjectResource extends JsonResource
         return [
           'id' => $this->id,
           'name' => $this->name,
+          'client' => $this->client,
           'users' => $users,
+
           // 'email' => $this->email,
           // 'role' => $this->role,
           // 'role_name' => $roleName,

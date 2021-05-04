@@ -15,92 +15,64 @@
         </div>
         <v-toolbar-title>Project Management</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
-        <v-spacer></v-spacer>
         <v-text-field v-model="search" label="Search" append-icon="mdi-magnify" class="mx-4" single-line hide-details></v-text-field>
-        <v-spacer></v-spacer>
-        <v-switch v-model="singleExpand" label="Single expand" class="mt-2"></v-switch>
-      </v-toolbar>
-    </template>
-
-    <template v-slot:expanded-item="{ headers, item }">
-      <td :colspan="headers.length" style="padding-left: 0px; padding-right: 0px;">
-        <v-list subheader style="width:100%">
-          <!-- <v-subheader>Recent chat</v-subheader> -->
-          <v-list-item class="borderline">
-            <v-list-item-content>
-
-              <div class="text-center">
-                <v-list-item-icon style="cursor: pointer; padding: 0; margin: 0;" v-on:click="showAssignUser(item, item.id)">
-                    <v-icon size=30 :color="'green lighten-2'">
-                      mdi-account-plus
-                    </v-icon>
-                </v-list-item-icon>
-
-                <v-list-item-icon style="cursor: pointer; padding: 0; margin: 0;" v-on:click="showAssignClient(item, item.id)">
-                    <v-icon size=30 :color="'amber accent-2'">
-                      mdi-crown
-                    </v-icon>
-                </v-list-item-icon>
-              </div>
-
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item v-for="(item, index) in item.users" :key="item.id" v-bind:class="getBottomLine(item.pivot.project_id, index)">
-            <v-list-item-avatar>
-              <v-img :alt="`${item.name} avatar`" :src="'https://cdn.vuetifyjs.com/images/lists/1.jpg'"></v-img>
-            </v-list-item-avatar>
-
-            <v-list-item-content>
-              <v-list-item-title v-text="item.name"></v-list-item-title>
-            </v-list-item-content>
-
-            <v-list-item-content>
-              <v-list-item-subtitle v-text="getRoleName(item.pivot.role)"></v-list-item-subtitle>
-            </v-list-item-content>
-
-
-            <v-list-item-icon style="cursor: pointer;" v-on:click="userEdit">
-                <v-icon size=30 :color="'blue lighten-2'">
-                  mdi-account-edit
-                </v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-icon style="cursor: pointer;" v-on:click="deleteItem(item)">
-                <v-icon size=30 :color="'red lighten-2'">
-                  mdi-account-cancel
-                </v-icon>
-            </v-list-item-icon>
-
-          </v-list-item>
-
-        </v-list>
-      </td>
-
-    </template>
-  </v-data-table>
-
-
-  <v-data-table :headers="headers" :items="projects" :search="search" class="elevation-1">
-    <template v-slot:top>
-      <v-toolbar flat>
-
-        <div class="mr-4 text-start v-card--material__heading mb-n6 v-sheet theme--dark elevation-6 success pa-7 d-none d-sm-flex d-md-flex" style="max-height: 90px; width: auto;">
-          <i aria-hidden="true" class="v-icon notranslate mdi mdi-clipboard-text theme--dark" style="font-size: 32px;">
-          </i>
-        </div>
-
-        <v-toolbar-title>Project Management</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
-        <v-spacer></v-spacer>
-        <v-text-field v-model="search" label="Search" append-icon="mdi-magnify" class="mx-4" single-line hide-details></v-text-field>
-        <v-spacer></v-spacer>
+        <v-switch
+          v-model="singleExpand"
+          style="margin-bottom: 0px;"
+          label="Single expand"
+          class="ma-0 pa-0" >
+        </v-switch>
+
+        <v-divider class="mx-4" inset vertical></v-divider>
+
+        <v-dialog v-model="newProjectDialog" max-width="500px">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+              New Project
+            </v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              <span class="headline">New Project</span>
+            </v-card-title>
+
+            <v-card-text>
+              <v-container>
+
+                <v-row>
+                  <v-col cols="12">
+                    <v-text-field
+                      v-model="newProject.name"
+                      :error-messages="nameErrors"
+                      label="Project name"
+                      required
+                      @input="$v.newProject.name.$touch()"
+                      @blur="$v.newProject.name.$touch()"
+                    ></v-text-field>
+
+                    </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="closeDialogs">
+                Cancel
+              </v-btn>
+              <v-btn color="blue darken-1" text @click="saveNewProject">
+                Create
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
 
         <v-dialog v-model="assignUserDialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+            <!-- <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
               Assign User
-            </v-btn>
+            </v-btn> -->
           </template>
           <v-card>
             <v-card-title>
@@ -152,7 +124,7 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDialog">
+              <v-btn color="blue darken-1" text @click="closeDialogs">
                 Cancel
               </v-btn>
               <v-btn color="blue darken-1" text @click="saveAssignedUser">
@@ -164,9 +136,6 @@
 
         <v-dialog v-model="assignClientDialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-              Assign Client
-            </v-btn>
           </template>
           <v-card>
             <v-card-title>
@@ -197,7 +166,7 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDialog">
+              <v-btn color="blue darken-1" text @click="closeDialogs">
                 Cancel
               </v-btn>
               <v-btn color="blue darken-1" text @click="saveAssignedClient">
@@ -206,7 +175,6 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-
 
         <v-dialog v-model="dialogDelete" max-width="400px">
           <v-card>
@@ -220,20 +188,124 @@
           </v-card>
         </v-dialog>
 
+        <v-dialog v-model="deleteProjectDialog" max-width="400px">
+          <v-card>
+            <v-card-title class="headline">Are you sure you want to delete this project? THIS CANNOT BE UNDONE</v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="closeDialogs">Cancel</v-btn>
+              <v-btn color="blue darken-1" text @click="DeleteProjectConfirm">OK</v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
       </v-toolbar>
     </template>
-    <template v-slot:item.actions="{ item }">
-      <v-icon small class="mr-2" @click="editItem(item)">
-        mdi-pencil
-      </v-icon>
-      <v-icon small @click="deleteItem(item)">
-        mdi-delete
-      </v-icon>
-    </template>
-    <template v-slot:no-data>
-      <v-btn color="primary" @click="getProjects">
-        Reset
-      </v-btn>
+
+    <template v-slot:expanded-item="{ headers, item }">
+      <td :colspan="headers.length" style="padding-left: 0px; padding-right: 0px;">
+        <v-list subheader style="width:100%">
+          <!-- <v-subheader>Recent chat</v-subheader> -->
+          <v-list-item class="borderline">
+            <v-list-item-content>
+
+              <div class="text-center" style="max-width=100px">
+
+                <v-list-item-icon class="justify-center" style="cursor: pointer; padding: 0; margin: 0;" v-on:click="showAssignUser(item, item.id)">
+                    <v-icon size=30 :color="'green lighten-2'">
+                      mdi-account-plus
+                    </v-icon>
+                </v-list-item-icon>
+
+                <v-list-item-icon class="justify-center" style="cursor: pointer; padding: 0; margin: 0;" v-on:click="showAssignClient(item, item.id)">
+                    <v-icon size=30 :color="'amber accent-2'">
+                      mdi-crown
+                    </v-icon>
+                </v-list-item-icon>
+
+                <v-divider class="ml-10" inset vertical></v-divider>
+
+                <v-list-item-icon class="justify-end" style="cursor: pointer; padding: 0; margin: 0;" v-on:click="showDeleteProject(item, item.id)">
+                    <v-icon size=30 :color="'red accent-2'">
+                      mdi-briefcase-remove
+                    </v-icon>
+                </v-list-item-icon>
+
+
+              </div>
+
+
+            </v-list-item-content>
+          </v-list-item>
+
+          <div class="borderline theme--light">
+            <div style="margin-left:20px">
+              <h5 style="margin-bottom:0px; font-size: 1rem;">Client:</h5>
+            </div>
+          </div>
+
+          <v-list-item v-if="item.client!=null" class="borderline">
+            <v-list-item-avatar>
+              <v-img :alt="`${item.name} avatar`" :src="'https://cdn.vuetifyjs.com/images/lists/1.jpg'"></v-img>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title v-text="item.client.name"></v-list-item-title>
+              <v-list-item-subtitle v-text="'Client'"></v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item v-else class="borderline">
+            <v-list-item-content>
+              <v-list-item-title v-text="'No Client assigned yet.'"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <div class="borderline theme--light" style="max-height: 5px; min-height: 5px;">
+          </div>
+
+          <div class="borderline theme--light">
+            <div style="margin-left:20px">
+              <h5 style="margin-bottom:0px; font-size: 1rem;">Users:</h5>
+            </div>
+          </div>
+
+
+          <template v-if="item.users.length!=0">
+            <v-list-item  v-for="(item, index) in item.users" :key="item.id" v-bind:class="getBottomLine(item.pivot.project_id, index)">
+              <v-list-item-avatar>
+                <v-img :alt="`${item.name} avatar`" :src="'https://cdn.vuetifyjs.com/images/lists/1.jpg'"></v-img>
+              </v-list-item-avatar>
+
+              <v-list-item-content>
+                <v-list-item-title v-text="item.name"></v-list-item-title>
+                <v-list-item-subtitle v-text="getRoleName(item.pivot.role)"></v-list-item-subtitle>
+              </v-list-item-content>
+
+              <v-list-item-icon style="cursor: pointer;" v-on:click="userEdit">
+                  <v-icon size=30 :color="'blue lighten-2'">
+                    mdi-account-edit
+                  </v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-icon style="cursor: pointer;" v-on:click="deleteItem(item)">
+                  <v-icon size=30 :color="'red lighten-2'">
+                    mdi-account-cancel
+                  </v-icon>
+              </v-list-item-icon>
+
+            </v-list-item>
+          </template>
+
+          <v-list-item v-else class="borderline">
+            <v-list-item-content>
+              <v-list-item-title v-text="'No Users assigned yet.'"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+        </v-list>
+      </td>
+
     </template>
   </v-data-table>
 
@@ -241,14 +313,24 @@
 </template>
 
 <script>
-// import Pagination from "@/components/Pagination";
+import axios from 'axios'
+import { validationMixin } from 'vuelidate'
+import { required } from 'vuelidate/lib/validators'
 
 export default {
-  components: {
-    // pagination: Pagination,
-  },
+  mixins: [validationMixin],
   data: () => ({
+    singleExpand: true,
+    newProject:{
+      name: ''
+    },
     // usersrole:[],
+    deleteProjectDialog: false,
+    newProjectDialog: false,
+    assignUserDialog: false,
+    assignClientDialog: false,
+    dialogDelete: false,
+
     projectToAssing:null,
     selectedClient:[],
     clients:[],
@@ -258,33 +340,27 @@ export default {
     value: null,
     selectedUser: null,
     users: [],
-    assignUserDialog: false,
-    assignClientDialog: false,
+
     editedUser:[],
     expanded: [],
     projects: [],
     search: '',
-    singleExpand: false,
-    dialog: false,
-    dialogDelete: false,
     editedIndex: -1,
-    editedItem: {
-      name: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
-    },
-    defaultItem: {
-      name: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
-    },
+
   }),
+  validations: {
+    newProject:{
+      name: { required }
+    }
+  },
 
   computed: {
+    nameErrors () {
+      const errors = []
+      if (!this.$v.newProject.name.$dirty) return errors
+      !this.$v.newProject.name.required && errors.push('Name is required.')
+      return errors
+    },
     formTitle() {
       return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
     },
@@ -334,11 +410,11 @@ export default {
   methods: {
     getRoleName(rolenr) {
       if (rolenr == 0) {
-        return 'User-Viewer'
+        return 'Viewer'
       } else if (rolenr == 1) {
-        return 'User-Editor'
+        return 'Editor'
       } else if (rolenr == 2) {
-        return 'User-Admin'
+        return 'Admin'
       } else {
         return 'Role: ' + rolenr
       }
@@ -371,7 +447,30 @@ export default {
       var project = this.projects.find(project => project.id === item.pivot.project_id)
       var indexProject = this.projects.indexOf(project)
       var indexUser = project.users.indexOf(item)
+      console.log(project)
+      console.log(item)
       project.users.splice(this.indexUser, 1)
+      var deleteUser={
+        user_id: item.id,
+        project_id: project.id
+      }
+      axios.post(`http://goldberg.local/unassignUser`, deleteUser)
+        .then(response => {
+          console.log(response);
+          if(response.status == 200){
+            this.getProjects();
+            this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
+          }
+          else{
+            this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+          }
+        }).catch(error => {
+          if (error.response.status != 200){
+            console.log(error);
+            this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+          }
+        });
+        this.getProjects(),
       this.closeDelete()
     },
     close() {
@@ -397,16 +496,99 @@ export default {
       console.log(this.projectToAssing);
       console.log(this.selectedUser.id);
       console.log(this.newrole);
+      var projectData = {
+        projectId : this.projectToAssing,
+        id: this.selectedUser.id,
+        role: this.newrole
+      }
+      // axios.post()
+      axios.post(`http://goldberg.local/assignuser`, projectData)
+        .then(response => {
+          console.log(response);
+          if(response.status == 200){
+            this.getProjects();
+            this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
+          }
+          else{
+            this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+          }
+        }).catch(error => {
+          if (error.response.status != 200){
+            console.log(error);
+            this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+          }
+        });
+      this.getProjects(),
+      this.projectToAssing = null
+      this.selectedUser.id = null
+      this.newrole = 0
+      this.selectedUser = null
+      console.log('resetted')
+      this.assignUserDialog = false;
       this.close()
     },
     saveAssignedClient() {
-      if(this.selectedUser === null){
+      if(this.selectedClient === null){
         this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: 'Please select a user.'});
         return false;
       }
       console.log(this.projectToAssing);
-      console.log(this.selectedUser.id);
+      console.log(this.selectedClient.id);
+      var ClientData = {
+        projectId : this.projectToAssing,
+        client_id: this.selectedClient.id,
+      }
+      axios.post(`http://goldberg.local/assignclient`, ClientData)
+        .then(response => {
+          console.log(response);
+          if(response.status == 200){
+            this.getProjects();
+            this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
+          }
+          else{
+            this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+          }
+        }).catch(error => {
+          if (error.response.status != 200){
+            console.log(error);
+            this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+          }
+        });
+      this.assignClientDialog = false;
       this.close()
+    },
+    saveNewProject(){
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        console.log('invalid form entries')
+        this.submitStatus = 'ERROR'
+      }
+      else{
+        axios.post(`http://goldberg.local/api/projects`, this.newProject)
+          .then(response => {
+            console.log(response);
+            if(response.status == 200){
+              this.getProjects();
+              this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
+              this.$v.$reset()
+              this.newProject={
+                user:''
+              }
+            }
+            else{
+              this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+            }
+          }).catch(error => {
+            if (error.response.status != 200){
+              console.log(error);
+              this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+            }
+          });
+          // this.newProject = null;
+          this.newProjectDialog = false;
+          this.close()
+      }
+
     },
     userEdit() {
       console.log("editing..")
@@ -431,9 +613,38 @@ export default {
       // this.filteredClients = this.clients.filter(function(elt) {return idsToDelete.indexOf(elt.id) === -1;});
       this.assignClientDialog = true;
     },
-    closeDialog(){
+    showDeleteProject(item, project_id){
+      this.projectToDelete = project_id;
+      this.deleteProjectDialog = true;
+
+      console.log(this.projectToDelete)
+    },
+    DeleteProjectConfirm(){
+      console.log(this.projectToDelete)
+      axios.delete(`http://goldberg.local/api/projects/`+this.projectToDelete )
+        .then(response => {
+          console.log(response);
+          if(response.status == 200){
+            this.getProjects();
+            this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
+          }
+          else{
+            this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+          }
+        }).catch(error => {
+          if (error.response.status != 200){
+            console.log(error);
+            this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+          }
+        });
+        this.getProjects()
+        this.closeDialogs()
+    },
+    closeDialogs(){
       this.assignUserDialog = false;
       this.assignClientDialog = false;
+      this.newProjectDialog = false;
+      this.deleteProjectDialog = false;
     }
   },
 }
@@ -441,9 +652,19 @@ export default {
 
 <style>
 .borderline {
-  border-bottom: 1px solid;
+  border-bottom: 1px solid rgba(0,0,0,.22)
+
 }
 .v-card__text, .v-card__title {
   word-break: normal; /* maybe !important  */
+}
+.v-messages{
+  display:none;
+}
+.v-label{
+  margin-bottom: 0px;
+}
+.v-input__slot{
+  margin-bottom: 0px;
 }
 </style>

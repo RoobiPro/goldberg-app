@@ -26,6 +26,8 @@ use App\Http\Controllers\AuthController;
 //     return $request->user();
 // });
 
+
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('users', UserController::class);
     Route::apiResource('projects', ProjectController::class);

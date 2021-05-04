@@ -23,6 +23,9 @@ class Project extends Model
       return $this->hasMany(\App\Models\Campaign::class);
     }
 
+    public function client(){
+      return $this->belongsTo(User::class);
+    }
     // public function users()
     // {
     //   return $this->belongsToMany('App\Models\Role', 'project_user_role', 'project_id');
