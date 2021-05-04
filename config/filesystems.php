@@ -52,6 +52,13 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
         ],
 
+        'user_avatars' => [
+          'driver' => 'local',
+          'root' => storage_path('app/public/user-avatar'),
+          'url' => env('APP_URL').'/storage/user-avatar',
+          'visibility' => 'public',
+      ],
+
     ],
 
     /*

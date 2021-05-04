@@ -35,7 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Route::get('/refresh',function () {
     //   return "HURENSOHN";
     // });
-
+    Route::post('upload_avatar', 'UserController@upload_user_photo');
     Route::get('/refresh', [AuthController::class, 'refresh']);
     // Route::get('user', [UserController::class, 'getLoggedInUser']);
     // Route::apiResource('user', UserController::class);
