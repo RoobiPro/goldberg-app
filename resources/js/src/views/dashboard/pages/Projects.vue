@@ -402,12 +402,17 @@ export default {
     this.getClients()
   },
   methods: {
-    getRoleName(rolenr) {
-      console.log(rolenr)
-      return this.$store.dispatch("users/getRoleName", rolenr);
+    getRoleName(params) {
+      if (params == 0) {
+        return 'Viewer'
+      } else if (params == 1) {
+        return 'Editor'
+      } else if (params == 2) {
+        return 'Admin'
+      } else {
+        return 'Role: ' + params
+      }
     },
-
-
     async getProjects() {
       await this.$store.dispatch("projects/getAll");
       this.projects = await this.$store.getters["projects/list"];
@@ -421,6 +426,8 @@ export default {
       await this.$store.dispatch("users/getclients");
       this.clients = await this.$store.getters["users/clients_role"];
     },
+
+
     editItem(item) {
       this.editedIndex = this.desserts.indexOf(item)
       this.editedItem = Object.assign({}, item)
@@ -438,9 +445,9 @@ export default {
         this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: 'Please select a user.'});
         return false;
       }
-      console.log(this.projectToAssing);
-      console.log(this.selectedUser.id);
-      console.log(this.newrole);
+      // console.log(this.projectToAssing);
+      // console.log(this.selectedUser.id);
+      // console.log(this.newrole);
       var projectData = {
         projectId : this.projectToAssing,
         id: this.selectedUser.id,

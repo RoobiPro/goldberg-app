@@ -185,7 +185,7 @@
     }),
 
     computed: {
-      ...mapState(['barImage']),
+      ...mapState("hs", ['barImage']),
     },
 
     watch: {
@@ -210,7 +210,7 @@
 
     methods: {
       ...mapMutations({
-        setBarImage: 'SET_BAR_IMAGE',
+        setBarImage: 'hs/SET_BAR_IMAGE',
       }),
     },
   }

@@ -174,12 +174,12 @@
     }),
 
     computed: {
-      ...mapState(['drawer']),
+      ...mapState("hs", ['drawer']),
     },
 
     methods: {
       ...mapMutations({
-        setDrawer: 'SET_DRAWER',
+        setDrawer: 'hs/SET_DRAWER',
       }),
     },
   }

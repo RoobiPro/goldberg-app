@@ -8,7 +8,12 @@ const state = {
   response: {},
   users_role: {},
   clients_role: {},
-  admins_role: {}
+  admins_role: {},
+  roleList: [
+    'Viewer',
+    'Editor',
+    'Admin'
+  ]
 };
 
 const mutations = {
@@ -36,18 +41,6 @@ const mutations = {
 };
 
 const actions = {
-  getRoleName({commit, dispatch}, params) {
-    console.log(params);
-    if (params == 0) {
-      return 'Viewer'
-    } else if (params == 1) {
-      return 'Editor'
-    } else if (params == 2) {
-      return 'Admin'
-    } else {
-      return 'Role: ' + params
-    }
-  },
 
   list({commit, dispatch}, params) {
     return service.list(params)

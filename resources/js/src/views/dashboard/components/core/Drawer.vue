@@ -69,10 +69,7 @@
 
 <script>
 // Utilities
-import {
-  mapState,
-  mapActions,
-} from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
   name: 'DashboardCoreDrawer',
@@ -136,14 +133,14 @@ export default {
   }),
 
   computed: {
-    ...mapState(['barColor', 'barImage']),
+    ...mapState("hs", ['barColor', 'barImage']),
 
     drawer: {
       get() {
-        return this.$store.state.drawer
+        return this.$store.state.hs.drawer
       },
       set(val) {
-        this.$store.commit('SET_DRAWER', val)
+        this.$store.commit('hs/SET_DRAWER', val)
       },
     },
     computedItems() {
