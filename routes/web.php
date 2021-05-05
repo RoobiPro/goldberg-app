@@ -39,7 +39,7 @@ Route::post('/assignclient', [ProjectController::class, 'assignClient']);
 Route::post('/unassignUser', [ProjectController::class, 'unassignUser']);
 
 // Route::get('projects', ProjectController::class);
-
+Route::get('/getProjectUsers/{id}', [ProjectController::class, 'getProjectUsers']);
 
 // ->where('any', '.*');
 

@@ -1,28 +1,21 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-// import createPersistedState from "vuex-persistedstate";
 import auth from './auth'
 import hs from './hs'
 
-import usersmod from './modules/users-module'
-import projectsmod from './modules/projects-module'
+import users from './modules/users-module'
+import projects from './modules/projects-module'
 import alerts from './modules/alerts-module'
 
-// import Cookies from 'js-cookie';
-
 Vue.use(Vuex)
-
-
-
-// Vue.use(Vuex);
 
 const store = new Vuex.Store({
   modules: {
     auth,
     hs,
     alerts,
-    usersmod,
-    projectsmod
+    users,
+    projects
   },
   state: {
     barColor: 'rgba(0, 0, 0, .8), rgba(0, 0, 0, .8)',

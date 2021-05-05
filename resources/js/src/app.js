@@ -18,18 +18,17 @@ import router from './vue-router/router'
 import store from './vuex/store'
 import './plugins/base'
 import './plugins/chartist'
-import './plugins/vee-validate'
+// import './plugins/vee-validate'
 import vuetify from './plugins/vuetify'
 import i18n from './vue-i18n/i18n'
-// import 'vuetify/dist/vuetifymin.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
-// import { ValidationProvider, extend } from 'vee-validate';
-// import { required } from 'vee-validate/dist/rules';
-//
-// extend('required', {
-//   ...required,
-//   message: 'This field is required'
-// });
+
+if ( process.env.NODE_ENV == 'production' ) {
+    Vue.config.silent = true;
+    Vue.config.productionTip = false;
+    Vue.config.devtools = false;
+} else {
+}
 
 axios.defaults.withCredentials = true
 axios.defaults.baseURL = 'http://goldberg.local/'

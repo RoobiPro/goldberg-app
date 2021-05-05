@@ -176,13 +176,13 @@
           </v-card>
         </v-dialog>
 
-        <v-dialog v-model="dialogDelete" max-width="400px">
+        <v-dialog v-model="unassignUserDialog" max-width="400px">
           <v-card>
             <v-card-title class="headline">Are you sure you want to remove the user from the project?</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+              <v-btn color="blue darken-1" text @click="closeDialogs">Cancel</v-btn>
+              <v-btn color="blue darken-1" text @click="saveUnassignUser">OK</v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
@@ -194,7 +194,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closeDialogs">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="DeleteProjectConfirm">OK</v-btn>
+              <v-btn color="blue darken-1" text @click="deleteProjectConfirm">OK</v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
@@ -288,7 +288,7 @@
                   </v-icon>
               </v-list-item-icon>
 
-              <v-list-item-icon style="cursor: pointer;" v-on:click="deleteItem(item)">
+              <v-list-item-icon style="cursor: pointer;" v-on:click="showUnassingUser(item)">
                   <v-icon size=30 :color="'red lighten-2'">
                     mdi-account-cancel
                   </v-icon>
@@ -324,12 +324,11 @@ export default {
     newProject:{
       name: ''
     },
-    // usersrole:[],
     deleteProjectDialog: false,
     newProjectDialog: false,
     assignUserDialog: false,
     assignClientDialog: false,
-    dialogDelete: false,
+    unassignUserDialog: false,
 
     projectToAssing:null,
     selectedClient:[],
@@ -341,6 +340,8 @@ export default {
     selectedUser: null,
     users: [],
 
+    UserToUnassign:[],
+    UnassignFromProjectID: 0,
     editedUser:[],
     expanded: [],
     projects: [],
@@ -394,14 +395,7 @@ export default {
       ]
     },
   },
-  watch: {
-    dialog(val) {
-      val || this.close()
-    },
-    dialogDelete(val) {
-      val || this.closeDelete()
-    },
-  },
+
   created() {
     this.getProjects(),
     this.getUsers(),
@@ -409,86 +403,37 @@ export default {
   },
   methods: {
     getRoleName(rolenr) {
-      if (rolenr == 0) {
-        return 'Viewer'
-      } else if (rolenr == 1) {
-        return 'Editor'
-      } else if (rolenr == 2) {
-        return 'Admin'
-      } else {
-        return 'Role: ' + rolenr
-      }
+      console.log(rolenr)
+      return this.$store.dispatch("users/getRoleName", rolenr);
     },
+
+
     async getProjects() {
-      await this.$store.dispatch("projectsmod/list");
-      this.projects = await this.$store.getters["projectsmod/list"];
+      await this.$store.dispatch("projects/getAll");
+      this.projects = await this.$store.getters["projects/list"];
       this.projects.forEach(element => element.users.sort((a, b) => (a.pivot.role < b.pivot.role) ? 1 : -1));
     },
     async getUsers() {
-      await this.$store.dispatch("usersmod/getusers");
-      this.users = await this.$store.getters["usersmod/users_role"];
+      await this.$store.dispatch("users/getusers");
+      this.users = await this.$store.getters["users/users_role"];
     },
     async getClients() {
-      await this.$store.dispatch("usersmod/getclients");
-      this.clients = await this.$store.getters["usersmod/clients_role"];
+      await this.$store.dispatch("users/getclients");
+      this.clients = await this.$store.getters["users/clients_role"];
     },
     editItem(item) {
       this.editedIndex = this.desserts.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
-    deleteItem(item) {
-      this.dialogDelete = true
-      console.log(item);
-      this.editedUser = Object.assign({}, item)
-    },
-    deleteItemConfirm() {
-      var item=this.editedUser
-      var project = this.projects.find(project => project.id === item.pivot.project_id)
-      var indexProject = this.projects.indexOf(project)
-      var indexUser = project.users.indexOf(item)
-      console.log(project)
-      console.log(item)
-      project.users.splice(this.indexUser, 1)
-      var deleteUser={
-        user_id: item.id,
-        project_id: project.id
-      }
-      axios.post(`http://goldberg.local/unassignUser`, deleteUser)
-        .then(response => {
-          console.log(response);
-          if(response.status == 200){
-            this.getProjects();
-            this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
-          }
-          else{
-            this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
-          }
-        }).catch(error => {
-          if (error.response.status != 200){
-            console.log(error);
-            this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
-          }
-        });
-        this.getProjects(),
-      this.closeDelete()
-    },
-    close() {
-      this.dialog = false
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
-    },
-    closeDelete() {
-      this.dialogDelete = false
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
+    async showAssignUser(item, project_id){
+      await this.$store.dispatch("projects/filterUsers", project_id);
+      this.filteredUsers = await this.$store.getters["projects/filteredusers"];
+      console.log(this.filteredUsers);
+      this.projectToAssing = project_id;
+      this.assignUserDialog = true;
     },
     saveAssignedUser() {
-
       if(this.selectedUser === null){
         this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: 'Please select a user.'});
         return false;
@@ -501,7 +446,6 @@ export default {
         id: this.selectedUser.id,
         role: this.newrole
       }
-      // axios.post()
       axios.post(`http://goldberg.local/assignuser`, projectData)
         .then(response => {
           console.log(response);
@@ -519,13 +463,17 @@ export default {
           }
         });
       this.getProjects(),
-      this.projectToAssing = null
-      this.selectedUser.id = null
+      this.projectToAssing = ''
+      this.selectedUser.id = ''
       this.newrole = 0
-      this.selectedUser = null
-      console.log('resetted')
+      this.selectedUser = undefined
       this.assignUserDialog = false;
-      this.close()
+      this.closeDialogs()
+    },
+
+    showAssignClient(item, project_id){
+      this.projectToAssing = project_id;
+      this.assignClientDialog = true;
     },
     saveAssignedClient() {
       if(this.selectedClient === null){
@@ -555,8 +503,42 @@ export default {
           }
         });
       this.assignClientDialog = false;
-      this.close()
+      this.closeDialogs()
     },
+
+    showUnassingUser(item, project_id){
+      this.UserToUnassign = item
+      this.unassignUserDialog = true;
+      this.UnassignFromProjectID = item.pivot.project_id
+      console.log("showUnassingUser")
+      console.log(this.UserToUnassign)
+      console.log(this.UnassignFromProjectID)
+    },
+    saveUnassignUser() {
+      var deleteUser={
+        user_id: this.UserToUnassign.id,
+        project_id: this.UnassignFromProjectID
+      }
+      axios.post(`http://goldberg.local/unassignUser`, deleteUser)
+        .then(response => {
+          console.log(response);
+          if(response.status == 200){
+            this.getProjects();
+            this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
+          }
+          else{
+            this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+          }
+        }).catch(error => {
+          if (error.response.status != 200){
+            console.log(error);
+            this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+          }
+        });
+        this.getProjects(),
+      this.closeDialogs()
+    },
+
     saveNewProject(){
       this.$v.$touch()
       if (this.$v.$invalid) {
@@ -586,13 +568,15 @@ export default {
           });
           // this.newProject = null;
           this.newProjectDialog = false;
-          this.close()
+          this.closeDialogs()
       }
 
     },
+
     userEdit() {
       console.log("editing..")
     },
+
     getBottomLine(project_id, index) {
       var project = this.projects.find(project => project.id === project_id);
       if (project.users.length == index + 1) {
@@ -601,25 +585,15 @@ export default {
         return 'borderline'
       }
     },
-    showAssignUser(item, project_id){
-      this.projectToAssing = project_id;
-      var idsToDelete = item.users.map(function(elt) {return elt.id;});
-      this.filteredUsers = this.users.filter(function(elt) {return idsToDelete.indexOf(elt.id) === -1;});
-      this.assignUserDialog = true;
-    },
-    showAssignClient(item, project_id){
-      this.projectToAssing = project_id;
-      // var idsToDelete = item.clients.map(function(elt) {return elt.id;});
-      // this.filteredClients = this.clients.filter(function(elt) {return idsToDelete.indexOf(elt.id) === -1;});
-      this.assignClientDialog = true;
-    },
+
     showDeleteProject(item, project_id){
       this.projectToDelete = project_id;
       this.deleteProjectDialog = true;
 
       console.log(this.projectToDelete)
     },
-    DeleteProjectConfirm(){
+
+    deleteProjectConfirm(){
       console.log(this.projectToDelete)
       axios.delete(`http://goldberg.local/api/projects/`+this.projectToDelete )
         .then(response => {
@@ -640,7 +614,9 @@ export default {
         this.getProjects()
         this.closeDialogs()
     },
+
     closeDialogs(){
+      this.unassignUserDialog = false;
       this.assignUserDialog = false;
       this.assignClientDialog = false;
       this.newProjectDialog = false;
@@ -653,7 +629,6 @@ export default {
 <style>
 .borderline {
   border-bottom: 1px solid rgba(0,0,0,.22)
-
 }
 .v-card__text, .v-card__title {
   word-break: normal; /* maybe !important  */

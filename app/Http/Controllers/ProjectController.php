@@ -108,9 +108,36 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-        $project = Project::find($id);
-        $project->users()->detach();
-        $project->delete();
-        return response()->json("Project successfully deleted!", 200);
+      $project = Project::find($id);
+      $project->users()->detach();
+      $project->delete();
+      return response()->json("Project successfully deleted!", 200);
+    }
+    public function getProjectUsers($id){
+
+      $project = Project::find($id);
+      $projectUsers = $project->users;
+
+      $allUsers = User::where('role', 0)->get();
+      // return response()->json($allUsers, 200);
+
+      // return $allUsers;
+      $ProjectUsersIds = [];
+
+      foreach($projectUsers as $item){
+        array_push($ProjectUsersIds, $item->id);
+      }
+
+      $selected = [];
+      foreach ($allUsers as $key => $value) {
+            if (!in_array($value->id,$ProjectUsersIds)) {
+                $selected[] = $value;
+                $allUsers->forget($key);
+            }
+      }
+
+      return response()->json($selected, 200);
+      // return response()->json($myArray = json_decode(json_encode($allUsers), true), 200);
+      return gettype();
     }
 }

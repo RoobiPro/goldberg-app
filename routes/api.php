@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Http\Controllers\AuthController;
+// use App\Http\Controllers\ProjectController;
 
 
 /*
@@ -25,6 +26,7 @@ use App\Http\Controllers\AuthController;
 // Route::middleware('auth:sanctum')->get('/users/{user}', function (Request $request) {
 //     return $request->user();
 // });
+
 
 
 

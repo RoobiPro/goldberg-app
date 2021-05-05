@@ -294,6 +294,7 @@ export default {
     },
 
     created () {
+
       this.getList();
     },
 
@@ -307,8 +308,8 @@ export default {
         }
       },
      async getList () {
-       await this.$store.dispatch("usersmod/list");
-       this.users = await this.$store.getters["usersmod/list"];
+       await this.$store.dispatch("users/list");
+       this.users = await this.$store.getters["users/list"];
        console.log(this.users);
         },
 
@@ -329,7 +330,7 @@ export default {
       deleteItemConfirm () {
         console.log(this.editedItem)
         this.users.splice(this.editedIndex, 1)
-        this.$store.dispatch("usersmod/destroy", this.editedItem.id).then((response) => {
+        this.$store.dispatch("users/destroy", this.editedItem.id).then((response) => {
           if(response.status==200){
             this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
           }
@@ -369,8 +370,8 @@ export default {
           console.log('Valid form...submitting')
           console.log(this.user)
           // delete this.user.repeatPassword;
-          await this.$store.dispatch("usersmod/add", this.user)
-          var resp = await this.$store.getters["usersmod/response"]
+          await this.$store.dispatch("users/add", this.user)
+          var resp = await this.$store.getters["users/response"]
           if (resp.status==409){
             this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: resp.data});
             // this.dialog = false;

@@ -1,41 +1,43 @@
-import service from '@/vuex/services/projects-service';
+import service from '@/vuex/api/projects-service';
 
 const state = {
   list: {},
+  filteredusers: {},
   project: {},
-  meta: {}
 };
 
 const mutations = {
   SET_LIST: (state, list) => {
     state.list = list;
   },
-  SET_RESOURCE: (state, project) => {
+  SET_FILTEREDUSERS: (state, filteredusers) => {
+    state.filteredusers = filteredusers;
+  },
+  SET_PROJECT: (state, project) => {
     state.project = project;
   },
-  SET_META: (state, meta) => {
-    state.meta = meta;
-  }
+
 };
 
 const actions = {
-  list({commit, dispatch}, params) {
-    // console.log(params);
-    // console.log(params2);
+  filterUsers({commit, dispatch}, params) {
+    return service.projectusers(params)
+      .then((project) => { commit('SET_FILTEREDUSERS', project); });
+  },
 
-    return service.list(params)
+  getAll({commit, dispatch}, params) {
+    return service.getAll(params)
       .then(({list, meta}) => {
         commit('SET_LIST', list);
-        commit('SET_META', meta);
       });
   },
 
-  get({commit, dispatch}, params) {
+  show({commit, dispatch}, params) {
     return service.get(params)
-      .then((project) => { commit('SET_RESOURCE', project); });
+      .then((project) => { commit('SET_PROJECT', project); });
   },
 
-  add({commit, dispatch}, params) {
+  create({commit, dispatch}, params) {
     return service.add(params)
       .then((project) => { commit('SET_RESOURCE', project); });
   },
@@ -53,7 +55,7 @@ const actions = {
 const getters = {
   list: state => state.list,
   project: state => state.project,
-  meta: state => state.meta
+  filteredusers: state => state.filteredusers
 
 };
 
