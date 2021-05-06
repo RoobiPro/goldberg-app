@@ -41,6 +41,8 @@ Route::post('/unassignUser', [ProjectController::class, 'unassignUser']);
 // Route::get('projects', ProjectController::class);
 Route::get('/getProjectUsers/{id}', [ProjectController::class, 'getProjectUsers']);
 
+Route::post('/reassignUser', [ProjectController::class, 'reassignUser']);
+
 // ->where('any', '.*');
 
 

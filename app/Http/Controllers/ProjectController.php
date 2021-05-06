@@ -43,6 +43,10 @@ class ProjectController extends Controller
         if ($request->has('client_id')){
           $project->client_id = $request->client_id;
         }
+        $project->project_start_date = $request->date;
+        $project->coordinates_x = $request->coordinates_x;
+        $project->coordinates_y = $request->coordinates_y;
+        $project->coordinates_z = $request->coordinates_z;
         $project->save();
         return response()->json("Project successfully created!", 200);
     }
@@ -98,6 +102,14 @@ class ProjectController extends Controller
         $project->users()->detach($user);
         return response()->json("User successfully unassigned!", 200);
 
+    }
+
+    public function reassignUser(Request $request){
+      $user = User::find($request->user_id);
+      $project = Project::find($request->project_id);
+      $project->users()->detach($user);
+      $project->users()->attach($user, ['role' => $request->role]);
+      return response()->json("User role successfully changed!", 200);
     }
 
     /**

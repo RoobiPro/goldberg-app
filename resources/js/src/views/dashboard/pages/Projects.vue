@@ -1,14 +1,19 @@
 <template>
-<v-container id="regular-tables" fluid tag="section" style="margin-top:10vh;">
+<v-container
+id="regular-tables"
+class="d-flex justify-center"
+tag="section"
+style="margin-top:10vh;">
   <!-- <base-v-component
       heading="User Management"
       link="components/simple-tables"
     /> -->
-  <v-data-table :headers="headers" :items="projects" :search="search" :single-expand="singleExpand" :expanded.sync="expanded" item-key="name" show-expand class="elevation-1">
+    <!-- max-width:1000px -->
+  <v-data-table style="" :headers="headers" :items="projects" :search="search" :single-expand="singleExpand" :expanded.sync="expanded" item-key="name" show-expand class="elevation-0">
 
     <template v-slot:top>
       <v-toolbar flat>
-        <div class="v-application primary mr-4 text-start v-card--material__heading mb-n6 v-sheet theme--dark elevation-6 pa-7 d-none d-sm-flex d-md-flex"
+        <div class="hidden-md-and-down v-application primary mr-4 text-start v-card--material__heading mb-n6 v-sheet theme--dark elevation-6 pa-7"
           style="max-height: 90px; width: auto;">
           <i aria-hidden="true" class="v-icon notranslate mdi mdi-clipboard-text theme--dark" style="font-size: 32px;">
           </i>
@@ -26,10 +31,59 @@
 
         <v-divider class="mx-4" inset vertical></v-divider>
 
+        <v-dialog v-model="editUserRoleDialog" max-width="500px">
+          <v-card>
+            <v-card-title>
+              <span class="headline">Change user role</span>
+            </v-card-title>
+
+            <v-card-text>
+              <v-container>
+
+                <v-row>
+                  <v-col cols="12">
+                    Select a new role for the user {{UserToEdit.name}}:
+                    <v-radio-group v-model="UserToEdit.role" required>
+                    <v-radio
+                      :key="0"
+                      :label="`Viewer`"
+                      :value="0"
+                    ></v-radio>
+                    <v-radio
+                      :key="1"
+                      :label="`Editor`"
+                      :value="1"
+                    ></v-radio>
+                    <v-radio
+                      :key="2"
+                      :label="`Admin`"
+                      :value="2"
+                    ></v-radio>
+                    </v-radio-group>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="closeDialogs">
+                Cancel
+              </v-btn>
+              <v-btn color="blue darken-1" text @click="saveEditUserRole">
+                Update
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
         <v-dialog v-model="newProjectDialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
               New Project
+              <v-icon size=26 :color="'white'" style="padding-left:10px">
+                mdi-briefcase-plus
+              </v-icon>
             </v-btn>
           </template>
           <v-card>
@@ -42,14 +96,68 @@
 
                 <v-row>
                   <v-col cols="12">
-                    <v-text-field
-                      v-model="newProject.name"
-                      :error-messages="nameErrors"
-                      label="Project name"
-                      required
-                      @input="$v.newProject.name.$touch()"
-                      @blur="$v.newProject.name.$touch()"
-                    ></v-text-field>
+                      <v-text-field
+                        v-model="newProject.name"
+                        label="Project name"
+                      ></v-text-field>
+
+                      <v-menu
+                        ref="menu"
+                        v-model="menu"
+                        :close-on-content-click="false"
+                        :return-value.sync="newProject.date"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="newProject.date"
+                            label="Project start date"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                          v-model="newProject.date"
+                          color="primary"
+                          no-title
+                          scrollable
+                        >
+                          <v-spacer></v-spacer>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="menu = false"
+                          >
+                            Cancel
+                          </v-btn>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="$refs.menu.save(newProject.date)"
+                          >
+                            OK
+                          </v-btn>
+                        </v-date-picker>
+                      </v-menu>
+
+                      <v-text-field
+                        v-model="newProject.coordinates_x"
+                        label="Main coordinate X"
+                      ></v-text-field>
+
+                      <v-text-field
+                        v-model="newProject.coordinates_y"
+                        label="Main coordinate Y"
+                      ></v-text-field>
+
+                      <v-text-field
+                        v-model="newProject.coordinates_z"
+                        label="Main coordinate Z"
+                      ></v-text-field>
 
                     </v-col>
                 </v-row>
@@ -70,9 +178,6 @@
 
         <v-dialog v-model="assignUserDialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
-            <!-- <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-              Assign User
-            </v-btn> -->
           </template>
           <v-card>
             <v-card-title>
@@ -203,49 +308,66 @@
       </v-toolbar>
     </template>
 
-    <template v-slot:expanded-item="{ headers, item }">
+    <template style="" v-slot:expanded-item="{ headers, item }">
       <td :colspan="headers.length" style="padding-left: 0px; padding-right: 0px;">
         <v-list subheader style="width:100%">
           <!-- <v-subheader>Recent chat</v-subheader> -->
+          <div class="theme--light ma-4">
+            <div>
+              <h5 style="margin-bottom:0px; font-size: 1rem;">Project settings:</h5>
+            </div>
+          </div>
+
+
           <v-list-item class="borderline">
-            <v-list-item-content>
+              <!-- <v-list-item-content align-self: flex-center> -->
+                <v-row class="ma-4 d-flex justify-space-around">
+                    <v-list-item-icon style=" padding: 0; margin: 0;" v-on:click="showAssignUser(item, item.id)">
+                      <v-btn min-width="180" max-width="180" color="primary" dark>
+                        Assign User
+                        <v-icon size=26 :color="'white'" style="padding-left:10px">
+                          mdi-account-plus
+                        </v-icon>
+                      </v-btn>
+                    </v-list-item-icon>
 
-              <div class="text-center" style="max-width=100px">
+                    <v-list-item-icon style="padding: 0; margin: 0;" v-on:click="showAssignClient(item, item.id)">
+                      <v-btn min-width="180" max-width="180" color="primary" dark>
+                        Assign Client
+                        <v-icon size=26 :color="'white'" style="padding-left:10px">
+                          mdi-account-tie
+                        </v-icon>
+                      </v-btn>
+                    </v-list-item-icon>
 
-                <v-list-item-icon class="justify-center" style="cursor: pointer; padding: 0; margin: 0;" v-on:click="showAssignUser(item, item.id)">
-                    <v-icon size=30 :color="'green lighten-2'">
-                      mdi-account-plus
-                    </v-icon>
-                </v-list-item-icon>
+                    <v-list-item-icon style="padding: 0; margin: 0;" v-on:click="showDeleteProject(item, item.id)">
+                      <v-btn min-width="180" max-width="180" color="blue darken-1" dark>
+                        Edit Project
+                        <v-icon size=26 :color="'white'" style="padding-left:10px">
+                          mdi-briefcase-edit
+                        </v-icon>
+                      </v-btn>
+                    </v-list-item-icon>
 
-                <v-list-item-icon class="justify-center" style="cursor: pointer; padding: 0; margin: 0;" v-on:click="showAssignClient(item, item.id)">
-                    <v-icon size=30 :color="'amber accent-2'">
-                      mdi-crown
-                    </v-icon>
-                </v-list-item-icon>
-
-                <v-divider class="ml-10" inset vertical></v-divider>
-
-                <v-list-item-icon class="justify-end" style="cursor: pointer; padding: 0; margin: 0;" v-on:click="showDeleteProject(item, item.id)">
-                    <v-icon size=30 :color="'red accent-2'">
-                      mdi-briefcase-remove
-                    </v-icon>
-                </v-list-item-icon>
-
-
-              </div>
-
-
-            </v-list-item-content>
+                    <v-list-item-icon style="padding: 0; margin: 0;" v-on:click="showDeleteProject(item, item.id)">
+                      <v-btn min-width="180" max-width="180" color="red darken-1" dark>
+                        Delete Project
+                        <v-icon size=26 :color="'white'" style="padding-left:10px">
+                          mdi-briefcase-remove
+                        </v-icon>
+                      </v-btn>
+                    </v-list-item-icon>
+                </v-row>
+              <!-- </v-list-item-content> -->
           </v-list-item>
 
-          <div class="borderline theme--light">
-            <div style="margin-left:20px">
+          <div class="theme--light ma-4">
+            <div style="">
               <h5 style="margin-bottom:0px; font-size: 1rem;">Client:</h5>
             </div>
           </div>
 
-          <v-list-item v-if="item.client!=null" class="borderline">
+          <v-list-item v-if="item.client!=null" class="d-flex justify-center">
             <v-list-item-avatar>
               <v-img :alt="`${item.name} avatar`" :src="'https://cdn.vuetifyjs.com/images/lists/1.jpg'"></v-img>
             </v-list-item-avatar>
@@ -264,8 +386,8 @@
           <div class="borderline theme--light" style="max-height: 5px; min-height: 5px;">
           </div>
 
-          <div class="borderline theme--light">
-            <div style="margin-left:20px">
+          <div class="theme--light ma-4">
+            <div style="">
               <h5 style="margin-bottom:0px; font-size: 1rem;">Users:</h5>
             </div>
           </div>
@@ -282,7 +404,7 @@
                 <v-list-item-subtitle v-text="getRoleName(item.pivot.role)"></v-list-item-subtitle>
               </v-list-item-content>
 
-              <v-list-item-icon style="cursor: pointer;" v-on:click="userEdit">
+              <v-list-item-icon style="cursor: pointer;" v-on:click="showEditUserRoleDialog(item)">
                   <v-icon size=30 :color="'blue lighten-2'">
                     mdi-account-edit
                   </v-icon>
@@ -314,16 +436,20 @@
 
 <script>
 import axios from 'axios'
-import { validationMixin } from 'vuelidate'
-import { required } from 'vuelidate/lib/validators'
 
 export default {
-  mixins: [validationMixin],
   data: () => ({
+    menu: false,
+
     singleExpand: true,
     newProject:{
-      name: ''
+      name: null,
+      date: new Date().toISOString().substr(0, 10),
+      coordinates_x: null,
+      coordinates_y: null,
+      coordinates_z: null,
     },
+    editUserRoleDialog: false,
     deleteProjectDialog: false,
     newProjectDialog: false,
     assignUserDialog: false,
@@ -331,14 +457,21 @@ export default {
     unassignUserDialog: false,
 
     projectToAssing:null,
-    selectedClient:[],
+    selectedClient: undefined,
     clients:[],
     filteredClients:[],
     filteredUsers: [],
     newrole:0,
     value: null,
-    selectedUser: null,
+    selectedUser: undefined,
     users: [],
+
+    UserToEdit: {
+      name: '',
+      role: 0,
+      user_id: 0,
+      project_id: 0
+    },
 
     UserToUnassign:[],
     UnassignFromProjectID: 0,
@@ -349,19 +482,8 @@ export default {
     editedIndex: -1,
 
   }),
-  validations: {
-    newProject:{
-      name: { required }
-    }
-  },
 
   computed: {
-    nameErrors () {
-      const errors = []
-      if (!this.$v.newProject.name.$dirty) return errors
-      !this.$v.newProject.name.required && errors.push('Name is required.')
-      return errors
-    },
     formTitle() {
       return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
     },
@@ -376,16 +498,22 @@ export default {
           value: 'name'
         },
         {
-          text: 'E-mail',
-          value: 'created_at'
+          text: 'Start date',
+          value: 'project_start_date'
         },
         {
-          text: 'Role',
-          value: 'updated_at'
+          text: 'Coordinate X',
+          value: 'coordinates_x',
+          sortable: false
         },
         {
-          text: 'Actions',
-          value: 'actions',
+          text: 'Coordinate Y',
+          value: 'coordinates_y',
+          sortable: false
+        },
+        {
+          text: 'Coordinate Z',
+          value: 'coordinates_z',
           sortable: false
         },
         {
@@ -402,6 +530,9 @@ export default {
     this.getClients()
   },
   methods: {
+    hasDecimal (num) {
+    	return !!(num % 1);
+    },
     getRoleName(params) {
       if (params == 0) {
         return 'Viewer'
@@ -427,21 +558,21 @@ export default {
       this.clients = await this.$store.getters["users/clients_role"];
     },
 
-
-    editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialog = true
-    },
     async showAssignUser(item, project_id){
       await this.$store.dispatch("projects/filterUsers", project_id);
       this.filteredUsers = await this.$store.getters["projects/filteredusers"];
-      console.log(this.filteredUsers);
-      this.projectToAssing = project_id;
-      this.assignUserDialog = true;
+      console.log(this.filteredUsers.length);
+      if(this.filteredUsers.length==0){
+        this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: 'No more users to assign for this project.'});
+      }
+      else{
+        this.projectToAssing = project_id;
+        this.assignUserDialog = true;
+      }
+
     },
     saveAssignedUser() {
-      if(this.selectedUser === null){
+      if(this.selectedUser === undefined){
         this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: 'Please select a user.'});
         return false;
       }
@@ -483,7 +614,7 @@ export default {
       this.assignClientDialog = true;
     },
     saveAssignedClient() {
-      if(this.selectedClient === null){
+      if(this.selectedClient === undefined){
         this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: 'Please select a user.'});
         return false;
       }
@@ -509,6 +640,7 @@ export default {
             this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
           }
         });
+      this.selectedClient = undefined;
       this.assignClientDialog = false;
       this.closeDialogs()
     },
@@ -547,41 +679,87 @@ export default {
     },
 
     saveNewProject(){
-      this.$v.$touch()
-      if (this.$v.$invalid) {
-        console.log('invalid form entries')
-        this.submitStatus = 'ERROR'
+      console.log(this.newProject)
+      var conditionOne= false;
+      var conditionTwo= false;
+      if (!this.newProject.name) {
+        this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: 'Please enter a project name.'});
       }
       else{
+        conditionOne = true;
+      }
+      if((!this.hasDecimal(this.newProject.coordinates_x)||!this.hasDecimal(this.newProject.coordinates_y)||!this.hasDecimal(this.newProject.coordinates_z))&&conditionOne){
+        this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: 'Coordinates only as decimal. Example: 10.22111'});
+      }
+      else{
+        conditionTwo = true;
+      }
+
+      if (conditionOne&&conditionTwo){
         axios.post(`http://goldberg.local/api/projects`, this.newProject)
           .then(response => {
             console.log(response);
             if(response.status == 200){
               this.getProjects();
               this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
-              this.$v.$reset()
               this.newProject={
-                user:''
+                name: null,
+                date: new Date().toISOString().substr(0, 10),
+                coordinates_x: null,
+                coordinates_y: null,
+                coordinates_z: null,
               }
+              // this.newProject.name = null;
             }
             else{
-              this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
-            }
-          }).catch(error => {
-            if (error.response.status != 200){
-              console.log(error);
               this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
             }
           });
           // this.newProject = null;
           this.newProjectDialog = false;
+
           this.closeDialogs()
       }
 
     },
 
-    userEdit() {
-      console.log("editing..")
+    showEditUserRoleDialog(item) {
+      console.log(item)
+      this.UserToEdit.name = item.name
+      this.UserToEdit.role = item.pivot.role
+      this.UserToEdit.user_id = item.pivot.user_id
+      this.UserToEdit.project_id = item.pivot.project_id
+
+      // this.UserToEditUser = item.pivot.
+      this.editUserRoleDialog = true
+      console.log(this.UserToEdit)
+    },
+    saveEditUserRole(){
+      console.log(this.UserToEdit)
+      axios.post(`http://goldberg.local/reassignUser`, this.UserToEdit)
+        .then(response => {
+          console.log(response);
+          if(response.status == 200){
+            this.getProjects();
+            this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
+          }
+          else{
+            this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+          }
+        }).catch(error => {
+          if (error.response.status != 200){
+            console.log(error);
+            this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+          }
+        });
+      this.UserToEdit={
+            name: '',
+            role: 0,
+            user_id: 0,
+            project_id: 0
+          },
+      this.editUserRoleDialog = false;
+      this.closeDialogs()
     },
 
     getBottomLine(project_id, index) {
@@ -623,6 +801,7 @@ export default {
     },
 
     closeDialogs(){
+      this.editUserRoleDialog = false;
       this.unassignUserDialog = false;
       this.assignUserDialog = false;
       this.assignClientDialog = false;
@@ -649,4 +828,9 @@ export default {
 .v-input__slot{
   margin-bottom: 0px;
 }
+.v-data-table>.v-data-table__wrapper tbody tr.v-data-table__expanded__content {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
 </style>

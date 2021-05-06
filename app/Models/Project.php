@@ -10,7 +10,16 @@ class Project extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name','client_id', 'created_at', 'updated_at'];
+    protected $fillable = [
+      'name',
+      'client_id',
+      'created_at',
+      'updated_at',
+      'project_start_date',
+      'coordinates_x',
+      'coordinates_y',
+      'coordinates_z'
+    ];
 
     public function users()
     {

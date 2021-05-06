@@ -17,6 +17,10 @@ class CreateProjectsTable extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedInteger('client_id')->nullable();
+            $table->date('project_start_date')->nullable();
+            $table->decimal('coordinates_x', 10, 7)->nullable();
+            $table->decimal('coordinates_y', 10, 7)->nullable();
+            $table->float('coordinates_z', 6, 4)->nullable();
             $table->timestamps();
         });
     }
