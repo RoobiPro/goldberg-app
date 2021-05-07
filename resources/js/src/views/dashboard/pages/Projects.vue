@@ -4,11 +4,7 @@ id="regular-tables"
 class="d-flex justify-center"
 tag="section"
 style="margin-top:10vh;">
-  <!-- <base-v-component
-      heading="User Management"
-      link="components/simple-tables"
-    /> -->
-    <!-- max-width:1000px -->
+
   <v-data-table style="" :headers="headers" :items="projects" :search="search" :single-expand="singleExpand" :expanded.sync="expanded" item-key="name" show-expand class="elevation-0">
 
     <template v-slot:top>
@@ -105,19 +101,20 @@ style="margin-top:10vh;">
                         ref="menu"
                         v-model="menu"
                         :close-on-content-click="false"
-                        :return-value.sync="newProject.date"
+                        :return-value.sync="newProject.dateFormatted"
                         transition="scale-transition"
                         offset-y
                         min-width="auto"
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <v-text-field
-                            v-model="newProject.date"
+                            v-model="computedDateFormatted"
                             label="Project start date"
                             prepend-icon="mdi-calendar"
                             readonly
                             v-bind="attrs"
                             v-on="on"
+                            @blur="date = parseDate(newProject.dateFormatted)"
                           ></v-text-field>
                         </template>
                         <v-date-picker
@@ -125,6 +122,8 @@ style="margin-top:10vh;">
                           color="primary"
                           no-title
                           scrollable
+                          style="background: white;"
+                          @input="menu = false"
                         >
                           <v-spacer></v-spacer>
                           <v-btn
@@ -171,6 +170,90 @@ style="margin-top:10vh;">
               </v-btn>
               <v-btn color="blue darken-1" text @click="saveNewProject">
                 Create
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="editProjectDialog" max-width="500px">
+
+          <v-card>
+            <v-card-title>
+              <span class="headline">Edit project</span>
+            </v-card-title>
+
+            <v-card-text>
+              <v-container>
+
+                <v-row>
+                  <v-col cols="12">
+                      <v-text-field
+                        v-model="projectToEdit.name"
+                        label="Project name"
+                      ></v-text-field>
+
+                      <v-menu
+                        ref="menu2"
+                        v-model="menu2"
+                        :close-on-content-click="false"
+                        :return-value.sync="projectToEdit.dateFormatted"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="editComputedDateFormatted"
+                            label="Project start date"
+                            prepend-icon="mdi-calendar"
+                            v-bind="attrs"
+                            v-on="on"
+                            @blur="projectToEdit.date = parseDate(projectToEdit.dateFormatted)"
+                          ></v-text-field>
+                        </template>
+
+                        <v-date-picker
+                          v-model="projectToEdit.date"
+                          color="primary"
+                          no-title
+                          scrollable
+                          style="background: white;"
+                          @input="menu2 = false"
+                        >
+                          <v-spacer></v-spacer>
+                          <v-btn text color="primary" @click="menu2 = false">Cancel</v-btn>
+                          <v-btn text color="primary" @click="$refs.menu2.save(projectToEdit.dateFormatted)">OK</v-btn>
+                        </v-date-picker>
+
+                      </v-menu>
+
+                      <v-text-field
+                        v-model="projectToEdit.coordinates_x"
+                        label="Main coordinate X"
+                      ></v-text-field>
+
+                      <v-text-field
+                        v-model="projectToEdit.coordinates_y"
+                        label="Main coordinate Y"
+                      ></v-text-field>
+
+                      <v-text-field
+                        v-model="projectToEdit.coordinates_z"
+                        label="Main coordinate Z"
+                      ></v-text-field>
+
+                    </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="closeDialogs">
+                Cancel
+              </v-btn>
+              <v-btn color="blue darken-1" text @click="saveEditProject">
+                Update
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -311,7 +394,6 @@ style="margin-top:10vh;">
     <template style="" v-slot:expanded-item="{ headers, item }">
       <td :colspan="headers.length" style="padding-left: 0px; padding-right: 0px;">
         <v-list subheader style="width:100%">
-          <!-- <v-subheader>Recent chat</v-subheader> -->
           <div class="theme--light ma-4">
             <div>
               <h5 style="margin-bottom:0px; font-size: 1rem;">Project settings:</h5>
@@ -320,7 +402,6 @@ style="margin-top:10vh;">
 
 
           <v-list-item class="borderline">
-              <!-- <v-list-item-content align-self: flex-center> -->
                 <v-row class="ma-4 d-flex justify-space-around">
                     <v-list-item-icon style=" padding: 0; margin: 0;" v-on:click="showAssignUser(item, item.id)">
                       <v-btn min-width="180" max-width="180" color="primary" dark>
@@ -340,7 +421,7 @@ style="margin-top:10vh;">
                       </v-btn>
                     </v-list-item-icon>
 
-                    <v-list-item-icon style="padding: 0; margin: 0;" v-on:click="showDeleteProject(item, item.id)">
+                    <v-list-item-icon style="padding: 0; margin: 0;" v-on:click="showEditProjectDialog(item, item.id)">
                       <v-btn min-width="180" max-width="180" color="blue darken-1" dark>
                         Edit Project
                         <v-icon size=26 :color="'white'" style="padding-left:10px">
@@ -358,7 +439,6 @@ style="margin-top:10vh;">
                       </v-btn>
                     </v-list-item-icon>
                 </v-row>
-              <!-- </v-list-item-content> -->
           </v-list-item>
 
           <div class="theme--light ma-4">
@@ -438,17 +518,22 @@ style="margin-top:10vh;">
 import axios from 'axios'
 
 export default {
-  data: () => ({
+  data: vm => ({
+    mydate:null,
+
     menu: false,
+    menu2: false,
 
     singleExpand: true,
     newProject:{
       name: null,
       date: new Date().toISOString().substr(0, 10),
+      dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
       coordinates_x: null,
       coordinates_y: null,
       coordinates_z: null,
     },
+    editProjectDialog: false,
     editUserRoleDialog: false,
     deleteProjectDialog: false,
     newProjectDialog: false,
@@ -465,6 +550,16 @@ export default {
     value: null,
     selectedUser: undefined,
     users: [],
+
+    projectToEdit:{
+      id: null,
+      name: null,
+      date: new Date().toISOString().substr(0, 10),
+      dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
+      coordinates_x: null,
+      coordinates_y: null,
+      coordinates_z: null,
+    },
 
     UserToEdit: {
       name: '',
@@ -484,6 +579,12 @@ export default {
   }),
 
   computed: {
+    computedDateFormatted () {
+      return this.formatDate(this.newProject.date)
+    },
+    editComputedDateFormatted () {
+      return this.formatDate(this.projectToEdit.date)
+    },
     formTitle() {
       return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
     },
@@ -523,6 +624,14 @@ export default {
       ]
     },
   },
+  watch: {
+    'newProject.date': function(val){
+      this.newProject.dateFormatted = this.formatDate(this.newProject.date)
+    },
+    'projectToEdit.date': function(val){
+      this.projectToEdit.dateFormatted = this.formatDate(this.projectToEdit.date)
+    }
+  },
 
   created() {
     this.getProjects(),
@@ -530,6 +639,17 @@ export default {
     this.getClients()
   },
   methods: {
+    formatDate (date) {
+      if (!date) return null
+      const [year, month, day] = date.split('-')
+      return `${day}.${month}.${year}`
+    },
+    parseDate (date) {
+      if (!date) return null
+
+      const [day, month, year] = date.split('.')
+      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+    },
     hasDecimal (num) {
     	return !!(num % 1);
     },
@@ -545,10 +665,11 @@ export default {
       }
     },
     async getProjects() {
-      await this.$store.dispatch("projects/getAll");
-      this.projects = await this.$store.getters["projects/list"];
-      this.projects.forEach(element => element.users.sort((a, b) => (a.pivot.role < b.pivot.role) ? 1 : -1));
+        await this.$store.dispatch("projects/getAll");
+        const projectsJson = await this.$store.getters["projects/list"];
+        this.projects = projectsJson.map(projects => ({...projects, project_start_date: this.formatDate(projects.project_start_date)}))
     },
+
     async getUsers() {
       await this.$store.dispatch("users/getusers");
       this.users = await this.$store.getters["users/users_role"];
@@ -561,7 +682,6 @@ export default {
     async showAssignUser(item, project_id){
       await this.$store.dispatch("projects/filterUsers", project_id);
       this.filteredUsers = await this.$store.getters["projects/filteredusers"];
-      console.log(this.filteredUsers.length);
       if(this.filteredUsers.length==0){
         this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: 'No more users to assign for this project.'});
       }
@@ -576,17 +696,13 @@ export default {
         this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: 'Please select a user.'});
         return false;
       }
-      // console.log(this.projectToAssing);
-      // console.log(this.selectedUser.id);
-      // console.log(this.newrole);
-      var projectData = {
+    var projectData = {
         projectId : this.projectToAssing,
         id: this.selectedUser.id,
         role: this.newrole
       }
       axios.post(`http://goldberg.local/assignuser`, projectData)
         .then(response => {
-          console.log(response);
           if(response.status == 200){
             this.getProjects();
             this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
@@ -596,7 +712,6 @@ export default {
           }
         }).catch(error => {
           if (error.response.status != 200){
-            console.log(error);
             this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
           }
         });
@@ -618,15 +733,12 @@ export default {
         this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: 'Please select a user.'});
         return false;
       }
-      console.log(this.projectToAssing);
-      console.log(this.selectedClient.id);
       var ClientData = {
         projectId : this.projectToAssing,
         client_id: this.selectedClient.id,
       }
       axios.post(`http://goldberg.local/assignclient`, ClientData)
         .then(response => {
-          console.log(response);
           if(response.status == 200){
             this.getProjects();
             this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
@@ -636,7 +748,6 @@ export default {
           }
         }).catch(error => {
           if (error.response.status != 200){
-            console.log(error);
             this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
           }
         });
@@ -649,9 +760,6 @@ export default {
       this.UserToUnassign = item
       this.unassignUserDialog = true;
       this.UnassignFromProjectID = item.pivot.project_id
-      console.log("showUnassingUser")
-      console.log(this.UserToUnassign)
-      console.log(this.UnassignFromProjectID)
     },
     saveUnassignUser() {
       var deleteUser={
@@ -660,7 +768,6 @@ export default {
       }
       axios.post(`http://goldberg.local/unassignUser`, deleteUser)
         .then(response => {
-          console.log(response);
           if(response.status == 200){
             this.getProjects();
             this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
@@ -670,7 +777,6 @@ export default {
           }
         }).catch(error => {
           if (error.response.status != 200){
-            console.log(error);
             this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
           }
         });
@@ -679,7 +785,6 @@ export default {
     },
 
     saveNewProject(){
-      console.log(this.newProject)
       var conditionOne= false;
       var conditionTwo= false;
       if (!this.newProject.name) {
@@ -698,7 +803,6 @@ export default {
       if (conditionOne&&conditionTwo){
         axios.post(`http://goldberg.local/api/projects`, this.newProject)
           .then(response => {
-            console.log(response);
             if(response.status == 200){
               this.getProjects();
               this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
@@ -709,13 +813,11 @@ export default {
                 coordinates_y: null,
                 coordinates_z: null,
               }
-              // this.newProject.name = null;
             }
             else{
               this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
             }
           });
-          // this.newProject = null;
           this.newProjectDialog = false;
 
           this.closeDialogs()
@@ -724,21 +826,15 @@ export default {
     },
 
     showEditUserRoleDialog(item) {
-      console.log(item)
       this.UserToEdit.name = item.name
       this.UserToEdit.role = item.pivot.role
       this.UserToEdit.user_id = item.pivot.user_id
       this.UserToEdit.project_id = item.pivot.project_id
-
-      // this.UserToEditUser = item.pivot.
       this.editUserRoleDialog = true
-      console.log(this.UserToEdit)
     },
     saveEditUserRole(){
-      console.log(this.UserToEdit)
       axios.post(`http://goldberg.local/reassignUser`, this.UserToEdit)
         .then(response => {
-          console.log(response);
           if(response.status == 200){
             this.getProjects();
             this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
@@ -748,7 +844,6 @@ export default {
           }
         }).catch(error => {
           if (error.response.status != 200){
-            console.log(error);
             this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
           }
         });
@@ -760,6 +855,32 @@ export default {
           },
       this.editUserRoleDialog = false;
       this.closeDialogs()
+    },
+
+    showEditProjectDialog(item, item_id){
+      this.editProjectDialog = true;
+      this.projectToEdit.id = item.id
+      this.projectToEdit.name = item.name
+      this.projectToEdit.date = this.parseDate(item.project_start_date)
+      this.projectToEdit.dateFormatted = item.project_start_date
+      this.projectToEdit.coordinates_x = item.coordinates_x
+      this.projectToEdit.coordinates_y = item.coordinates_y
+      this.projectToEdit.coordinates_z = item.coordinates_z
+    },
+
+    saveEditProject(){
+      axios.patch(`http://goldberg.local/api/projects/`+this.projectToEdit.id, this.projectToEdit)
+        .then(response => {
+                  if(response.status == 200){
+                    this.getProjects();
+                    this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
+                    // this.newProject.name = null
+                    this.closeDialogs();
+                  }
+                  else{
+                    this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+                  }
+                });
     },
 
     getBottomLine(project_id, index) {
@@ -774,15 +895,11 @@ export default {
     showDeleteProject(item, project_id){
       this.projectToDelete = project_id;
       this.deleteProjectDialog = true;
-
-      console.log(this.projectToDelete)
     },
 
     deleteProjectConfirm(){
-      console.log(this.projectToDelete)
       axios.delete(`http://goldberg.local/api/projects/`+this.projectToDelete )
         .then(response => {
-          console.log(response);
           if(response.status == 200){
             this.getProjects();
             this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
@@ -792,7 +909,6 @@ export default {
           }
         }).catch(error => {
           if (error.response.status != 200){
-            console.log(error);
             this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
           }
         });
@@ -807,6 +923,7 @@ export default {
       this.assignClientDialog = false;
       this.newProjectDialog = false;
       this.deleteProjectDialog = false;
+      this.editProjectDialog= false;
     }
   },
 }
@@ -831,6 +948,9 @@ export default {
 .v-data-table>.v-data-table__wrapper tbody tr.v-data-table__expanded__content {
     -webkit-box-shadow: none;
     box-shadow: none;
+}
+.v-menu__content--fixed {
+  background: white;
 }
 
 </style>

@@ -22,8 +22,13 @@ class ProjectFactory extends Factory
      */
     public function definition()
     {
+        $timestamp = mt_rand(1525639948, time());
         return [
           'name' => $this->faker->name,
+          'project_start_date' => $this->faker->date('Y-m-d', $timestamp),
+          'coordinates_x' => rand(12, 57) / 10,
+          'coordinates_y' => rand(12, 57) / 10,
+          'coordinates_z' => rand(12, 57) / 10,
           // 'client' =>
           'created_at' => now(),
           'updated_at' => now(),

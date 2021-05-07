@@ -44,6 +44,8 @@ class ProjectController extends Controller
           $project->client_id = $request->client_id;
         }
         $project->project_start_date = $request->date;
+        // $project->project_start_date =  Carbon::parse($this->project_start_date)->format('d.m.Y');
+
         $project->coordinates_x = $request->coordinates_x;
         $project->coordinates_y = $request->coordinates_y;
         $project->coordinates_z = $request->coordinates_z;
@@ -72,7 +74,14 @@ class ProjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $project = Project::find($request->id);
+        $project->name = $request->name;
+        $project->project_start_date = $request->date;
+        $project->coordinates_x = $request->coordinates_x;
+        $project->coordinates_y = $request->coordinates_y;
+        $project->coordinates_z = $request->coordinates_z;
+        $project->save();
+        return response()->json("Project successfully updated!", 200);
     }
 
     public function assignUser(Request $request)
