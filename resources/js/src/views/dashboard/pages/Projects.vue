@@ -401,10 +401,14 @@ style="margin-top:10vh;">
           </div>
 
 
-          <v-list-item class="borderline">
-                <v-row class="ma-4 d-flex justify-space-around">
-                    <v-list-item-icon style=" padding: 0; margin: 0;" v-on:click="showAssignUser(item, item.id)">
-                      <v-btn min-width="180" max-width="180" color="primary" dark>
+          <!-- <v-list-item class="borderline"> -->
+              <div class="ma-4 d-flex justify-space-around flex-wrap custom">
+                <!-- justify="space-around"> -->
+                <!-- <v-col
+                align-self="center"
+                  md="4"> -->
+                    <v-list-item-icon style=" padding: 0; margin: 0; margin-bottom:10px;" v-on:click="showAssignUser(item, item.id)">
+                      <v-btn min-width="120" max-width="180" color="primary" dark>
                         Assign User
                         <v-icon size=26 :color="'white'" style="padding-left:10px">
                           mdi-account-plus
@@ -412,8 +416,8 @@ style="margin-top:10vh;">
                       </v-btn>
                     </v-list-item-icon>
 
-                    <v-list-item-icon style="padding: 0; margin: 0;" v-on:click="showAssignClient(item, item.id)">
-                      <v-btn min-width="180" max-width="180" color="primary" dark>
+                    <v-list-item-icon style="padding: 0; margin: 0;margin-bottom:10px;" v-on:click="showAssignClient(item, item.id)">
+                      <v-btn min-width="120" max-width="180" color="primary" dark>
                         Assign Client
                         <v-icon size=26 :color="'white'" style="padding-left:10px">
                           mdi-account-tie
@@ -421,8 +425,8 @@ style="margin-top:10vh;">
                       </v-btn>
                     </v-list-item-icon>
 
-                    <v-list-item-icon style="padding: 0; margin: 0;" v-on:click="showEditProjectDialog(item, item.id)">
-                      <v-btn min-width="180" max-width="180" color="blue darken-1" dark>
+                    <v-list-item-icon style="padding: 0; margin: 0;margin-bottom:10px;" v-on:click="showEditProjectDialog(item, item.id)">
+                      <v-btn min-width="120" max-width="180" color="blue darken-1" dark>
                         Edit Project
                         <v-icon size=26 :color="'white'" style="padding-left:10px">
                           mdi-briefcase-edit
@@ -430,16 +434,21 @@ style="margin-top:10vh;">
                       </v-btn>
                     </v-list-item-icon>
 
-                    <v-list-item-icon style="padding: 0; margin: 0;" v-on:click="showDeleteProject(item, item.id)">
-                      <v-btn min-width="180" max-width="180" color="red darken-1" dark>
+                    <v-list-item-icon style="padding: 0; margin: 0;margin-bottom:10px;" v-on:click="showDeleteProject(item, item.id)">
+                      <v-btn min-width="120" max-width="180" color="red darken-1" dark>
                         Delete Project
                         <v-icon size=26 :color="'white'" style="padding-left:10px">
                           mdi-briefcase-remove
                         </v-icon>
                       </v-btn>
                     </v-list-item-icon>
-                </v-row>
-          </v-list-item>
+              <!-- </v-col> -->
+            <!-- </v-row> -->
+          </div>
+          <!-- </v-list-item> -->
+          <div class="borderline">
+          </div>
+
 
           <div class="theme--light ma-4">
             <div style="">
@@ -952,5 +961,23 @@ export default {
 .v-menu__content--fixed {
   background: white;
 }
+
+
+
+@media only screen and (max-width: 1054px) {
+  .custom > div {
+    justify-content: space-around;
+    flex-shrink: 1;
+    flex-basis: auto;
+    flex: 50%;
+  }
+}
+
+@media only screen and (max-width: 470px) {
+  .custom > div {
+    flex:none;
+  }
+}
+
 
 </style>
