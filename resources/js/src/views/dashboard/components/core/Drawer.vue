@@ -23,9 +23,13 @@
   <v-list dense nav class="d-flex justify-start">
     <div class="d-flex justify-content-center">
       <v-list-item>
-          <v-avatar size="50">
-            <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John">
+        <v-hover
+          v-slot="{ hover }"
+        >
+          <v-avatar size="50" :class="{ 'on-hover': hover }">
+            <img :class="{ 'on-hover': hover }" src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John">
           </v-avatar>
+        </v-hover>
       </v-list-item>
       <v-list-item class="pl-0 ml-0">
         <v-list-item-content>
@@ -248,4 +252,8 @@ export default {
 
           +rtl()
             margin-left: 8px
+
+    img:hover
+      opacity: 0.5
+      cursor: pointer
 </style>
