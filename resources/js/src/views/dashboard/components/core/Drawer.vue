@@ -27,7 +27,7 @@
           v-slot="{ hover }"
         >
           <v-avatar size="50" :class="{ 'on-hover': hover }">
-            <img :class="{ 'on-hover': hover }" src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John">
+            <img :class="{ 'on-hover': hover }" :src="'http://goldberg.local/storage/user-avatar/'+user.avatar" alt="John">
           </v-avatar>
         </v-hover>
       </v-list-item>
@@ -86,7 +86,8 @@ export default {
   },
 
   data: () => ({
-    user:'',
+    useravatar:'',
+    // user:'',
     isFetching: true,
     items: [{
         icon: 'mdi-view-dashboard',
@@ -143,7 +144,16 @@ export default {
 
   computed: {
     ...mapState("hs", ['barColor', 'barImage']),
+    ...mapState("auth", ['user']),
 
+    user: {
+      get() {
+        return this.$store.state.auth.user
+      },
+      set(val) {
+        this.$store.commit('auth/SET_USER', val)
+      },
+    },
     drawer: {
       get() {
         return this.$store.state.hs.drawer

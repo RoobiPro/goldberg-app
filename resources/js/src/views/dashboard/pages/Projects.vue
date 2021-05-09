@@ -955,7 +955,7 @@ export default {
   word-break: normal; /* maybe !important  */
 }
 .v-messages{
-  display:none;
+  display:block;
 }
 .v-label{
   margin-bottom: 0px;

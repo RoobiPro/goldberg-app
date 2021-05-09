@@ -66,7 +66,7 @@
 
             <v-col cols="auto">
               <v-switch
-                v-model="$vuetify.theme.dark"
+                v-model="dark"
                 class="ma-0 pa-0"
                 color="secondary"
                 hide-details
@@ -126,7 +126,6 @@
             </v-item>
           </v-item-group>
 
-
           <v-btn
             block
             class="mb-3"
@@ -141,10 +140,6 @@
           </v-btn>
 
           <div class="my-12" />
-
-
-
-
 
         </v-card-text>
       </v-card>
@@ -163,7 +158,7 @@
     mixins: [Proxyable],
 
     data: () => ({
-      color: '#E91E63',
+      color: localStorage.getItem("color"),
       colors: [
         '#9C27b0',
         '#00CAE3',
@@ -182,15 +177,26 @@
       menu: false,
       saveImage: '',
       showImg: true,
+      dark: localStorage.getItem("dark\_theme"),
     }),
+
 
     computed: {
       ...mapState("hs", ['barImage']),
     },
 
     watch: {
+      dark(newValue){
+        this.$vuetify.theme.dark = newValue;
+        localStorage.setItem("dark\_theme", this.$vuetify.theme.dark.toString());
+
+        //called whenever switch1 changes
+        console.log(newValue);
+      },
       color (val) {
+
         this.$vuetify.theme.themes[this.isDark ? 'dark' : 'light'].primary = val
+        localStorage.setItem("color", val);
       },
       showImg (val) {
         if (!val) {

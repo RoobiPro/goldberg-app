@@ -130,6 +130,27 @@
                     Update Profile
                   </v-btn>
                 </v-col>
+
+                <v-col
+                  cols="12"
+                  class="text-right"
+                >
+
+                <v-file-input
+                  v-model="file"
+                  truncate-length="15"
+                  label="Change your avatar"
+                  accept=".jpg, .png"
+                  prepend-icon="mdi-camera"
+                  @change="updateAvatar">
+                ></v-file-input>
+                Uploading: {{ uploadPercent }} %
+                </v-col>
+
+                <div v-if="showUploadProgress">
+                    Uploading: {{ uploadPercent }} %
+                </div>
+
               </v-row>
             </v-container>
           </v-form>
@@ -172,7 +193,81 @@
 </template>
 
 <script>
-  export default {
-    //
-  }
+import axios from 'axios'
+export default {
+
+    name: "AvatarImageComponent",
+    props: ['avatarUrl'],
+    data() {
+        return {
+            file: [],
+            uploadPercent: 0,
+            avatarImageUrl: "",
+            showUploadProgress: false,
+            processingUpload: false
+        }
+    },
+    mounted(){
+        this.avatarImageUrl = this.avatarUrl
+    },
+    methods: {
+        updateAvatar(){
+          console.log("uploading")
+          console.log(this.file)
+          let formData = new FormData()
+          formData.append('avatar', this.file)
+          axios.post('/api/upload_avatar', formData, {
+              onUploadProgress: (progressEvent) => {
+                  this.uploadPercent = progressEvent.lengthComputable ? Math.round( (progressEvent.loaded * 100) / progressEvent.total ) : 0 ;
+              }
+          })
+          .then( (response) => {
+            console.log(response)
+              this.$store.commit('auth/SET_USERAVATAR', response.data.avatar)
+              this.avatarImageUrl = response.data.avatar_url
+              this.showUploadProgress = false
+              this.processingUpload = false
+              this.$emit('imageUrl', response.data.secure_url )
+  
+              console.log(this.$store.getters["auth/user"])
+          })
+          .catch( (error) => {
+              if(error.response){
+                  console.log(error.message)
+              }else{
+                  console.log(error)
+              }
+              this.showUploadProgress = false
+              this.processingUpload = false
+          })
+            if(this.$refs.photo){
+                this.showUploadProgress = true
+                this.processingUpload = true
+                this.uploadPercent = 0
+                let formData = new FormData()
+                formData.append('avatar', this.$refs.photo)
+                axios.post('/upload_avatar', formData, {
+                    onUploadProgress: (progressEvent) => {
+                        this.uploadPercent = progressEvent.lengthComputable ? Math.round( (progressEvent.loaded * 100) / progressEvent.total ) : 0 ;
+                    }
+                })
+                .then( (response) => {
+                    this.avatarImageUrl = response.data.avatar_url
+                    this.showUploadProgress = false
+                    this.processingUpload = false
+                    this.$emit('imageUrl', response.data.secure_url )
+                })
+                .catch( (error) => {
+                    if(error.response){
+                        console.log(error.message)
+                    }else{
+                        console.log(error)
+                    }
+                    this.showUploadProgress = false
+                    this.processingUpload = false
+                })
+            }
+        }
+    }
+}
 </script>

@@ -26,6 +26,12 @@ export default {
     SET_USER (state, value) {
       state.user = value
       console.log(state.user)
+    },
+
+    SET_USERAVATAR (state, avatar) {
+      console.log(avatar)
+      state.user.avatar = avatar
+
     }
   },
 

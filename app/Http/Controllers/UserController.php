@@ -8,6 +8,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -31,6 +32,16 @@ class UserController extends Controller
 
     public function getAdmins(Request $request){
       return UserResource::collection(User::all()->where('role', 2));
+    }
+
+    function generateRandomString($length = 20) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 
     /**
@@ -102,43 +113,53 @@ class UserController extends Controller
     }
 
     public function upload_user_photo(Request $request){
-    // check if image has been received from form
-    if($request->file('avatar')){
-        // check if user has an existing avatar
-        if($this->guard()->user()->avatar != NULL){
-            // delete existing image file
-            Storage::disk('user_avatars')->delete($this->guard()->user()->avatar);
-        }
+      // return response()->json("alo", 200);
+      // check if image has been received from form
+      // return response()->json($request->file('avatar'), 200);
+      // return response()->json($request->file('avatar'), 200);
+      if($request->file('avatar')){
+          // return response()->json(auth('sanctum')->user(), 200);
+          // check if user has an existing avatar
+          if(auth('sanctum')->user()->avatar != NULL){
+              // delete existing image file
+              // return response()->json(Storage::disk('user_avatars'), 200);
+              Storage::disk('user_avatars')->delete(auth('sanctum')->user()->avatar);
+              auth('sanctum')->user()->avatar= NULL;
+          }
 
-        // processing the uploaded image
-        $avatar_name = $this->random_char_gen(20).'.'.$request->file('avatar')->getClientOriginalExtension();
-        $avatar_path = $request->file('avatar')->storeAs('',$avatar_name, 'user_avatars');
+          // processing the uploaded image
+          // return response()->json($this->generateRandomString(), 200);
+          //
+          $avatar_name = $this->generateRandomString().'.'.$request->file('avatar')->getClientOriginalExtension();
+          // return response()->json("alo2", 200);
+          $avatar_path = $request->file('avatar')->storeAs('',$avatar_name, 'user_avatars');
 
-        // Update user's avatar column on 'users' table
-        $profile = User::find($request->user()->id);
-        $profile->avatar = $avatar_path;
+          // Update user's avatar column on 'users' table
+          $profile = User::find(auth('sanctum')->user()->id);
+          $profile->avatar = $avatar_path;
 
-        if($profile->save()){
-            return response()->json([
-                'status'    =>  'success',
-                'message'   =>  'Profile Photo Updated!',
-                'avatar_url'=>  url('storage/user-avatar/'.$avatar_path)
-            ]);
-        }else{
-            return response()->json([
-                'status'    => 'failure',
-                'message'   => 'failed to update profile photo!',
-                'avatar_url'=> NULL
-            ]);
-        }
+          if($profile->save()){
+              return response()->json([
+                  'status'    =>  'success',
+                  'message'   =>  'Profile Photo Updated!',
+                  'avatar_url'=>  url('storage/user-avatar/'.$avatar_path),
+                  'avatar' => $profile->avatar
+              ]);
+          }else{
+              return response()->json([
+                  'status'    => 'failure',
+                  'message'   => 'failed to update profile photo!',
+                  'avatar_url'=> NULL
+              ]);
+          }
 
-    }
+      }
 
-      return response()->json([
-          'status'    => 'failure',
-          'message'   => 'No image file uploaded!',
-          'avatar_url'=> NULL
-      ]);
-    }
+        return response()->json([
+            'status'    => 'failure',
+            'message'   => 'No image file uploaded!',
+            'avatar_url'=> NULL
+        ]);
+      }
 
 }

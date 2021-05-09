@@ -21,7 +21,11 @@ use App\Http\Controllers\ProjectController;
 //     return view('vuedashboard');
 // });
 // Route::apiResource('users', UserController::class);
+// Route::middleware('auth:sanctum')->group(function () {
+//   Route::post('upload_avatar', [UserController::class, 'upload_user_photo']);
+// });
 
+// Route::post('upload_avatar', [UserController::class, 'upload_user_photo']);
 // Route::post('/login', 'AuthController@login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);

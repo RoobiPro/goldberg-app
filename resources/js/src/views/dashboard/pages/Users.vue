@@ -643,7 +643,7 @@ export default {
 }
 </script>
 <style>
-.v-messages{
+/* .v-messages{
   display:block;
-}
+} */
 </style>

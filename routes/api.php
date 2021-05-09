@@ -31,6 +31,7 @@ use App\Http\Controllers\AuthController;
 
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('upload_avatar', [UserController::class, 'upload_user_photo']);
     Route::apiResource('users', UserController::class);
     Route::apiResource('projects', ProjectController::class);
 
