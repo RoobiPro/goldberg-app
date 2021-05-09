@@ -94,6 +94,11 @@ export default {
         to: '/dashboard',
       },
       {
+        icon: 'mdi-hammer-wrench',
+        title: 'My Projects',
+        to: '/myprojects',
+      },
+      {
         icon: 'mdi-account-multiple',
         title: 'User Management',
         to: '/management/user',

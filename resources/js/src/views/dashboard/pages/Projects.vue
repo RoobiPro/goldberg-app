@@ -5,7 +5,15 @@ class="d-flex justify-center"
 tag="section"
 style="margin-top:10vh;">
 
-  <v-data-table style="" :headers="headers" :items="projects" :search="search" :single-expand="singleExpand" :expanded.sync="expanded" item-key="name" show-expand class="elevation-0">
+  <v-data-table
+    :headers="headers"
+    :items="projects"
+    :search="search"
+    :single-expand="singleExpand"
+    :expanded.sync="expanded"
+    item-key="name"
+    show-expand class="elevation-0"
+  >
 
     <template v-slot:top>
       <v-toolbar flat>
@@ -528,6 +536,7 @@ import axios from 'axios'
 
 export default {
   data: vm => ({
+    itemsPerPage: [10,20,30,-1],
     mydate:null,
 
     menu: false,

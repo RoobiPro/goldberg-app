@@ -642,8 +642,3 @@ export default {
     },
 }
 </script>
-<style>
-.v-messages{
-  display:block;
-}
-</style>

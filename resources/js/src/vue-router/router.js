@@ -118,6 +118,24 @@ const routes = [
             requiresAuth: true
           },
         },
+        {
+          name: 'My Projects',
+          path: 'myprojects',
+          component: () => import('@/views/dashboard/pages/projects/ProjectsOverview'),
+          props: true,
+          meta: {
+            requiresAuth: true
+          },
+        },
+        {
+          name: 'Project',
+          path: 'project/:id',
+          component: () => import('@/views/dashboard/pages/projects/SingleProject'),
+          props: true,
+          meta: {
+            requiresAuth: true
+          },
+        },
       ],
     },
     { path: '*', redirect: { name: 'Dashboard' }}

@@ -47,8 +47,9 @@ function show(id) {
     }
   };
 
-  return axios.get(`${url}/users/${id}`, options)
+  return axios.get(`${url}/api/projects/${id}`, options)
     .then(response => {
+      console.log(response.data)
       // let user = jsona.deserialize(response.data);
       let user = response.data;
       delete user.links;

@@ -19,10 +19,15 @@ const mutations = {
 
 };
 
+
 const actions = {
   filterUsers({commit, dispatch}, params) {
     return service.projectusers(params)
       .then((project) => { commit('SET_FILTEREDUSERS', project); });
+  },
+
+  selectedProject({commit, dispatch}, params) {
+    commit('SET_PROJECT', params); 
   },
 
   getAll({commit, dispatch}, params) {
@@ -33,7 +38,7 @@ const actions = {
   },
 
   show({commit, dispatch}, params) {
-    return service.get(params)
+    return service.show(params)
       .then((project) => { commit('SET_PROJECT', project); });
   },
 

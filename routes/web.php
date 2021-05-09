@@ -33,6 +33,9 @@ Route::get('/getUsers', [UserController::class, 'getUsers']);
 Route::get('/getClients', [UserController::class, 'getClients']);
 Route::get('/getAdmins', [UserController::class, 'getAdmins']);
 
+Route::get('/getUserProjects/{id}', [UserController::class, 'getUserProjects']);
+
+
 Route::post('/assignuser', [ProjectController::class, 'assignUser']);
 Route::post('/assignclient', [ProjectController::class, 'assignClient']);
 

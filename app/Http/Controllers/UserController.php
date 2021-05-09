@@ -7,7 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Facades\Auth;
-
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -56,6 +56,11 @@ class UserController extends Controller
 
     }
 
+    public function getUserProjects($id){
+      $user = User::find($id);
+      return response()->json($user->projects, 200);
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -65,7 +70,21 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      // return response()->json($request, 200);
+      $user = User::find($id);
+      if($request->has('password')){
+        $user->password = Hash::make($request->password);
+        $user->save();
+        return response()->json("User's password was updated!", 200);
+      }
+      else{
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role = $request->role;
+        $user->save();
+        return response()->json('The user has been updated!', 200);
+      }
+
     }
 
     /**
