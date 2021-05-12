@@ -629,6 +629,7 @@ export default {
             this.getList();
             this.$v.$reset()
             this.user = []
+            this.user.role=0
             this.newUserDialog = false;
           }
           else{
