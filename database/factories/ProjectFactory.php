@@ -18,7 +18,6 @@ class ProjectFactory extends Factory
     /**
      * Define the model's default state.
      *getProjectUsers
-     
      * @return array
      */
     public function definition()

@@ -8,7 +8,8 @@ const routes = [
     {
       path: '/login',
       name: 'Login',
-      component: () => import('@/views/Login'),
+      component: () => import('@/views/LoginNew'),
+      // component: () => import('@/views/Login'),
       props: true,
       meta: {
         guest: true
@@ -54,7 +55,7 @@ const routes = [
         },
         {
           name: 'User Profile',
-          path: 'pages/user',
+          path: '/pages/user',
           component: () => import('@/views/dashboard/pages/UserProfile'),
           props: true,
           meta: {

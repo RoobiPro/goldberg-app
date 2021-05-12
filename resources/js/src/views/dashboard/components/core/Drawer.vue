@@ -10,24 +10,29 @@
   <v-list dense nav>
     <v-list-item>
       <v-list-item-avatar>
-        <v-img src="http://goldberg.local/images/favicon.png" />
+        <v-img src="/images/favicon.png" />
       </v-list-item-avatar>
       <v-list-item-content class="pa-4 pl-0">
-        <v-img src="http://goldberg.local/images/goldberg_font.png" />
+        <v-img src="/images/goldberg_font.png" />
       </v-list-item-content>
     </v-list-item>
   </v-list>
 
   <v-divider/>
 
-  <v-list dense nav class="d-flex justify-start">
+<div @click="goToProfile" style="cursor: pointer;">
+  <v-list dense nav class="d-flex justify-start" >
     <div class="d-flex justify-content-center">
       <v-list-item>
         <v-hover
           v-slot="{ hover }"
         >
           <v-avatar size="50" :class="{ 'on-hover': hover }">
-            <img :class="{ 'on-hover': hover }" :src="'http://goldberg.local/storage/user-avatar/'+user.avatar" alt="John">
+            <img
+              :class="{ 'on-hover': hover }"
+              :src="'/storage/user-avatar/'+user.avatar"
+              :alt="user.name"
+            >
           </v-avatar>
         </v-hover>
       </v-list-item>
@@ -41,6 +46,8 @@
       </v-list-item>
     </div>
   </v-list>
+</div>
+
 
   <v-divider/>
 
@@ -89,6 +96,59 @@ export default {
     useravatar:'',
     // user:'',
     isFetching: true,
+    items_admin:[{
+        icon: 'mdi-view-dashboard',
+        title: 'dashboard',
+        to: '/dashboard',
+      },
+      {
+        icon: 'mdi-account-multiple',
+        title: 'User Management',
+        to: '/management/user',
+      },
+      {
+        icon: 'mdi-briefcase',
+        title: 'Project Management',
+        to: '/management/project',
+      },
+      {
+        icon: 'mdi-account',
+        title: 'user',
+        to: '/pages/user',
+      }
+    ],
+    items_user:[{
+        icon: 'mdi-view-dashboard',
+        title: 'dashboard',
+        to: '/dashboard',
+      },
+      {
+        icon: 'mdi-account',
+        title: 'user',
+        to: '/pages/user',
+      },
+      {
+        icon: 'mdi-hammer-wrench',
+        title: 'My Projects',
+        to: '/myprojects',
+      }
+    ],
+    items_client:[{
+        icon: 'mdi-view-dashboard',
+        title: 'dashboard',
+        to: '/dashboard',
+      },
+      {
+        icon: 'mdi-account',
+        title: 'user',
+        to: '/pages/user',
+      },
+      {
+        icon: 'mdi-hammer-wrench',
+        title: 'My Projects',
+        to: '/myprojects',
+      }
+    ],
     items: [{
         icon: 'mdi-view-dashboard',
         title: 'dashboard',
@@ -163,6 +223,17 @@ export default {
       },
     },
     computedItems() {
+      console.log("computedItems")
+      console.log(this.user)
+      if(this.user.role==2){
+        return this.items_admin.map(this.mapItem)
+      }
+      else if(this.user.role==1){
+        return this.items_client.map(this.mapItem)
+      }
+      else{
+        return this.items_user.map(this.mapItem)
+      }
       return this.items.map(this.mapItem)
     },
     profile() {
@@ -181,6 +252,11 @@ export default {
       signOutAction: 'auth/signOut',
       // successAlert: 'alerts/success'
     }),
+
+    goToProfile(){
+      this.$router.push({ path: `/pages/user` }).catch(()=>{});
+
+    },
     getUser(){
       this.user = this.$store.getters["auth/user"]
     },

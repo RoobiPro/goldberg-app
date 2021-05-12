@@ -546,7 +546,7 @@ export default {
             password: this.newPassword
           }
 
-          axios.patch(`http://goldberg.local/api/users/`+this.newPasswordId, password)
+          axios.patch(`/api/users/`+this.newPasswordId, password)
             .then(response => {
               if(response.status == 200){
                 this.getList();
@@ -574,7 +574,7 @@ export default {
         }
         else{
           console.log("valid")
-          axios.patch(`http://goldberg.local/api/users/`+this.editUser.id, this.editUser)
+          axios.patch(`/api/users/`+this.editUser.id, this.editUser)
             .then(response => {
               if(response.status == 200){
                 this.getList();

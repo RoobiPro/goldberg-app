@@ -24,13 +24,13 @@ class UsersSeeder extends Seeder
             'name' => 'Eduardo',
             'email' => 'edoguerra@goldbergresources.com',
             'role' => 2,
-            'password' => Hash::make('miclave')
+            'password' => Hash::make('miclave1')
         ]);
         User::create([
             'name' => 'Juan Carlos',
             'email' => 'juancarlos@goldbergresources.com',
             'role' => 2,
-            'password' => Hash::make('miclave')
+            'password' => Hash::make('miclave1')
         ]);
 
         // factory(User::class, 120)->create();

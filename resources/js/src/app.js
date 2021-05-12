@@ -18,22 +18,28 @@ import router from './vue-router/router'
 import store from './vuex/store'
 import './plugins/base'
 import './plugins/chartist'
-// import './plugins/vee-validate'
 import vuetify from './plugins/vuetify'
 import i18n from './vue-i18n/i18n'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
-if ( process.env.NODE_ENV == 'production' ) {
+if ( process.env.APP_ENV == 'production' ) {
     Vue.config.silent = true;
     Vue.config.productionTip = false;
     Vue.config.devtools = false;
+    axios.defaults.baseURL = 'http://phplaravel-524047-1884759.cloudwaysapps.com'
 } else {
+  axios.defaults.baseURL = ''
 }
 
 axios.defaults.withCredentials = true
-axios.defaults.baseURL = 'http://goldberg.local/'
 
-Vue.config.productionTip = false
+let api_url = process.env.APP_ENV;
+console.log("my env variable:");
+console.log(api_url);
+console.log(process.env.APP_ENV)
+
+
+// Vue.config.productionTip = false
 
 Vue.use(vuetify);
 
@@ -49,27 +55,3 @@ store.dispatch('auth/refresh').then(() => {
     render: h => h(App),
   }).$mount('#app')
 })
-//
-// new Vue({
-//   el: '#app',
-//   router,
-//   vuetify: new Vuetify(),
-//   store,
-//   components: { App},
-//   template: "<App/>"
-// })
-
-// .$mount('#app')
-
-  // render: h => h(App),
-// components: { App },
-// template: '<App/>'
-// const app = new Vue({
-//     el: '#app',
-//     router,
-//     store,
-//     components: { AdminApp },
-//     template: '<AdminApp/>'
-// })
-
-// antialiased''

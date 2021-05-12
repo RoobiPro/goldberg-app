@@ -4,8 +4,8 @@ switch( process.env.NODE_ENV ){
     var APIV1 = 'https://goldbergresources.com/api/v1';
   break;
   case 'development':
-    var AUTH_API = 'http://goldberg.local/api';
-    var APIv1 = 'http://goldberg.local/api/v1';
+    var AUTH_API = '/api';
+    var APIv1 = '/api/v1';
   break;
 }
 

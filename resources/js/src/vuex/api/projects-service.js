@@ -4,7 +4,7 @@ import axios from 'axios';
 // import Jsona from 'jsona';
 
 // const url = process.env.VUE_APP_API_BASE_URL;
-const url = 'http://goldberg.local'
+const url = ''
 // const jsona = new Jsona();
 
 function projectusers(id) {

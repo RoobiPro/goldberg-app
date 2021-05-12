@@ -228,7 +228,7 @@ export default {
               this.showUploadProgress = false
               this.processingUpload = false
               this.$emit('imageUrl', response.data.secure_url )
-  
+
               console.log(this.$store.getters["auth/user"])
           })
           .catch( (error) => {

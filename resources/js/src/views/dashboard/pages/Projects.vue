@@ -466,7 +466,7 @@ style="margin-top:10vh;">
 
           <v-list-item v-if="item.client!=null" class="d-flex justify-center">
             <v-list-item-avatar>
-              <v-img :alt="`${item.name} avatar`" :src="'https://cdn.vuetifyjs.com/images/lists/1.jpg'"></v-img>
+              <v-img :alt="`${item.name} avatar`" :src="'/storage/user-avatar/'+item.client.avatar"></v-img>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title v-text="item.client.name"></v-list-item-title>
@@ -493,7 +493,7 @@ style="margin-top:10vh;">
           <template v-if="item.users.length!=0">
             <v-list-item  v-for="(item, index) in item.users" :key="item.id" v-bind:class="getBottomLine(item.pivot.project_id, index)">
               <v-list-item-avatar>
-                <v-img :alt="`${item.name} avatar`" :src="'https://cdn.vuetifyjs.com/images/lists/1.jpg'"></v-img>
+                <v-img :alt="`${item.name} avatar`" :src="'/storage/user-avatar/'+item.avatar"></v-img>
               </v-list-item-avatar>
 
               <v-list-item-content>
@@ -719,7 +719,7 @@ export default {
         id: this.selectedUser.id,
         role: this.newrole
       }
-      axios.post(`http://goldberg.local/assignuser`, projectData)
+      axios.post(`/assignuser`, projectData)
         .then(response => {
           if(response.status == 200){
             this.getProjects();
@@ -755,7 +755,7 @@ export default {
         projectId : this.projectToAssing,
         client_id: this.selectedClient.id,
       }
-      axios.post(`http://goldberg.local/assignclient`, ClientData)
+      axios.post(`/assignclient`, ClientData)
         .then(response => {
           if(response.status == 200){
             this.getProjects();
@@ -784,7 +784,7 @@ export default {
         user_id: this.UserToUnassign.id,
         project_id: this.UnassignFromProjectID
       }
-      axios.post(`http://goldberg.local/unassignUser`, deleteUser)
+      axios.post(`/unassignUser`, deleteUser)
         .then(response => {
           if(response.status == 200){
             this.getProjects();
@@ -819,7 +819,7 @@ export default {
       }
 
       if (conditionOne&&conditionTwo){
-        axios.post(`http://goldberg.local/api/projects`, this.newProject)
+        axios.post(`/api/projects`, this.newProject)
           .then(response => {
             if(response.status == 200){
               this.getProjects();
@@ -851,7 +851,7 @@ export default {
       this.editUserRoleDialog = true
     },
     saveEditUserRole(){
-      axios.post(`http://goldberg.local/reassignUser`, this.UserToEdit)
+      axios.post(`/reassignUser`, this.UserToEdit)
         .then(response => {
           if(response.status == 200){
             this.getProjects();
@@ -887,7 +887,7 @@ export default {
     },
 
     saveEditProject(){
-      axios.patch(`http://goldberg.local/api/projects/`+this.projectToEdit.id, this.projectToEdit)
+      axios.patch(`/api/projects/`+this.projectToEdit.id, this.projectToEdit)
         .then(response => {
                   if(response.status == 200){
                     this.getProjects();
@@ -916,7 +916,7 @@ export default {
     },
 
     deleteProjectConfirm(){
-      axios.delete(`http://goldberg.local/api/projects/`+this.projectToDelete )
+      axios.delete(`/api/projects/`+this.projectToDelete )
         .then(response => {
           if(response.status == 200){
             this.getProjects();
@@ -953,9 +953,6 @@ export default {
 }
 .v-card__text, .v-card__title {
   word-break: normal; /* maybe !important  */
-}
-.v-messages{
-  display:block;
 }
 .v-label{
   margin-bottom: 0px;

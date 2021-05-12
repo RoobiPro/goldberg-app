@@ -205,14 +205,12 @@ export default {
     async getProjects() {
       var me = await this.$store.getters["auth/user"];
       console.log(me)
-      axios.get(`http://goldberg.local/getUserProjects/`+me.id)
+      axios.get(`/getUserProjects/`+me.id)
         .then(response => {
           if(response.status == 200){
             const projectsJson = response.data
             this.projects = projectsJson.map(projects => ({...projects, project_start_date: this.formatDate(projects.project_start_date), role: this.getRoleName(projects.pivot.role)}))
             console.log(response)
-
-            // this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
           }
           else{
             this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
@@ -238,9 +236,10 @@ export default {
 .v-card__text, .v-card__title {
   word-break: normal; /* maybe !important  */
 }
-.v-messages{
-  display:none;
+.v-messages {
+    display: block !important;
 }
+
 .v-label{
   margin-bottom: 0px;
 }

@@ -113,19 +113,15 @@ class UserController extends Controller
     }
 
     public function upload_user_photo(Request $request){
-      // return response()->json("alo", 200);
-      // check if image has been received from form
-      // return response()->json($request->file('avatar'), 200);
-      // return response()->json($request->file('avatar'), 200);
+
       if($request->file('avatar')){
-          // return response()->json(auth('sanctum')->user(), 200);
-          // check if user has an existing avatar
-          if(auth('sanctum')->user()->avatar != NULL){
-              // delete existing image file
-              // return response()->json(Storage::disk('user_avatars'), 200);
+
+
+          if(auth('sanctum')->user()->avatar != "default_avatar.png"){
+
               Storage::disk('user_avatars')->delete(auth('sanctum')->user()->avatar);
-              auth('sanctum')->user()->avatar= NULL;
           }
+
 
           // processing the uploaded image
           // return response()->json($this->generateRandomString(), 200);
@@ -137,6 +133,8 @@ class UserController extends Controller
           // Update user's avatar column on 'users' table
           $profile = User::find(auth('sanctum')->user()->id);
           $profile->avatar = $avatar_path;
+
+          // return response()->json($avatar_path, 200);
 
           if($profile->save()){
               return response()->json([

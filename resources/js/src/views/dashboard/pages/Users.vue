@@ -309,7 +309,13 @@
 
           </v-toolbar>
         </template>
+        <template  v-slot:item.avatar="{ item }">
+          <v-avatar size="35">
+            <img :src="'/storage/user-avatar/'+item.avatar" :alt="item.name">
+          </v-avatar>
+        </template>
         <template  v-slot:item.actions="{ item }">
+
           <v-icon v-show="canBeDeleted(item)"
             small
             class="mr-2"
@@ -452,10 +458,11 @@ export default {
       headers () {
         return [
           { text: 'ID', align: 'start', value: 'id', },
+          { text: 'Avatar', align: 'start', value: 'avatar'},
           { text: 'Name', value: 'name' },
           { text: 'E-mail', value: 'email' },
           { text: 'Role', value: 'role_name' },
-          { text: 'Actions', value: 'actions', sortable: false },
+          { text: 'Actions', align: 'center', value: 'actions', sortable: false },
         ]
       },
     },
@@ -546,7 +553,7 @@ export default {
             password: this.newPassword
           }
 
-          axios.patch(`http://goldberg.local/api/users/`+this.newPasswordId, password)
+          axios.patch(`/api/users/`+this.newPasswordId, password)
             .then(response => {
               if(response.status == 200){
                 this.getList();
@@ -574,7 +581,7 @@ export default {
         }
         else{
           console.log("valid")
-          axios.patch(`http://goldberg.local/api/users/`+this.editUser.id, this.editUser)
+          axios.patch(`/api/users/`+this.editUser.id, this.editUser)
             .then(response => {
               if(response.status == 200){
                 this.getList();
@@ -643,7 +650,7 @@ export default {
 }
 </script>
 <style>
-/* .v-messages{
-  display:block;
-} */
+.v-messages {
+    display: block !important;
+}
 </style>
