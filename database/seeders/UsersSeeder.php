@@ -32,6 +32,12 @@ class UsersSeeder extends Seeder
             'role' => 2,
             'password' => Hash::make('miclave1')
         ]);
+        User::create([
+            'name' => 'Robinson Guerra',
+            'email' => 'robinson.guerra90@gmail.com',
+            'role' => 2,
+            'password' => Hash::make('miclave1')
+        ]);
 
         // factory(User::class, 120)->create();
         User::factory()->count(20)->create();
