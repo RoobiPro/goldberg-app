@@ -13,7 +13,7 @@
         <v-img src="/images/favicon.png" />
       </v-list-item-avatar>
       <v-list-item-content class="pa-4 pl-0">
-        <v-img src="/images/goldberg_font.png" />
+        <v-img src="/images/goldberg_font_drawer.png" />
       </v-list-item-content>
     </v-list-item>
   </v-list>
