@@ -126,21 +126,6 @@
             </v-item>
           </v-item-group>
 
-          <v-btn
-            block
-            class="mb-3"
-            color="grey darken-1"
-            dark
-            href="https://vuetifyjs.com/components/api-explorer"
-            default
-            rel="noopener"
-            target="_blank"
-          >
-            Documentation
-          </v-btn>
-
-          <div class="my-12" />
-
         </v-card-text>
       </v-card>
     </v-menu>
@@ -167,17 +152,17 @@
         '#E91E63',
         '#FF5252',
       ],
-      image: 'https://demos.creative-tim.com/material-dashboard/assets/img/sidebar-1.jpg',
+      image: !localStorage.getItem("showBarImage") ? 'https://demos.creative-tim.com/material-dashboard/assets/img/sidebar-1.jpg' : (localStorage.getItem("showBarImage") == 'true' ? localStorage.getItem("barImage") : false),
       images: [
         'https://demos.creative-tim.com/material-dashboard/assets/img/sidebar-1.jpg',
         'https://demos.creative-tim.com/material-dashboard/assets/img/sidebar-2.jpg',
         'https://demos.creative-tim.com/material-dashboard/assets/img/sidebar-3.jpg',
-        'https://demos.creative-tim.com/material-dashboard/assets/img/sidebar-4.jpg',
+        'https://demos.creative-tim.com/material-dashboard/assets/img/sidebar-4.jpg'
       ],
       menu: false,
       saveImage: '',
-      showImg: true,
-      dark: localStorage.getItem("dark\_theme"),
+      showImg: !localStorage.getItem("showBarImage") ? false : (localStorage.getItem("showBarImage") == 'true' ? true : false),
+      dark: !localStorage.getItem("dark\_theme") ? false : (localStorage.getItem("dark\_theme") == 'true' ? true : false),
     }),
 
 
@@ -193,30 +178,33 @@
         //called whenever switch1 changes
         console.log(newValue);
       },
+      image() {
+        console.log(this.image)
+        this.setBarImage(this.image)
+      },
       color (val) {
 
         this.$vuetify.theme.themes[this.isDark ? 'dark' : 'light'].primary = val
         localStorage.setItem("color", val);
       },
       showImg (val) {
-        if (!val) {
-          this.saveImage = this.barImage
-          this.setBarImage('')
-        } else if (this.saveImage) {
-          this.setBarImage(this.saveImage)
-          this.saveImage = ''
-        } else {
-          this.setBarImage(val)
-        }
-      },
-      image (val) {
-        this.setBarImage(val)
-      },
+        console.log(val)
+          if (!val) {
+            this.toggleBarImage(false)
+            this.setBarImage('')
+
+          }
+          else {
+            this.toggleBarImage(true)
+            this.setBarImage(this.image)
+          }
+      }
     },
 
     methods: {
       ...mapMutations({
         setBarImage: 'hs/SET_BAR_IMAGE',
+        toggleBarImage: 'hs/SET_SHOWBARIMAGE',
       }),
     },
   }

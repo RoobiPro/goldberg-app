@@ -30,7 +30,9 @@
         <div class="card" style="background-color:transparent">
           <div class="card-info">
             <h1 class="text-center">Login</h1>
-
+            <v-form
+            @submit.prevent="Login"
+            >
             <v-text-field
               v-model="email"
               :error-messages="emailErrors"
@@ -52,8 +54,6 @@
               @blur="$v.password.$touch()"
             ></v-text-field>
 
-
-
               <div class="text-center mt-4">
                 <v-progress-circular
                 v-if="loading"
@@ -66,12 +66,13 @@
                   v-else
                     class="ma-2"
                     color="#71623f"
-                    @click="Login"
+                    type="submit"
                   >
                     Login
                   </v-btn>
 
               </div>
+            </v-form>
             </div>
 
         </div>
@@ -438,7 +439,7 @@ p+p {
     justify-content: center;
   }
   .mycard{
-    height: 200px;
+    height: 220px;
   }
 
   .right {

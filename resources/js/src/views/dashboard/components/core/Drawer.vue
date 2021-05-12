@@ -1,12 +1,18 @@
 <template>
-<v-navigation-drawer id="core-navigation-drawer" v-model="drawer" :dark="barColor !== 'rgba(228, 226, 226, 1), rgba(255, 255, 255, 0.7)'" :expand-on-hover="expandOnHover" :right="$vuetify.rtl" :src="barImage" mobile-breakpoint="960" app width="260"
+<v-navigation-drawer id="core-navigation-drawer"
+  v-model="drawer"
+  :dark="barColor !== 'rgba(228, 226, 226, 1), rgba(255, 255, 255, 0.7)'"
+  :expand-on-hover="expandOnHover"
+  :right="$vuetify.rtl"
+  :src="showBarImage ? barImage: '/public/images/blackbackground.png'"
+  mobile-breakpoint="960"
+  app
+  width="260"
   v-bind="$attrs">
   <template v-slot:img="props">
     <v-img :gradient="`to bottom, ${barColor}`" v-bind="props" />
   </template>
-
   <v-divider/>
-
   <v-list dense nav>
     <v-list-item>
       <v-list-item-avatar>
@@ -17,9 +23,7 @@
       </v-list-item-content>
     </v-list-item>
   </v-list>
-
   <v-divider/>
-
 <div @click="goToProfile" style="cursor: pointer;">
   <v-list dense nav class="d-flex justify-start" >
     <div class="d-flex justify-content-center">
@@ -47,51 +51,39 @@
     </div>
   </v-list>
 </div>
-
-
   <v-divider/>
-
   <v-list expand nav>
     <!-- Style cascading bug  -->
     <!-- https://github.com/vuetifyjs/vuetify/pull/8574 -->
     <div />
-
     <template v-for="(item, i) in computedItems">
       <base-item-group v-if="item.children" :key="`group-${i}`" :item="item">
         <!--  -->
       </base-item-group>
-
       <base-item v-else :key="`item-${i}`" :item="item" />
     </template>
-
     <div />
   </v-list>
-
   <template #append>
     <div class="pa-4 ml-3 text-left mouseover">
       <div @click="signOut()">
         <v-icon>power_settings_new</v-icon>
       </div>
     </div>
-
   </template>
 </v-navigation-drawer>
 </template>
-
 <script>
 // Utilities
 import { mapState, mapActions, mapMutations } from 'vuex'
-
 export default {
   name: 'DashboardCoreDrawer',
-
   props: {
     expandOnHover: {
       type: Boolean,
       default: false,
     },
   },
-
   data: () => ({
     useravatar:'',
     // user:'',
@@ -201,11 +193,9 @@ export default {
       },
     ],
   }),
-
   computed: {
-    ...mapState("hs", ['barColor', 'barImage']),
+    ...mapState("hs", ['barColor', 'barImage', 'showBarImage']),
     ...mapState("auth", ['user']),
-
     user: {
       get() {
         return this.$store.state.auth.user
@@ -252,17 +242,20 @@ export default {
       signOutAction: 'auth/signOut',
       // successAlert: 'alerts/success'
     }),
-
+    barImageFunction(){
+      // return 'https://demos.creative-tim.com/material-dashboard/assets/img/sidebar-1.jpg'
+      if(this.showBarImage=='true'){
+        return this.barImage;
+      }
+    },
     goToProfile(){
       this.$router.push({ path: `/pages/user` }).catch(()=>{});
-
     },
     getUser(){
       this.user = this.$store.getters["auth/user"]
     },
     async signOut() {
       await this.signOutAction()
-
       this.$router.replace({
         name: 'Login'
       })
@@ -284,66 +277,50 @@ export default {
   },
 }
 </script>
-
 <style lang="sass">
   @import '~vuetify/src/styles/tools/_rtl.sass'
-
   #core-navigation-drawer
     .mouseover
       cursor: pointer
-
     .v-list-group__header.v-list-item--active:before
       opacity: .24
-
     .v-list-item
       &__icon--text,
       &__icon:first-child
         justify-content: center
         text-align: center
         width: 20px
-
         +ltr()
           margin-right: 24px
           margin-left: 12px !important
-
         +rtl()
           margin-left: 24px
           margin-right: 12px !important
-
     .v-list--dense
       .v-list-item
         &__icon--text,
         &__icon:first-child
           margin-top: 10px
-
     .v-list-group--sub-group
       .v-list-item
         +ltr()
           padding-left: 8px
-
         +rtl()
           padding-right: 8px
-
       .v-list-group__header
         +ltr()
           padding-right: 0
-
         +rtl()
           padding-right: 0
-
         .v-list-item__icon--text
           margin-top: 19px
           order: 0
-
         .v-list-group__header__prepend-icon
           order: 2
-
           +ltr()
             margin-right: 8px
-
           +rtl()
             margin-left: 8px
-
     img:hover
       opacity: 0.5
       cursor: pointer

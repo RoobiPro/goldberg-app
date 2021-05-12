@@ -33,3 +33,15 @@
     },
   }
 </script>
+
+<style>
+
+body::-webkit-scrollbar {
+display: none !important;
+}
+
+body {
+-ms-overflow-style: none !important;
+scrollbar-width: none !important;
+}
+</style>

@@ -1,6 +1,7 @@
 <template>
   <v-footer
     id="dashboard-core-footer"
+
   >
 
   </v-footer>
@@ -40,4 +41,10 @@
       font-weight: 500
       text-decoration: none
       text-transform: uppercase
+
+
+  #dashboard-core-footer
+      position: absolute
+      min-width: 100%
+      bottom: 0
 </style>
