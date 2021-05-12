@@ -150,30 +150,33 @@ const router = new Router({
   routes
 })
 
-router.beforeEach((to, from, next) => {
-  const authenticated = store.getters["auth/authenticated"];
-
-  const reqAuth = to.matched.some(record => record.meta.requiresAuth);
-
-  if (reqAuth && !authenticated) {
-      console.log(store.getters["auth/authenticated"])
-        next(
-          {path: '/login'}
-        );
+router.beforeEach(async (to, from, next) => {
+  await store.dispatch("auth/refresh")
+  const authUser = store.getters["auth/authenticated"];
+  const reqAuth = to.matched.some((record) => record.meta.requiresAuth);
+  const loginQuery = { path: "/login", query: { redirect: to.fullPath } };
+  console.log(authUser)
+  if (reqAuth && !authUser) {
+    next(
+         {path: '/login'}
+       );
+    // store.dispatch("auth/refresh").then(() => {
+    //   if (!store.getters["auth/authenticated"]) {
+    //     next(
+    //       {path: '/login'}
+    //     );
+    //   } else {
+    //     next();
+    //   }
+    // });
   }
-  else if (to.matched.some(record => record.meta.guest)){
-    if(authenticated){
-      next(
-        {path: '/'}
-      );
-    }
-    else {
-      next(); // make sure to always call next()!
-    }
+  else if(!reqAuth && authUser){
+    next(
+      {path: '/dashboard'}
+    );
   }
   else {
     next(); // make sure to always call next()!
   }
 });
-
 export default router

@@ -3,9 +3,12 @@
 </template>
 
 <script>
+import store from '../vuex/store'
+
   export default {
     name: 'App',
       mounted() {
+      // store.dispatch('auth/refresh');
       const theme = localStorage.getItem("dark\_theme");
       const color = localStorage.getItem("color");
       const barimage = localStorage.getItem("barImage");

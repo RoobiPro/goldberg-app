@@ -1,8 +1,8 @@
 <template>
   <v-card
-    :loading="loading"
     class="mx-auto my-12"
-    max-width="374"
+    min-width="400px"
+    max-width="500px"
   >
     <template slot="progress">
       <v-progress-linear
@@ -14,13 +14,13 @@
 
     <v-img
       height="250"
-      src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
+      src="https://www.mining-technology.com/wp-content/uploads/sites/8/2017/10/3l-image-11.jpg"
     ></v-img>
 
-    <v-card-title>Cafe Badilico</v-card-title>
+    <v-card-title>{{this.project.name}}</v-card-title>
 
     <v-card-text>
-      <v-row
+      <!-- <v-row
         align="center"
         class="mx-0"
       >
@@ -36,36 +36,39 @@
         <div class="grey--text ml-4">
           4.5 (413)
         </div>
-      </v-row>
+      </v-row> -->
 
       <div class="my-4 subtitle-1">
-        $ • Italian, Cafe
+        Start date: {{project.project_start_date}} <br>
+        Coordinate X: {{project.coordinates_x}} <br>
+        Coordinate Y: {{project.coordinates_y}} <br>
+        Coordinate Z: {{project.coordinates_z}} <br>
+
       </div>
 
-      <div>Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.</div>
+      <!-- <div>Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.</div> -->
     </v-card-text>
 
     <v-divider class="mx-4"></v-divider>
 
-    <v-card-title>Tonight's availability</v-card-title>
+    <v-card-title>View data</v-card-title>
 
     <v-card-text>
       <v-chip-group
-        v-model="selection"
         active-class="deep-purple accent-4 white--text"
         column
       >
-        <v-chip>5:30PM</v-chip>
+        <v-chip>Wells</v-chip>
 
-        <v-chip>7:30PM</v-chip>
+        <v-chip>Drilling</v-chip>
 
-        <v-chip>8:00PM</v-chip>
+        <v-chip>Samples</v-chip>
 
-        <v-chip>9:00PM</v-chip>
+        <v-chip>Spatial</v-chip>
       </v-chip-group>
     </v-card-text>
 
-    <v-card-actions>
+    <!-- <v-card-actions>
       <v-btn
         color="deep-purple lighten-2"
         text
@@ -73,7 +76,7 @@
       >
         Reserve
       </v-btn>
-    </v-card-actions>
+    </v-card-actions> -->
   </v-card>
 </template>
 

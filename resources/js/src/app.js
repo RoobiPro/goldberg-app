@@ -43,7 +43,7 @@ console.log(process.env.APP_ENV)
 
 Vue.use(vuetify);
 
-store.dispatch('auth/refresh').then(() => {
+
   new Vue({
     // components: {
     //   ValidationProvider
@@ -54,4 +54,3 @@ store.dispatch('auth/refresh').then(() => {
     i18n,
     render: h => h(App),
   }).$mount('#app')
-})

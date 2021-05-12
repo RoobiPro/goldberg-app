@@ -266,13 +266,6 @@ export default {
         children: item.children ? item.children.map(this.mapItem) : undefined,
         title: this.$t(item.title),
       }
-    },
-    logout() {
-      console.log("Vadder");
-      // axios.post('/logout', { withCredentials: true }).then( () => {
-      //   location.reload()
-      // console.log(response)
-      // })
     }
   },
 }

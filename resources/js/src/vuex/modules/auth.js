@@ -56,9 +56,7 @@ export default {
         console.log(response.data)
         commit('SET_AUTHENTICATED', false)
         commit('SET_USER', null)
-        axios.get('/api/users').then((response) => {
-          console.log(response.data)
-        })
+        // this.$router.replace({ path: '/login' })
       })
 
       // return dispatch('me')

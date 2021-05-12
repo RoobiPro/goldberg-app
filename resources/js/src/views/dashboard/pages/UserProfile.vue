@@ -25,8 +25,8 @@
               >
               <v-avatar size="80">
                 <img
-                  :src="'/storage/user-avatar/'+user.avatar"
-                  :alt="user.name"
+                  :src="'/storage/user-avatar/'+myuser.avatar"
+                  :alt="myuser.name"
                 >
               </v-avatar>
               </v-col>
@@ -53,7 +53,7 @@
                 md="6"
               >
                 <v-text-field
-                  v-model="this.user.name"
+                  v-model="myuser.name"
                   class="purple-input"
                   label="Name"
                 />
@@ -64,7 +64,7 @@
               >
                 <v-text-field
                   disabled
-                  v-model="user.email"
+                  v-model="myuser.email"
                   label="Email Address"
                   class="purple-input"
                 />
@@ -78,6 +78,7 @@
                 <v-btn
                   color="primary"
                   class="mr-0"
+                  v-on:click="updateProfile()"
                 >
                   Update Profile
                 </v-btn>
@@ -106,6 +107,7 @@ export default {
   data() {
     return {
       file: [],
+      myuser:[],
       uploadPercent: 0,
       avatarImageUrl: "",
       fullAvatarUrl: "",
@@ -115,24 +117,33 @@ export default {
   },
   computed: {
     ...mapState("hs", ['barColor', 'barImage']),
-    ...mapState("auth", ['user']),
-    user: {
-      get() {
-        return this.$store.state.auth.user
-      },
-      set(val) {
-        this.$store.commit('auth/SET_USER', val)
-      },
-    },
+
   },
   mounted() {
+    this.myuser = this.$store.getters["auth/user"]
     this.avatarImageUrl = this.avatarUrl
-    this.fullAvatarUrl = '/storage/user-avatar/' + this.user.avatar
+    this.fullAvatarUrl = '/storage/user-avatar/' + this.myuser.avatar
     console.log(this.fullAvatarUrl)
     console.log(this.avatarUrl)
     console.log(this.user)
   },
   methods: {
+    updateProfile(){
+      console.log(this.myuser.name)
+
+      axios.patch('/api/users/'+this.myuser.id, this.myuser)        .then(response => {
+                if(response.status == 200){
+                  this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
+                }
+                else{
+                  this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+                }
+              }).catch(error => {
+                if (error.response.status != 200){
+                  this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+                }
+              });
+    },
     updateAvatar() {
       console.log("uploading")
       console.log(this.file)
