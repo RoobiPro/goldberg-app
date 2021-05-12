@@ -454,8 +454,8 @@ style="margin-top:10vh;">
             <!-- </v-row> -->
           </div>
           <!-- </v-list-item> -->
-          <div class="borderline">
-          </div>
+          <v-divider class="ma-0"/>
+
 
 
           <div class="theme--light ma-4">
@@ -474,13 +474,19 @@ style="margin-top:10vh;">
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item v-else class="borderline">
-            <v-list-item-content>
-              <v-list-item-title v-text="'No Client assigned yet.'"></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
+          <v-divider v-if="item.client!=null" class="ma-0"/>
 
-          <div class="borderline theme--light" style="max-height: 5px; min-height: 5px;">
+          <template v-else>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title v-text="'No Client assigned yet.'"></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-divider class="ma-0"/>
+          </template>
+
+
+          <div class="theme--light" style="max-height: 5px; min-height: 5px;">
           </div>
 
           <div class="theme--light ma-4">
@@ -491,36 +497,43 @@ style="margin-top:10vh;">
 
 
           <template v-if="item.users.length!=0">
-            <v-list-item  v-for="(item, index) in item.users" :key="item.id" v-bind:class="getBottomLine(item.pivot.project_id, index)">
-              <v-list-item-avatar>
-                <v-img :alt="`${item.name} avatar`" :src="'/storage/user-avatar/'+item.avatar"></v-img>
-              </v-list-item-avatar>
+            <template v-for="(item, index) in item.users">
+              <v-list-item :key="item.id">
+                <v-list-item-avatar>
+                  <v-img :alt="`${item.name} avatar`" :src="'/storage/user-avatar/'+item.avatar"></v-img>
+                </v-list-item-avatar>
 
+                <v-list-item-content>
+                  <v-list-item-title v-text="item.name"></v-list-item-title>
+                  <v-list-item-subtitle v-text="getRoleName(item.pivot.role)"></v-list-item-subtitle>
+                </v-list-item-content>
+
+                <v-list-item-icon style="cursor: pointer;" v-on:click="showEditUserRoleDialog(item)">
+                    <v-icon size=30 :color="'blue lighten-2'">
+                      mdi-account-edit
+                    </v-icon>
+                </v-list-item-icon>
+
+                <v-list-item-icon style="cursor: pointer;" v-on:click="showUnassingUser(item)">
+                    <v-icon size=30 :color="'red lighten-2'">
+                      mdi-account-cancel
+                    </v-icon>
+                </v-list-item-icon>
+
+
+              </v-list-item>
+              <v-divider class="ma-0" v-if="getBottomLine(item.pivot.project_id, index)"/>
+            </template>
+          </template>
+
+          <template v-else>
+            <v-list-item>
               <v-list-item-content>
-                <v-list-item-title v-text="item.name"></v-list-item-title>
-                <v-list-item-subtitle v-text="getRoleName(item.pivot.role)"></v-list-item-subtitle>
+                <v-list-item-title v-text="'No Users assigned yet.'"></v-list-item-title>
               </v-list-item-content>
-
-              <v-list-item-icon style="cursor: pointer;" v-on:click="showEditUserRoleDialog(item)">
-                  <v-icon size=30 :color="'blue lighten-2'">
-                    mdi-account-edit
-                  </v-icon>
-              </v-list-item-icon>
-
-              <v-list-item-icon style="cursor: pointer;" v-on:click="showUnassingUser(item)">
-                  <v-icon size=30 :color="'red lighten-2'">
-                    mdi-account-cancel
-                  </v-icon>
-              </v-list-item-icon>
-
             </v-list-item>
           </template>
 
-          <v-list-item v-else class="borderline">
-            <v-list-item-content>
-              <v-list-item-title v-text="'No Users assigned yet.'"></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
 
         </v-list>
       </td>
@@ -904,9 +917,9 @@ export default {
     getBottomLine(project_id, index) {
       var project = this.projects.find(project => project.id === project_id);
       if (project.users.length == index + 1) {
-        return ''
+        return false
       } else {
-        return 'borderline'
+        return true
       }
     },
 

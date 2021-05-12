@@ -9,10 +9,8 @@ style="margin-top:10vh;">
     :headers="headers"
     :items="projects"
     :search="search"
-    :single-expand="singleExpand"
-    :expanded.sync="expanded"
     item-key="name"
-    show-expand class="elevation-0"
+     class="elevation-0"
   >
 
     <template v-slot:top>

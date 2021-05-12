@@ -1,7 +1,7 @@
 <template>
   <v-card
     class="mx-auto my-12"
-    min-width="400px"
+    min-width="300px"
     max-width="500px"
   >
     <template slot="progress">

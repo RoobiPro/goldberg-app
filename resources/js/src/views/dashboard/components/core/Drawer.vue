@@ -88,7 +88,13 @@ export default {
     useravatar:'',
     // user:'',
     isFetching: true,
-    items_admin:[{
+    items_admin:[
+      {
+        icon: 'mdi-account',
+        title: 'user',
+        to: '/pages/user',
+      },
+      {
         icon: 'mdi-view-dashboard',
         title: 'dashboard',
         to: '/dashboard',
@@ -103,21 +109,18 @@ export default {
         title: 'Project Management',
         to: '/management/project',
       },
+
+    ],
+    items_user:[
       {
         icon: 'mdi-account',
         title: 'user',
         to: '/pages/user',
-      }
-    ],
-    items_user:[{
+      },
+      {
         icon: 'mdi-view-dashboard',
         title: 'dashboard',
         to: '/dashboard',
-      },
-      {
-        icon: 'mdi-account',
-        title: 'user',
-        to: '/pages/user',
       },
       {
         icon: 'mdi-hammer-wrench',
@@ -125,15 +128,16 @@ export default {
         to: '/myprojects',
       }
     ],
-    items_client:[{
-        icon: 'mdi-view-dashboard',
-        title: 'dashboard',
-        to: '/dashboard',
-      },
+    items_client:[
       {
         icon: 'mdi-account',
         title: 'user',
         to: '/pages/user',
+      },
+      {
+        icon: 'mdi-view-dashboard',
+        title: 'dashboard',
+        to: '/dashboard',
       },
       {
         icon: 'mdi-hammer-wrench',
