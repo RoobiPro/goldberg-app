@@ -29,11 +29,31 @@ class Project extends Model
     }
 
     public function campaigns(){
-      return $this->hasMany(\App\Models\Campaign::class);
+      return $this->hasMany(Campaign::class);
     }
 
     public function client(){
       return $this->belongsTo(User::class);
+    }
+
+    public function drillings()
+    {
+        return $this->hasManyThrough(Drilling::class, Campaign::class);
+    }
+
+    public function wells()
+    {
+        return $this->hasManyThrough(Well::class, Campaign::class);
+    }
+
+    public function spatial()
+    {
+        return $this->hasManyThrough(Spatial::class, Campaign::class);
+    }
+
+    public function samples()
+    {
+        return $this->hasManyThrough(Sample::class, Campaign::class);
     }
     // public function users()
     // {

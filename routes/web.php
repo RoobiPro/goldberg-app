@@ -53,6 +53,8 @@ Route::get('/getProjectUsers/{id}', [ProjectController::class, 'getProjectUsers'
 Route::post('/reassignUser', [ProjectController::class, 'reassignUser']);
 
 Route::get('/getCampaign/{id}', [CampaignController::class, 'show']);
+Route::get('/getProject/{id}', [ProjectController::class, 'show']);
+Route::get('/project/{id}/campaigns', [ProjectController::class, 'showCampaigns']);
 
 // ->where('any', '.*');
 

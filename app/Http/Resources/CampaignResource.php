@@ -17,12 +17,12 @@ class CampaignResource extends JsonResource
      */
     public function toArray($request)
     {
-          $campaign = Campaign::find($this->id);
-          $drillings = $campaign->drillings;
-          $wells = $campaign->wells;
-          $samples = $campaign->samples;
-
-          return [
+          // $campaign = Campaign::find($this->id);
+          // $drillings = $campaign->drillings;
+          // $wells = $campaign->wells;
+          // $samples = $campaign->samples;
+          //
+          // return [
             'id' => $this->id,
             'project_id' => $this->project_id,
             // 'client' => $this->client,

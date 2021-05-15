@@ -26,4 +26,9 @@ class Campaign extends Model
     public function samples(){
       return $this->hasMany(\App\Models\Sample::class);
     }
+
+    public function spatials(){
+      return $this->hasMany(\App\Models\Spatial::class);
+    }
+
 }

@@ -7,6 +7,7 @@ use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use Illuminate\Facades\Auth;
 use App\Models\User;
+use App\Models\Campaign;
 
 class ProjectController extends Controller
 {
@@ -62,8 +63,63 @@ class ProjectController extends Controller
     public function show($id)
     {
       $project = Project::find($id);
+      $campaigns = $project->campaigns;
+
+      // $project_obj-> = $
+      $drillings = $project->drillings;
+      $wells = $project->wells;
+
+      $drillings_count = count($drillings);
+      $wells_count = count($wells);
+
+      $project->drillings_count = $drillings_count;
+      $project->wells_count = $wells_count;
+
+      // $project_obj = $project;
+      // $samples = $project->samples;
       // return response()->json("alos", 200);
       return response()->json($project, 200);
+    }
+
+    public function showCampaigns($id){
+
+      $project = Project::find($id);
+      $campaigns = $project->campaigns;
+
+      // echo $campaigns[0]->id;
+      // $campaign_list = [];
+
+      $index = 0;
+
+      foreach ($campaigns as $campaign) {
+        // $drillings = $campaign->drillings;
+        $drillingscount = count($campaign->drillings);
+        $wellscount = count($campaign->wells);
+        $samplescount = count($campaign->samples);
+        $spatialscount = count($campaign->spatials);
+        // echo $drillingscount.' ';
+
+        $campaigns[$index]->drillings_count = $drillingscount;
+        $campaigns[$index]->wells_count = $wellscount;
+        $campaigns[$index]->samples_count = $samplescount;
+        $campaigns[$index]->spatials_count = $spatialscount;
+        
+        $index ++;
+
+        // $drillings = $campaignobj->drillings;
+        // echo $drillings;
+        // echo $campaignobj;
+
+        // code...
+      }
+
+      // return $campaigns;
+
+      // $campaign_list = [];
+
+
+
+      return response()->json($campaigns, 200);;
     }
 
 
