@@ -103,7 +103,7 @@ const routes = [
         {
           name: 'Google Maps',
           path: 'maps/google-maps',
-          component: () => import('@/views/dashboard/maps/GoogleMaps'),
+          component: () => import('@/views/dashboard/maps/GoogleMapsNew'),
           props: true,
           meta: {
             requiresAuth: true
@@ -130,8 +130,17 @@ const routes = [
         },
         {
           name: 'Project',
-          path: 'project/:id',
+          path: 'project/:id/',
           component: () => import('@/views/dashboard/pages/projects/SingleProject'),
+          props: true,
+          meta: {
+            requiresAuth: true
+          },
+        },
+        {
+          name: 'Campaigns',
+          path: 'project/:id/campaigns',
+          component: () => import('@/views/dashboard/pages/projects/tables/Campaigns'),
           props: true,
           meta: {
             requiresAuth: true

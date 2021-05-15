@@ -109,6 +109,16 @@ export default {
         title: 'Project Management',
         to: '/management/project',
       },
+      {
+        title: 'google',
+        icon: 'mdi-map-marker',
+        to: '/maps/google-maps',
+      },
+      {
+        title: 'google',
+        icon: 'mdi-map-marker',
+        to: '/maps/google-maps',
+      },
 
     ],
     items_user:[
@@ -199,7 +209,7 @@ export default {
   }),
   computed: {
     ...mapState("hs", ['barColor', 'barImage', 'showBarImage']),
-    ...mapState("auth", ['user']),
+    // ...mapState("auth", ['user']),
     user: {
       get() {
         return this.$store.state.auth.user

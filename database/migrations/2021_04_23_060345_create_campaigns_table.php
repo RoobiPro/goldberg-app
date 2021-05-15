@@ -16,8 +16,11 @@ class CreateCampaignsTable extends Migration
         Schema::create('campaigns', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('project_id')->references('id')->on('projects')
-                  ->onDelete('cascade');
+              ->onDelete('cascade');
+            $table->string('name')->nullable();
             $table->longText('description')->nullable();
+            $table->timestamp('start_date')->nullable();
+            $table->timestamp('end_date')->nullable();
             $table->timestamps();
         });
     }

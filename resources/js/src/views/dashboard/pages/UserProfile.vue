@@ -97,9 +97,7 @@
 <script>
 import axios from 'axios'
 import {
-  mapState,
-  mapActions,
-  mapMutations
+  mapState
 } from 'vuex'
 export default {
   name: "AvatarImageComponent",
@@ -120,7 +118,8 @@ export default {
 
   },
   mounted() {
-    this.myuser = this.$store.getters["auth/user"]
+    const user =  this.$store.getters["auth/user"]
+    this.myuser = JSON.parse(JSON.stringify(user));
     this.avatarImageUrl = this.avatarUrl
     this.fullAvatarUrl = '/storage/user-avatar/' + this.myuser.avatar
     console.log(this.fullAvatarUrl)
@@ -134,6 +133,8 @@ export default {
       axios.patch('/api/users/'+this.myuser.id, this.myuser)        .then(response => {
                 if(response.status == 200){
                   this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
+                  this.$store.commit('auth/SET_USER', JSON.parse(JSON.stringify(this.myuser)));
+
                 }
                 else{
                   this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
