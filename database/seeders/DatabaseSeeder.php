@@ -18,12 +18,22 @@ class DatabaseSeeder extends Seeder
         DB::table('users')->truncate();
         Schema::enableForeignKeyConstraints();
 
-        $this->call(UsersSeeder::class);
-        $this->call(ProjectSeeder::class);
-        $this->call(CampaignSeeder::class);
-        $this->call(DrillingSeeder::class);
-        $this->call(WellSeeder::class);
-        $this->call(ChemicalElementsSeeder::class);
+        $this->call([
+                      UsersSeeder::class,
+                      ProjectSeeder::class,
+                      CampaignSeeder::class,
+                      DrillingSeeder::class,
+                      WellSeeder::class,
+                      ChemicalElementsSeeder::class,
+                      SurveryDataSeeder::class
+                    ]);
+
+
+        // $this->call(ProjectSeeder::class);
+        // $this->call(CampaignSeeder::class);
+        // $this->call(DrillingSeeder::class);
+        // $this->call(WellSeeder::class);
+        // $this->call(ChemicalElementsSeeder::class);
 
         // \Artisan::call('passport:install');
 

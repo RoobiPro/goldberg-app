@@ -15,7 +15,11 @@ class CreateSurveyDataTable extends Migration
     {
         Schema::create('survey_data', function (Blueprint $table) {
             $table->id();
+
             $table->morphs('surveydata');
+            // $table->foreignId('surveydata_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            // $table->string('survey_data_type');
+
             $table->timestamps();
             $table->float('from', 6, 4)->nullable();
             $table->float('to', 6, 4)->nullable();

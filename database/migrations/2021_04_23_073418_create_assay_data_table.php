@@ -15,7 +15,9 @@ class CreateAssayDataTable extends Migration
     {
         Schema::create('assay_data', function (Blueprint $table) {
           $table->id();
+
           $table->morphs('assaydata');
+
           $table->timestamps();
           $table->float('from', 6, 4)->nullable();
           $table->float('to', 6, 4)->nullable();

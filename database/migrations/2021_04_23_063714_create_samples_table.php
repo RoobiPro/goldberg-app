@@ -15,6 +15,8 @@ class CreateSamplesTable extends Migration
     {
         Schema::create('samples', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('campaign_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

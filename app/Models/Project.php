@@ -28,7 +28,7 @@ class Project extends Model
         ->withPivot(['role']);
     }
 
-    public function campaings(){
+    public function campaigns(){
       return $this->hasMany(\App\Models\Campaign::class);
     }
 

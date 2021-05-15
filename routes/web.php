@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\CampaignController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -49,6 +51,8 @@ Route::post('/unassignUser', [ProjectController::class, 'unassignUser']);
 Route::get('/getProjectUsers/{id}', [ProjectController::class, 'getProjectUsers']);
 
 Route::post('/reassignUser', [ProjectController::class, 'reassignUser']);
+
+Route::get('/getCampaign/{id}', [CampaignController::class, 'show']);
 
 // ->where('any', '.*');
 
