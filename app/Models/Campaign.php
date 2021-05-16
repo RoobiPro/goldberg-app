@@ -9,7 +9,7 @@ class Campaign extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['project_id','description','created_at', 'updated_at'];
+    protected $fillable = ['project_id','name','description','start_date', 'end_date', 'created_at', 'updated_at'];
 
     public function project(){
       return $this->belongsTo(\App\Models\Project::class);

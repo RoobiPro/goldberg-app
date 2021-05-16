@@ -27,7 +27,10 @@ class CampaignController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $campaign = new Campaign();
+        $data = $request->only($campaign->getFillable());
+        $campaign->fill($data)->save();
+        return response()->json("Campaign successfully created!", 200);
     }
 
     /**

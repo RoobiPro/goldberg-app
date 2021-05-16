@@ -34,6 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('upload_avatar', [UserController::class, 'upload_user_photo']);
     Route::apiResource('users', UserController::class);
     Route::apiResource('projects', ProjectController::class);
+    Route::apiResource('campaign', CampaignController::class);
     Route::get('project/{id}/campaigns', 'ProjectController@showCampaigns');
 
 
