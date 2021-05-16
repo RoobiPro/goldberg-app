@@ -8,6 +8,8 @@ use App\Models\Project;
 use Illuminate\Facades\Auth;
 use App\Models\User;
 use App\Models\Campaign;
+use Carbon\Carbon;
+
 
 class ProjectController extends Controller
 {
@@ -93,6 +95,8 @@ class ProjectController extends Controller
 
       foreach ($campaigns as $campaign) {
         // $drillings = $campaign->drillings;
+        $campaigns[$index]->start_date = Carbon::parse($campaigns[$index]->start_date)->format('d.m.Y');
+        $campaigns[$index]->end_date = Carbon::parse($campaigns[$index]->end_date)->format('d.m.Y');
         $drillingscount = count($campaign->drillings);
         $wellscount = count($campaign->wells);
         $samplescount = count($campaign->samples);
@@ -103,7 +107,7 @@ class ProjectController extends Controller
         $campaigns[$index]->wells_count = $wellscount;
         $campaigns[$index]->samples_count = $samplescount;
         $campaigns[$index]->spatials_count = $spatialscount;
-        
+
         $index ++;
 
         // $drillings = $campaignobj->drillings;

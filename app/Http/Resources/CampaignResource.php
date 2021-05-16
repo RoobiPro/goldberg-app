@@ -27,7 +27,7 @@ class CampaignResource extends JsonResource
             'project_id' => $this->project_id,
             // 'client' => $this->client,
             // 'users' => $users,
-            // // 'project_start_date' => Carbon::parse($this->project_start_date)->format('d.m.Y'),
+            'start_date' => Carbon::parse($this->start_date)->format('d.m.Y'),
             // 'project_start_date' =>$this->project_start_date,
             // 'coordinates_x' => $this->coordinates_x,
             // 'coordinates_y' => $this->coordinates_y,

@@ -16,6 +16,7 @@ class CampaignSeeder extends Seeder
     {
       Campaign::create([
           'project_id' => 1,
+          'name' => 'first camp. name',
           'description' => 'first campaign',
           'created_at' => now(),
           'updated_at' => now()
@@ -23,6 +24,7 @@ class CampaignSeeder extends Seeder
 
       Campaign::create([
           'project_id' => 1,
+          'name' => 'seccond camp. name',
           'description' => 'seccond campaign',
           'created_at' => now(),
           'updated_at' => now()
@@ -30,6 +32,7 @@ class CampaignSeeder extends Seeder
 
       Campaign::create([
           'project_id' => 1,
+          'name' => 'third camp. name',
           'description' => 'third campaign',
           'created_at' => now(),
           'updated_at' => now()
@@ -37,12 +40,14 @@ class CampaignSeeder extends Seeder
 
       Campaign::create([
           'project_id' => 2,
+          'name' => 'first camp. name',
           'description' => 'first campaign',
           'created_at' => now(),
           'updated_at' => now()
       ]);
       Campaign::create([
           'project_id' => 3,
+          'name' => 'first camp. name',
           'description' => 'first campaign',
           'created_at' => now(),
           'updated_at' => now()

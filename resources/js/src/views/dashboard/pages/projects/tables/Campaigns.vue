@@ -1,300 +1,313 @@
 <template>
-  <v-container
-    fluid
-    tag="section"
-    style="margin-top:10vh;"
-    class="d-flex justify-center"
+<v-container
+id="regular-tables"
+class="d-flex justify-center"
+tag="section"
+style="margin-top:10vh;">
+
+  <v-data-table
+
+    :headers="headers"
+    :items="campaigns"
+    :search="search"
+    :single-expand="singleExpand"
+    :expanded.sync="expanded"
+    item-key="name"
+    show-expand class="elevation-0"
   >
-      <v-data-table
-        :headers="headers"
-        :items="users"
-        :search="search"
-        class="elevation-1"
-      >
-        <template v-slot:top>
-          <v-toolbar
-            flat
-          >
-            <div class="v-application primary mr-4 text-start v-card--material__heading mb-n6 v-sheet theme--dark elevation-6 pa-7 d-none d-sm-flex d-md-flex"
-              style="max-height: 90px; width: auto;">
-              <i aria-hidden="true" class="v-icon notranslate mdi mdi-clipboard-text theme--dark" style="font-size: 32px;">
-              </i>
-            </div>
-            <v-toolbar-title>Campaigns</v-toolbar-title>
-            <v-divider
-              class="mx-4"
-              inset
-              vertical
-            ></v-divider>
-            <v-spacer></v-spacer>
-            <v-text-field
-              v-model="search"
-              label="Search"
-              append-icon="mdi-magnify"
-              class="mx-4"
-              single-line
-              hide-details
-            ></v-text-field>
-            <v-spacer></v-spacer>
-            <v-btn
-              color="primary"
-              dark
-              class="mb-2"
-              v-on:click="showNewUserDialog"
-            >
+
+    <template v-slot:top>
+      <v-toolbar flat>
+        <div class="hidden-md-and-down v-application primary mr-4 text-start v-card--material__heading mb-n6 v-sheet theme--dark elevation-6 pa-7"
+          style="max-height: 90px; width: auto;">
+          <i aria-hidden="true" class="v-icon notranslate mdi mdi-clipboard-text theme--dark" style="font-size: 32px;">
+          </i>
+        </div>
+        <v-toolbar-title>Project campaigns</v-toolbar-title>
+        <v-divider class="mx-4" inset vertical></v-divider>
+        <v-text-field v-model="search" label="Search" append-icon="mdi-magnify" class="mx-4" single-line hide-details></v-text-field>
+        <v-divider class="mx-4" inset vertical></v-divider>
+        <v-switch
+          v-model="singleExpand"
+          style="margin-bottom: 0px;"
+          label="Single expand"
+          class="ma-0 pa-0" >
+        </v-switch>
+
+        <v-divider class="mx-4" inset vertical></v-divider>
+
+        <v-dialog v-model="newCampaignDialog" max-width="500px">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
               New campaign
+              <v-icon size=26 :color="'white'" style="padding-left:10px">
+                mdi-briefcase-plus
+              </v-icon>
             </v-btn>
-            <v-dialog
-              ref="newUser"
-              v-model="newUserDialog"
-              max-width="500px"
-            >
-              <v-card>
-                <v-card-title>
-                  <span class="headline">New campaign</span>
-                </v-card-title>
-                <v-card-text>
-                  <v-container>
-                    <v-row>
-                      <v-form style="width: 100%">
-                        <v-col cols="12" sm="12" md="12">
+          </template>
+          <v-card>
+            <v-card-title>
+              <span class="headline">New campaign</span>
+            </v-card-title>
+
+            <v-card-text>
+              <v-container>
+
+                <v-row>
+                  <v-col cols="12">
+
+                      <v-text-field
+                        v-model="newCampaign.name"
+                        label="Name"
+                      ></v-text-field>
+
+                      <v-text-field
+                        v-model="newCampaign.description"
+                        label="Description"
+                      ></v-text-field>
+
+                      <v-menu
+                        ref="menu"
+                        v-model="menu"
+                        :close-on-content-click="false"
+                        :return-value.sync="newCampaign.start_date_formatted"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
                           <v-text-field
-                            v-model="user.name"
-                            :error-messages="nameErrors"
-                            label="Name"
-                            required
-                            @input="$v.user.name.$touch()"
-                            @blur="$v.user.name.$touch()"
+                            v-model="computedDateFormatted"
+                            label="Campaign start date"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                            @blur="date = parseDate(newCampaign.start_date_formatted)"
                           ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="12" md="12">
+                        </template>
+                        <v-date-picker
+                          v-model="newCampaign.start_date"
+                          color="primary"
+                          no-title
+                          scrollable
+                          style="background: white;"
+                          @input="menu = false"
+                        >
+                          <v-spacer></v-spacer>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="menu = false"
+                          >
+                            Cancel
+                          </v-btn>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="$refs.menu.save(newCampaign.start_date)"
+                          >
+                            OK
+                          </v-btn>
+                        </v-date-picker>
+                      </v-menu>
+
+                      <v-menu
+                        ref="menu2"
+                        v-model="menu2"
+                        :close-on-content-click="false"
+                        :return-value.sync="newCampaign.end_date_formatted"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
                           <v-text-field
-                            v-model="user.email"
-                            :error-messages="emailErrors"
-                            label="E-mail"
-                            required
-                            @input="$v.user.email.$touch()"
-                            @blur="$v.user.email.$touch()"
+                            v-model="computedDateFormatted2"
+                            label="Campaign end date"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                            @blur="date = parseDate(newCampaign.end_date_formatted)"
                           ></v-text-field>
-                          <!-- <v-text-field v-model="editedItem.email" label="E-mail" required></v-text-field> -->
-                        </v-col>
-                        <v-col cols="12" sm="12" md="12">
-                        <v-text-field
-                          label="Password"
-                          v-model="user.password"
-                          :error-messages="passwordErrors"
-                          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                          :type="show1 ? 'text' : 'password'"
-                          name="input-10-1"
-                          hint="At least 8 characters"
-                          counter
-                          @click:append="show1 = !show1"
-                          required
-                        ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="12" md="12">
-                        <v-text-field
-                          :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-                          v-model="user.repeatPassword"
-                          :error-messages="repeatPasswordErrors"
-                          :type="show2 ? 'text' : 'password'"
-                          name="input-10-2"
-                          label="Password confirmation"
-                          hint="At least 8 characters"
-                          class="input-group--focused"
-                          @click:append="show2 = !show2"
-                          required
-                        ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="12" md="12">
-                          <v-radio-group v-model="user.role" required>
-                          <v-radio
-                            :key="0"
-                            :label="`User`"
-                            :value="0"
-                          ></v-radio>
-                          <v-radio
-                            :key="1"
-                            :label="`Client`"
-                            :value="1"
-                          ></v-radio>
-                          <v-radio
-                            :key="2"
-                            :label="`Superadmin`"
-                            :value="2"
-                          ></v-radio>
-                          </v-radio-group>
-                        </v-col>
-                    </v-form>
-                    </v-row>
-                  </v-container>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-                  <v-btn color="blue darken-1" text @click="save">Create</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-            <v-dialog
-              v-model="editUserDialog"
-              max-width="500px"
-            >
-              <v-card>
-                <v-card-title>
-                  <span class="headline">Edit User</span>
-                </v-card-title>
-                <v-card-text>
-                  <v-container>
-                    <v-row>
-                      <v-form style="width: 100%">
-                        <v-col cols="12" sm="12" md="12">
-                          <v-text-field
-                            v-model="editUser.name"
-                            :error-messages="editNameErrors"
-                            label="Name"
-                            required
-                            @input="$v.editUser.name.$touch()"
-                            @blur="$v.editUser.name.$touch()"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="12" md="12">
-                          <v-text-field
-                            v-model="editUser.email"
-                            :error-messages="editEmailErrors"
-                            label="E-mail"
-                            required
-                            @input="$v.editUser.email.$touch()"
-                            @blur="$v.editUser.email.$touch()"
-                          ></v-text-field>
-                          <!-- <v-text-field v-model="editedItem.email" label="E-mail" required></v-text-field> -->
-                        </v-col>
-                        <v-col cols="12" sm="12" md="12">
-                          <v-radio-group v-model="editUser.role" required>
-                          <v-radio
-                            :key="0"
-                            :label="`User`"
-                            :value="0"
-                          ></v-radio>
-                          <v-radio
-                            :key="1"
-                            :label="`Client`"
-                            :value="1"
-                          ></v-radio>
-                          <v-radio
-                            :key="2"
-                            :label="`Superadmin`"
-                            :value="2"
-                          ></v-radio>
-                          </v-radio-group>
-                        </v-col>
-                    </v-form>
-                    </v-row>
-                  </v-container>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-                  <v-btn color="blue darken-1" text @click="saveEditUser">Create</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-            <v-dialog
-              v-model="newPasswordDialog"
-              max-width="500px"
-            >
-              <v-card>
-                <v-card-title>
-                  <span class="headline">New password for user</span>
-                </v-card-title>
-                <v-card-text>
-                  <v-container>
-                    <v-row>
-                      <v-form style="width: 100%">
-                        <v-col cols="12" sm="12" md="12">
-                        <v-text-field
-                          label="Password"
-                          v-model="newPassword"
-                          :error-messages="newPasswordErrors"
-                          @input="$v.newPassword.$touch()"
-                          @blur="$v.newPassword.$touch()"
-                          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                          :type="show1 ? 'text' : 'password'"
-                          name="input-10-1"
-                          hint="At least 8 characters"
-                          counter
-                          @click:append="show1 = !show1"
-                          required
-                        ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="12" md="12">
-                        <v-text-field
-                          :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-                          v-model="newPassword_confirm"
-                          :error-messages="newRepeatPasswordErrors"
-                          @input="$v.newPassword_confirm.$touch()"
-                          @blur="$v.newPassword_confirm.$touch()"
-                          :type="show2 ? 'text' : 'password'"
-                          name="input-10-2"
-                          label="Password confirmation"
-                          hint="At least 8 characters"
-                          class="input-group--focused"
-                          @click:append="show2 = !show2"
-                          required
-                        ></v-text-field>
-                        </v-col>
-                    </v-form>
-                    </v-row>
-                  </v-container>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-                  <v-btn color="blue darken-1" text @click="saveNewPassword">Create</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-            <v-dialog v-model="dialogDelete" max-width="400px">
-              <v-card>
-                <v-card-title class="text-heading-5">Are you sure you want to delete this User?</v-card-title>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                  <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-                  <v-spacer></v-spacer>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </v-toolbar>
-        </template>
-        <template  v-slot:item.avatar="{ item }">
-          <v-avatar size="35">
-            <img :src="'/storage/user-avatar/'+item.avatar" :alt="item.name">
-          </v-avatar>
-        </template>
-        <template  v-slot:item.actions="{ item }">
-          <v-icon v-show="canBeDeleted(item)"
-            small
-            class="mr-2"
-            @click="showEditItem(item)"
-          >
-            mdi-pencil
-          </v-icon>
-          <v-icon v-show="canBeDeleted(item)"
-            small
-            class="mr-2"
-            @click="showNewPasswordDialog(item)"
-          >
-            mdi-key-arrow-right
-          </v-icon>
-          <v-icon v-show="canBeDeleted(item)"
-            small
-            @click="deleteItem(item)"
-          >
-            mdi-delete
-          </v-icon>
-        </template>
-      </v-data-table>
+                        </template>
+                        <v-date-picker
+                          v-model="newCampaign.end_date"
+                          color="primary"
+                          no-title
+                          scrollable
+                          style="background: white;"
+                          @input="menu2 = false"
+                        >
+                          <v-spacer></v-spacer>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="menu2 = false"
+                          >
+                            Cancel
+                          </v-btn>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="$refs.menu.save(newCampaign.end_date)"
+                          >
+                            OK
+                          </v-btn>
+                        </v-date-picker>
+                      </v-menu>
+
+                    </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="closeDialogs">
+                Cancel
+              </v-btn>
+              <v-btn color="blue darken-1" text @click="saveNewCampaign">
+                Create
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+
+      </v-toolbar>
+    </template>
+
+    <template style="" v-slot:expanded-item="{ headers, item }">
+      <td :colspan="headers.length" style="padding-left: 0px; padding-right: 0px;">
+        <v-list subheader style="width:100%">
+          <div class="theme--light ma-4">
+            <div>
+              <h5 style="margin-bottom:0px; font-size: 1rem;">Project settings:</h5>
+            </div>
+          </div>
+
+
+          <!-- <v-list-item class="borderline"> -->
+              <div class="ma-4 d-flex justify-space-around flex-wrap custom">
+                <!-- justify="space-around"> -->
+                <!-- <v-col
+                align-self="center"
+                  md="4"> -->
+                    <v-list-item-icon style=" padding: 0; margin: 0; margin-bottom:10px;">
+                      <v-btn min-width="120" max-width="180" color="primary" dark>
+                        Assign User
+                        <v-icon size=26 :color="'white'" style="padding-left:10px">
+                          mdi-account-plus
+                        </v-icon>
+                      </v-btn>
+                    </v-list-item-icon>
+
+                    <v-list-item-icon style="padding: 0; margin: 0;margin-bottom:10px;">
+                      <v-btn min-width="120" max-width="180" color="primary" dark>
+                        Assign Client
+                        <v-icon size=26 :color="'white'" style="padding-left:10px">
+                          mdi-account-tie
+                        </v-icon>
+                      </v-btn>
+                    </v-list-item-icon>
+
+                    <v-list-item-icon style="padding: 0; margin: 0;margin-bottom:10px;">
+                      <v-btn min-width="120" max-width="180" color="blue darken-1" dark>
+                        Edit Project
+                        <v-icon size=26 :color="'white'" style="padding-left:10px">
+                          mdi-briefcase-edit
+                        </v-icon>
+                      </v-btn>
+                    </v-list-item-icon>
+
+                    <v-list-item-icon style="padding: 0; margin: 0;margin-bottom:10px;">
+                      <v-btn min-width="120" max-width="180" color="red darken-1" dark>
+                        Delete Project
+                        <v-icon size=26 :color="'white'" style="padding-left:10px">
+                          mdi-briefcase-remove
+                        </v-icon>
+                      </v-btn>
+                    </v-list-item-icon>
+              <!-- </v-col> -->
+            <!-- </v-row> -->
+          </div>
+          <!-- </v-list-item> -->
+          <v-divider class="ma-0"/>
+
+
+
+          <div class="theme--light ma-4">
+            <div style="">
+              <h5 style="margin-bottom:0px; font-size: 1rem;">Client:</h5>
+            </div>
+          </div>
+
+          <v-list-item v-if="item.client!=null" class="d-flex justify-center">
+            <v-list-item-avatar>
+              <v-img :alt="`${item.name} avatar`" :src="'/storage/user-avatar/'+item.client.avatar"></v-img>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title v-text="item.client.name"></v-list-item-title>
+              <v-list-item-subtitle v-text="'Client'"></v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-divider v-if="item.client!=null" class="ma-0"/>
+
+          <template v-else>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title v-text="'No Client assigned yet.'"></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-divider class="ma-0"/>
+          </template>
+
+
+          <div class="theme--light" style="max-height: 5px; min-height: 5px;">
+          </div>
+
+          <div class="theme--light ma-4">
+            <div style="">
+              <h5 style="margin-bottom:0px; font-size: 1rem;">Users:</h5>
+            </div>
+          </div>
+
+
+          <template v-if="true">
+            <template v-for="(item, index) in item.users">
+              <v-list-item :key="item.id">
+                <v-list-item-avatar>
+                  <v-img :alt="`${item.name} avatar`" :src="'/storage/user-avatar/'+item.avatar"></v-img>
+                </v-list-item-avatar>
+
+                <v-list-item-content>
+                  <v-list-item-title v-text="item.name"></v-list-item-title>
+                  <!-- <v-list-item-subtitle v-text="getRoleName(item.pivot.role)"></v-list-item-subtitle> -->
+                </v-list-item-content>
+
+              </v-list-item>
+              <!-- <v-divider class="ma-0" v-if="getBottomLine(item.pivot.project_id, index)"/> -->
+            </template>
+          </template>
+
+          <template v-else>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title v-text="'No Users assigned yet.'"></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </template>
+
+
+        </v-list>
+      </td>
+
+    </template>
+  </v-data-table>
+
 </v-container>
 </template>
 <script>
@@ -303,28 +316,42 @@ import { validationMixin } from 'vuelidate'
 import { required, sameAs, minLength, email } from 'vuelidate/lib/validators'
 export default {
   mixins: [validationMixin],
-  data: () => ({
-      newPasswordId: '',
-      newPassword: '',
-      newPassword_confirm: '',
-      editUser:{},
-      user:{
-        name:'',
-        email:'',
-        password: '',
-        repeatPassword: '',
-        role:0,
-      },
-      submitStatus: null,
-      show1: false,
-      show2: false,
-      users: [],
-      search: '',
-      newUserDialog: false,
-      editUserDialog: false,
-      newPasswordDialog: false,
-      dialogDelete: false,
-      editedIndex: -1,
+  data: vm => ({
+    menu: false,
+    menu2: false,
+    newCampaignDialog:false,
+    newCampaign:{
+      name: null,
+      description: null,
+      start_date: new Date().toISOString().substr(0, 10),
+      start_date_formatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
+      end_date: new Date().toISOString().substr(0, 10),
+      end_date_formatted: vm.formatDate(new Date().toISOString().substr(0, 10))
+    },
+    singleExpand: true,
+    expanded: [],
+    campaigns: [],
+    newPasswordId: '',
+    newPassword: '',
+    newPassword_confirm: '',
+    editUser:{},
+    user:{
+      name:'',
+      email:'',
+      password: '',
+      repeatPassword: '',
+      role:0,
+    },
+    submitStatus: null,
+    show1: false,
+    show2: false,
+    users: [],
+    search: '',
+    newUserDialog: false,
+    editUserDialog: false,
+    newPasswordDialog: false,
+    dialogDelete: false,
+    editedIndex: -1,
     }),
     validations: {
       user:{
@@ -336,17 +363,23 @@ export default {
           sameAsPassword: sameAs('password')
         }
       },
-      editUser:{
-        name: { required },
-        email: { required, email },
-      },
-      newPassword: { required, minLength: minLength(8) },
-      newPassword_confirm: {
-        required,
-        sameAsPassword: sameAs('newPassword')
-      }
+    editUser:{
+      name: { required },
+      email: { required, email },
     },
-    computed: {
+    newPassword: { required, minLength: minLength(8) },
+    newPassword_confirm: {
+      required,
+      sameAsPassword: sameAs('newPassword')
+    }
+  },
+  computed: {
+      computedDateFormatted () {
+        return this.formatDate(this.newCampaign.start_date)
+      },
+      computedDateFormatted2 () {
+        return this.formatDate(this.newCampaign.end_date)
+      },
       nameErrors () {
         const errors = []
         if (!this.$v.user.name.$dirty) return errors
@@ -404,51 +437,81 @@ export default {
       headers () {
         return [
           { text: 'ID', align: 'start', value: 'id', },
-          { text: 'Avatar', align: 'start', value: 'avatar'},
-          { text: 'Name', value: 'name' },
-          { text: 'E-mail', value: 'email' },
-          { text: 'Role', value: 'role_name' },
-          { text: 'Actions', align: 'center', value: 'actions', sortable: false },
+          { text: 'Name', align: 'start', value: 'name'},
+          { text: 'Description', align: 'start', value: 'description'},
+          { text: 'Start date', align: 'start', value: 'start_date'},
+          { text: 'End date', align: 'start', value: 'end_date'},
+          { text: 'Drllings number', align: 'center', value: 'drillings_count' },
+          { text: 'Wells number', align: 'center', value: 'wells_count' },
+          { text: 'Samples number', align: 'center', value: 'samples_count' },
+          { text: 'Spatial number', align: 'center', value: 'spatials_count' },
+          { text: '', value: 'data-table-expand' },
         ]
       },
-    },
-    watch: {
+  },
+  watch: {
       dialog (val) {
         val || this.close()
       },
       dialogDelete (val) {
         val || this.closeDelete()
       },
+  },
+  created () {
+    this.getCampaings()
+    console.log(this.campaigns)
+    this.$v.$reset()
+    // this.getList();
+  },
+  methods: {
+    parseDate (date) {
+      if (!date) return null
+
+      const [day, month, year] = date.split('.')
+      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
     },
-    created () {
-      this.$v.$reset()
-      this.getList();
+    saveNewCampaign(){
+      console.log('saving..')
+      this.newCampaign.project_id = this.$route.params.id
+      console.log(this.newCampaign)
     },
-    methods: {
-      canBeDeleted(item) {
-        if(item.id == 1 || item.id == 2){
-          return false;
-        }
-        else{
-          return true;
-        }
-      },
-     async getList () {
-       await this.$store.dispatch("users/list");
-       this.users = await this.$store.getters["users/list"];
-       console.log(this.users);
-        },
-      showEditItem (item) {
+    closeDialogs(){
+      this.newCampaignDialog = false;
+    },
+    formatDate (date) {
+      if (!date) return null
+      const [year, month, day] = date.split('-')
+      return `${day}.${month}.${year}`
+    },
+    async getCampaings(){
+      await axios.get('/api/project/'+this.$route.params.id+'/campaigns')
+        .then(response => {
+          console.log(response)
+          if(response.status == 200){
+            this.campaigns = response.data
+            // this.campaigns = campaignsJson.map(campaigns => ({...campaigns, start_date: this.formatDate(campaigns.start_date), end_date: this.formatDate(campaigns.end_date)}))
+          }
+          else{
+            this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+          }
+        });
+    },
+    // async getList () {
+    //    await this.$store.dispatch("users/list");
+    //    this.users = await this.$store.getters["users/list"];
+    //    console.log(this.users);
+    // },
+    showEditItem (item) {
         this.editUser = item
         this.editUserDialog = true
-      },
-      deleteItem (item) {
+    },
+    deleteItem (item) {
          console.log(item)
         this.editedIndex = this.users.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
-      },
-      deleteItemConfirm () {
+    },
+    deleteItemConfirm () {
         console.log(this.editedItem)
         this.users.splice(this.editedIndex, 1)
         this.$store.dispatch("users/destroy", this.editedItem.id).then((response) => {
@@ -458,23 +521,23 @@ export default {
           console.log(response.data)
         })
         this.closeDelete()
-      },
-      close () {
+    },
+    close () {
         this.newUserDialog = false
         this.editUserDialog = false
         this.newPasswordDialog = false
         this.$v.$reset()
         this.user = []
         this.editUser = []
-      },
-      closeDelete () {
+    },
+    closeDelete () {
         this.dialogDelete = false
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
         })
-      },
-      saveNewPassword(){
+    },
+    saveNewPassword(){
         this.$v.newPassword.$touch()
         this.$v.newPassword_confirm.$touch()
         if(this.$v.newPassword.$invalid ||
@@ -501,8 +564,8 @@ export default {
             });
           this.$v.$reset()
         }
-      },
-      async saveEditUser () {
+    },
+    async saveEditUser () {
         console.log(this.editUser)
         this.$v.editUser.name.$touch()
         this.$v.editUser.email.$touch()
@@ -525,8 +588,8 @@ export default {
             });
           this.$v.$reset()
         }
-      },
-      async save () {
+    },
+    async save () {
         this.$v.user.name.$touch()
         this.$v.user.email.$touch()
         this.$v.user.password.$touch()
@@ -560,8 +623,8 @@ export default {
             this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: resp.data});
           }
         }
-      },
-      showNewUserDialog(){
+    },
+    showNewUserDialog(){
         this.$v.$reset()
         console.log('alo')
         this.newUserDialog = true;
