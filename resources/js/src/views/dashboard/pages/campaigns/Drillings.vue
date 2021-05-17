@@ -222,11 +222,12 @@
 <script>
 import axios from 'axios'
 import { validationMixin } from 'vuelidate'
-import { required, decimal } from 'vuelidate/lib/validators'
+import { required, decimal, numeric } from 'vuelidate/lib/validators'
   export default {
     mixins: [validationMixin],
     data: vm  => ({
       newDrilling:{
+        campaign_id:null,
         coordinates_x:null,
         coordinates_y:null,
         coordinates_z:null,
@@ -252,12 +253,50 @@ import { required, decimal } from 'vuelidate/lib/validators'
     }),
     validations: {
       newDrilling:{
-        coordinates_x: { required, decimal },
-        coordinates_y: { required, decimal },
-        coordinates_z: { required, decimal },
-        azimuth: { required, decimal },
-        dip: { required, decimal },
-        length: { required, decimal },
+        coordinates_x: {
+          required,
+          mydecimal(coordinates_x) {
+            return (
+              /^\d{1,3}$|^\d{1,3}\.\d{1,7}$/.test(coordinates_x)
+            );
+          }
+        },
+        coordinates_y: {
+          required,
+          mydecimal(coordinates_x) {
+            return (
+              /^\d{1,3}$|^\d{1,3}\.\d{1,7}$/.test(coordinates_x)
+            );
+          }
+        },
+        coordinates_z: { required,
+          mydecimal(coordinates_x) {
+            return (
+              /^\d{1,2}$|^\d{1,2}\.\d{1,4}$/.test(coordinates_x)
+            );
+          }
+        },
+        azimuth: { required,
+          mydecimal(coordinates_x) {
+            return (
+              /^\d{1,2}$|^\d{1,2}\.\d{1,4}$/.test(coordinates_x)
+            );
+          }
+        },
+        dip: { required,
+          mydecimal(coordinates_x) {
+            return (
+              /^\d{1,2}$|^\d{1,2}\.\d{1,4}$/.test(coordinates_x)
+            );
+          }
+        },
+        length: { required,
+          mydecimal(coordinates_x) {
+            return (
+              /^\d{1,2}$|^\d{1,2}\.\d{1,4}$/.test(coordinates_x)
+            );
+          }
+        },
       }
     },
     mounted() {
@@ -269,42 +308,42 @@ import { required, decimal } from 'vuelidate/lib/validators'
           const errors = []
           if (!this.$v.newDrilling.coordinates_x.$dirty) return errors
           !this.$v.newDrilling.coordinates_x.required && errors.push('Coordinate X is required.')
-          !this.$v.newDrilling.coordinates_x.decimal && errors.push('Coordinate X must be decimal')
+          !this.$v.newDrilling.coordinates_x.mydecimal && errors.push('use the format: XXX.YYYYYYY')
           return errors
         },
         coordinates_y_Errors () {
           const errors = []
           if (!this.$v.newDrilling.coordinates_y.$dirty) return errors
           !this.$v.newDrilling.coordinates_y.required && errors.push('Coordinate Y is required.')
-          !this.$v.newDrilling.coordinates_y.decimal && errors.push('Coordinate Y must be decimal')
+          !this.$v.newDrilling.coordinates_y.mydecimal && errors.push('use the format: XXX.YYYYYYY')
           return errors
         },
         coordinates_z_Errors () {
           const errors = []
           if (!this.$v.newDrilling.coordinates_z.$dirty) return errors
           !this.$v.newDrilling.coordinates_z.required && errors.push('Coordinate Z is required.')
-          !this.$v.newDrilling.coordinates_z.decimal && errors.push('Coordinate Z must be decimal')
+          !this.$v.newDrilling.coordinates_z.mydecimal && errors.push('use the format: XX.YYYY')
           return errors
         },
         azimuth_Errors () {
           const errors = []
           if (!this.$v.newDrilling.azimuth.$dirty) return errors
           !this.$v.newDrilling.azimuth.required && errors.push('Azimuth is required.')
-          !this.$v.newDrilling.azimuth.decimal && errors.push('Azimuth must be decimal')
+          !this.$v.newDrilling.azimuth.mydecimal && errors.push('use the format: XX.YYYY')
           return errors
         },
         dip_Errors () {
           const errors = []
           if (!this.$v.newDrilling.dip.$dirty) return errors
           !this.$v.newDrilling.dip.required && errors.push('Dip is required.')
-          !this.$v.newDrilling.dip.decimal && errors.push('Dip must be decimal')
+          !this.$v.newDrilling.dip.mydecimal && errors.push('use the format: XX.YYYY')
           return errors
         },
         length_Errors () {
           const errors = []
           if (!this.$v.newDrilling.length.$dirty) return errors
           !this.$v.newDrilling.length.required && errors.push('Length is required.')
-          !this.$v.newDrilling.length.decimal && errors.push('Length must be decimal')
+          !this.$v.newDrilling.length.mydecimal && errors.push('use the format: XX.YYYY')
           return errors
         },
         computedStartDateFormatted () {
@@ -380,7 +419,33 @@ import { required, decimal } from 'vuelidate/lib/validators'
         }
         else{
           console.log(this.newDrilling)
+          this.newDrilling.campaign_id = this.campaign.id
           console.log('save drilling')
+          axios.post('/api/drillings', this.newDrilling).then(response => {
+            if(response.status == 200){
+              this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
+              this.getCampaign()
+              this.newDillingDialog = false
+              this.$v.$reset()
+              this.newDrilling={
+                      campaign_id:'',
+                      coordinates_x:'',
+                      coordinates_y:'',
+                      coordinates_z:'',
+                      azimuth:'',
+                      dip:'',
+                      length:'',
+                      start_date: new Date().toISOString().substr(0, 10),
+                      start_date_formatted: this.formatDate(new Date().toISOString().substr(0, 10)),
+                      end_date: new Date().toISOString().substr(0, 10),
+                      end_date_formatted: this.formatDate(new Date().toISOString().substr(0, 10))
+                    }
+            }
+            else{
+              this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+            }
+          });
+
         }
 
       },
@@ -403,7 +468,6 @@ import { required, decimal } from 'vuelidate/lib/validators'
         await axios.get('/getCampaign/'+this.$route.params.campaign_id).then(response => {
           if(response.status == 200){
             this.campaign = response.data
-            console.log(this.campaign)
             this.ready = true
           }
           });

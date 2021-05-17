@@ -353,7 +353,7 @@
 <script>
 import axios from 'axios'
 import { validationMixin } from 'vuelidate'
-import { required, decimal} from 'vuelidate/lib/validators'
+import { required, sameAs, minLength, email } from 'vuelidate/lib/validators'
 
 export default {
   mixins: [validationMixin],

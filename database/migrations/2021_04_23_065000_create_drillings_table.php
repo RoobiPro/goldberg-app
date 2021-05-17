@@ -21,10 +21,10 @@ class CreateDrillingsTable extends Migration
 
             $table->decimal('coordinates_x', 10, 7)->nullable();
             $table->decimal('coordinates_y', 10, 7)->nullable();
-            $table->float('coordinates_z', 6, 4)->nullable();
-            $table->float('dip', 6, 4)->nullable();
-            $table->float('azimuth', 6, 4)->nullable();
-            $table->float('length', 6, 4)->nullable();
+            $table->decimal('coordinates_z', 6, 4)->nullable();
+            $table->decimal('dip', 6, 4)->nullable();
+            $table->decimal('azimuth', 6, 4)->nullable();
+            $table->decimal('length', 6, 4)->nullable();
             $table->string('drilling_type')->nullable();
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
