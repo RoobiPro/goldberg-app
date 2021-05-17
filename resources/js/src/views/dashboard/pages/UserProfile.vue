@@ -40,6 +40,7 @@
                 label="Change your avatar"
                 accept=".jpg, .png"
                 prepend-icon="mdi-camera"
+                :clearable="false"
                 @change="updateAvatar">
               ></v-file-input>
               </v-col>
@@ -152,13 +153,16 @@ export default {
       formData.append('avatar', this.file)
       axios.post('/api/upload_avatar', formData, {
           onUploadProgress: (progressEvent) => {
+            this.showUploadProgress = true
             this.uploadPercent = progressEvent.lengthComputable ? Math.round((progressEvent.loaded * 100) / progressEvent.total) : 0;
           }
         })
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           this.$store.commit('auth/SET_USERAVATAR', response.data.avatar)
+          // console.log(response)
           this.avatarImageUrl = response.data.avatar_url
+          this.myuser.avatar = response.data.avatar
           this.showUploadProgress = false
           this.processingUpload = false
           this.$emit('imageUrl', response.data.secure_url)
@@ -186,6 +190,8 @@ export default {
           })
           .then((response) => {
             this.avatarImageUrl = response.data.avatar_url
+            console.log("ALOS")
+            this.myuser.avatar = response.data.avatar_url
             this.showUploadProgress = false
             this.processingUpload = false
             this.$emit('imageUrl', response.data.secure_url)

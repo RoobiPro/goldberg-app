@@ -17,7 +17,7 @@
           >
             <div class="v-application primary mr-4 text-start v-card--material__heading mb-n6 v-sheet theme--dark elevation-6 pa-7 d-none d-sm-flex d-md-flex"
               style="max-height: 90px; width: auto;">
-              <i aria-hidden="true" class="v-icon notranslate mdi mdi-clipboard-text theme--dark" style="font-size: 32px;">
+              <i aria-hidden="true" class="v-icon notranslate mdi mdi-account theme--dark" style="font-size: 32px;">
               </i>
             </div>
 
@@ -39,7 +39,11 @@
 
             ></v-text-field>
             <v-spacer></v-spacer>
-
+            <v-divider
+              class="mx-4"
+              inset
+              vertical
+            ></v-divider>
             <v-btn
               color="primary"
               dark
@@ -48,6 +52,9 @@
 
             >
               New User
+              <v-icon size=26 :color="'white'" style="padding-left:10px">
+                mdi-account-plus
+              </v-icon>
             </v-btn>
 
             <v-dialog
@@ -346,7 +353,7 @@
 <script>
 import axios from 'axios'
 import { validationMixin } from 'vuelidate'
-import { required, sameAs, minLength, email } from 'vuelidate/lib/validators'
+import { required, decimal} from 'vuelidate/lib/validators'
 
 export default {
   mixins: [validationMixin],

@@ -38,7 +38,7 @@ export default {
   data () {
     return {
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      zoom: 16,
+      zoom: 13,
       center: [parseFloat(this.coordinates_x), parseFloat(this.coordinates_y)],
       // markers: [
       //   parseFloat(this.coordinates_x), parseFloat(this.coordinates_y)

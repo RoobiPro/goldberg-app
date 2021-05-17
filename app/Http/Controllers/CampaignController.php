@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Resources\CampaignResource;
 use App\Models\Campaign;
+use Carbon\Carbon;
 
 class CampaignController extends Controller
 {
@@ -42,10 +43,17 @@ class CampaignController extends Controller
     public function show($id)
     {
         $campaign = Campaign::find($id);
+        $campaign->start_date = Carbon::parse($campaign->start_date)->format('d.m.Y');
+        $campaign->end_date = Carbon::parse($campaign->end_date)->format('d.m.Y');
         $drillings = $campaign->drillings;
+        foreach ($drillings as $drilling) {
+          $drilling->start_date = Carbon::parse($drilling->start_date)->format('d.m.Y');
+          $drilling->end_date = Carbon::parse($drilling->end_date)->format('d.m.Y');
+        }
+
         $wells = $campaign->wells;
         $samples = $campaign->samples;
-
+        $spatial = $campaign->spatials;
         // return response()->json([$campaign, $drillings, $wells, $samples], 200);
         return response()->json($campaign, 200);
 

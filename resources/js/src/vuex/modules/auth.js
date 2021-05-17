@@ -25,11 +25,9 @@ export default {
 
     SET_USER (state, value) {
       state.user = value
-      console.log(state.user)
     },
 
     SET_USERAVATAR (state, avatar) {
-      console.log(avatar)
       state.user.avatar = avatar
 
     }
@@ -38,7 +36,6 @@ export default {
   actions: {
     async signIn ({ commit }, credentials) {
     await axios.get('/sanctum/csrf-cookie')
-    console.log('sanctum csrf');
     // await axios.post('/login', credentials)
     await axios.post('/login', credentials).then((response) => {
       commit('SET_AUTHENTICATED', true)
@@ -53,7 +50,6 @@ export default {
 
     async signOut ({ commit }) {
       await axios.post('/logout').then((response) => {
-        console.log(response.data)
         commit('SET_AUTHENTICATED', false)
         commit('SET_USER', null)
         // this.$router.replace({ path: '/login' })
@@ -64,7 +60,6 @@ export default {
 
     refresh ({ commit }) {
       return axios.get('/api/refresh').then((response) => {
-        // console.log(response.data)
         commit('SET_AUTHENTICATED', true)
         commit('SET_USER', response.data.user)
       }).catch(() => {

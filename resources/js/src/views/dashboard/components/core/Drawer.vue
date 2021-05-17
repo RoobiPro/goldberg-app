@@ -45,7 +45,6 @@
           <v-list-item-title class="text-subtitle-1">
             {{user.name}}
           </v-list-item-title>
-          <!-- <v-list-item-subtitle>{{user.email}}</v-list-item-subtitle> -->
         </v-list-item-content>
       </v-list-item>
     </div>
@@ -53,8 +52,6 @@
 </div>
   <v-divider/>
   <v-list expand nav>
-    <!-- Style cascading bug  -->
-    <!-- https://github.com/vuetifyjs/vuetify/pull/8574 -->
     <div />
     <template v-for="(item, i) in computedItems">
       <base-item-group v-if="item.children" :key="`group-${i}`" :item="item">
@@ -227,8 +224,6 @@ export default {
       },
     },
     computedItems() {
-      console.log("computedItems")
-      console.log(this.user)
       if(this.user.role==2){
         return this.items_admin.map(this.mapItem)
       }
@@ -254,10 +249,8 @@ export default {
   methods: {
     ...mapActions({
       signOutAction: 'auth/signOut',
-      // successAlert: 'alerts/success'
     }),
     barImageFunction(){
-      // return 'https://demos.creative-tim.com/material-dashboard/assets/img/sidebar-1.jpg'
       if(this.showBarImage=='true'){
         return this.barImage;
       }

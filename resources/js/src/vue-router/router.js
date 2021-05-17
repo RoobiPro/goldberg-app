@@ -130,7 +130,7 @@ const routes = [
         },
         {
           name: 'Project',
-          path: 'project/:id/',
+          path: 'project/:project_id/',
           component: () => import('@/views/dashboard/pages/projects/SingleProject'),
           props: true,
           meta: {
@@ -141,6 +141,24 @@ const routes = [
           name: 'Campaigns',
           path: 'project/:id/campaigns',
           component: () => import('@/views/dashboard/pages/projects/tables/Campaigns'),
+          props: true,
+          meta: {
+            requiresAuth: true
+          },
+        },
+        {
+          name: 'Campaign',
+          path: 'project/:project_id/campaign/:campaign_id',
+          component: () => import('@/views/dashboard/pages/campaigns/Campaign'),
+          props: true,
+          meta: {
+            requiresAuth: true
+          },
+        },
+        {
+          name: 'Drillings',
+          path: 'project/:project_id/campaign/:campaign_id/drillings',
+          component: () => import('@/views/dashboard/pages/campaigns/Drillings'),
           props: true,
           meta: {
             requiresAuth: true
@@ -164,20 +182,10 @@ router.beforeEach(async (to, from, next) => {
   const authUser = store.getters["auth/authenticated"];
   const reqAuth = to.matched.some((record) => record.meta.requiresAuth);
   const loginQuery = { path: "/login", query: { redirect: to.fullPath } };
-  console.log(authUser)
   if (reqAuth && !authUser) {
     next(
          {path: '/login'}
        );
-    // store.dispatch("auth/refresh").then(() => {
-    //   if (!store.getters["auth/authenticated"]) {
-    //     next(
-    //       {path: '/login'}
-    //     );
-    //   } else {
-    //     next();
-    //   }
-    // });
   }
   else if(!reqAuth && authUser){
     next(

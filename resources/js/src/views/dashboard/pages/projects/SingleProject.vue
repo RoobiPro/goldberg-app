@@ -1,8 +1,7 @@
 <template>
   <v-card v-if="ready"
     class="mx-auto my-12"
-    min-width="300px"
-    max-width="500px"
+    max-width="700px"
   >
     <template slot="progress">
       <v-progress-linear
@@ -13,10 +12,6 @@
     </template>
 
     <MapsComponent v-if="(typeof project.coordinates_x !== 'undefined')" :coordinates_x="project.coordinates_x"  :coordinates_y="project.coordinates_y"/>
-    <!-- <v-img
-      height="250"
-      src="https://www.mining-technology.com/wp-content/uploads/sites/8/2017/10/3l-image-11.jpg"
-    ></v-img> -->
 
     <v-card-title>{{this.project.name}}</v-card-title>
     <v-card-text>
@@ -67,39 +62,37 @@ export default {
     project:[],
     projects:[]
   }),
-  created() {
-    this.getProjects()
-    console.log('created:', this.projects)
-  },
-  mounted () {
-    console.log('mounted:', this.projects)
-  },
-  beforeUpdate () {
-    console.log('beforeUpdate:', this.projects)
+  mounted() {
+    this.checkAuth()
   },
 
   methods: {
     openCampaings(){
       console.log('opening project campaings')
-      console.log('/project/'+this.$route.params.id+'/campaigns')
-      this.$router.push({ path: this.$route.params.id+'/campaigns' })
+      console.log('/project/'+this.$route.params.project_id+'/campaigns')
+      this.$router.push({ path: this.$route.params.project_id+'/campaigns' })
       // .catch(()=>{});
     },
-    async getProjects() {
-      var me = await this.$store.getters["auth/user"];
-      console.log(me)
-      axios.get(`/getUserProjects/`+me.id)
+    async checkAuth(){
+      this.me = await this.$store.getters["auth/user"];
+      console.log(this.me)
+      axios.get(`/getUserProjects/`+this.me.id)
         .then(response => {
           if(response.status == 200){
             const projectsJson = response.data
-            console.log(this.$route.params.id)
-            this.projects = projectsJson.map(projects => ({...projects, project_start_date: this.formatDate(projects.project_start_date), role: this.getRoleName(projects.pivot.role)}))
-            this.project = this.projects.filter(obj => {
-              return obj.id == this.$route.params.id
+            console.log(this.$route.params.project_id)
+            const projects = projectsJson.map(projects => ({...projects}))
+            this.project = projects.filter(obj => {
+              return obj.id == this.$route.params.project_id
             })[0]
-            console.log(this.projects)
-            console.log(this.project)
-            this.ready = true
+            if(this.project==undefined){
+              console.log('Not authorized!')
+              this.$router.push({ path: '/myprojects' })
+            }
+            else{
+              this.ready = true
+            }
+
           }
           else{
             this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});

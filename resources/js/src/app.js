@@ -36,9 +36,6 @@ if ( process.env.APP_ENV == 'production' ) {
 axios.defaults.withCredentials = true
 
 let api_url = process.env.APP_ENV;
-console.log("my env variable:");
-console.log(api_url);
-console.log(process.env.APP_ENV)
 
 import L from 'leaflet';
 delete L.Icon.Default.prototype._getIconUrl;

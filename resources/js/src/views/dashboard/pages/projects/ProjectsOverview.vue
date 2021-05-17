@@ -17,7 +17,7 @@ style="margin-top:10vh;">
       <v-toolbar flat>
         <div class="hidden-md-and-down v-application primary mr-4 text-start v-card--material__heading mb-n6 v-sheet theme--dark elevation-6 pa-7"
           style="max-height: 90px; width: auto;">
-          <i aria-hidden="true" class="v-icon notranslate mdi mdi-clipboard-text theme--dark" style="font-size: 32px;">
+          <i aria-hidden="true" class="v-icon notranslate mdi mdi-hammer-wrench theme--dark" style="font-size: 32px;">
           </i>
         </div>
         <v-toolbar-title>My projects</v-toolbar-title>
@@ -31,7 +31,7 @@ style="margin-top:10vh;">
           class="ma-0 pa-0" >
         </v-switch>
 
-        <v-divider class="mx-4" inset vertical></v-divider>
+        <!-- <v-divider class="mx-4" inset vertical></v-divider> -->
 
 
       </v-toolbar>
@@ -155,7 +155,7 @@ export default {
           sortable: false
         },
         {
-           text: 'Actions', value: 'actions'
+           text: 'Actions', align: 'center' ,value: 'actions'
         },
       ]
     },
