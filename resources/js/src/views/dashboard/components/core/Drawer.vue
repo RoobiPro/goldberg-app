@@ -1,9 +1,10 @@
 <template>
+
+  <!-- :right="$vuetify.rtl" -->
 <v-navigation-drawer id="core-navigation-drawer"
   v-model="drawer"
   :dark="barColor !== 'rgba(228, 226, 226, 1), rgba(255, 255, 255, 0.7)'"
   :expand-on-hover="expandOnHover"
-  :right="$vuetify.rtl"
   :src="showBarImage ? barImage: '/public/images/blackbackground.png'"
   mobile-breakpoint="960"
   app
@@ -238,7 +239,7 @@ export default {
     profile() {
       return {
         avatar: true,
-        title: this.$t('avatar'),
+        // title: this.$t('avatar'),
       }
     },
   },
@@ -271,7 +272,7 @@ export default {
       return {
         ...item,
         children: item.children ? item.children.map(this.mapItem) : undefined,
-        title: this.$t(item.title),
+        // title: this.$t(item.title),
       }
     }
   },

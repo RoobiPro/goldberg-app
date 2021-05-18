@@ -458,16 +458,12 @@ p+p {
 .v-icon.v-icon{
   color: #dbbd76;
 }
-
-
-
-</style>
-
-<style>
 .theme--light.v-messages {
     color: rgb(212 69 69)!important;
 }
 .mycolor {
     color: rgb(226 39 39 / 87%)!important;
 }
+
+
 </style>

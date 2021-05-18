@@ -16,12 +16,12 @@ const mix = require('laravel-mix');
 mix.js('resources/js/src/app.js', 'public/js')
     .vue()
     .webpackConfig({
-     resolve: {
-       extensions: ['.js', '.vue', '.json', '.scss', '.sass'],
-       alias: {
-         '@': __dirname + '/resources/js/src'
-        }
-      }
+       resolve: {
+         extensions: ['.js', '.vue', '.json', '.scss', '.sass'],
+         alias: {
+           '@': __dirname + '/resources/js/src'
+          }
+        },
     })
     .sass('resources/css/app.scss', 'public/css')
     .sourceMaps()

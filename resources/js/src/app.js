@@ -24,7 +24,7 @@ import store from './vuex/store'
 import './plugins/base'
 import './plugins/chartist'
 import vuetify from './plugins/vuetify'
-import i18n from './vue-i18n/i18n'
+// import i18n from './vue-i18n/i18n'
 import 'leaflet/dist/leaflet.css';
 // import 'bootstrap/dist/js/bootstrap'
 
@@ -73,6 +73,6 @@ const app = new Vue({
     router,
     store,
     vuetify,
-    i18n,
+    // i18n,
     render: h => h(App),
   }).$mount('#app')

@@ -1,4 +1,21 @@
 {
     "/js/app.js": "/js/app.js",
+    "/js/Login.js": "/js/Login.js",
+    "/js/index.js": "/js/index.js",
+    "/js/dashboard.js": "/js/dashboard.js",
+    "/js/usermanagement.js": "/js/usermanagement.js",
+    "/js/projectmanagement.js": "/js/projectmanagement.js",
+    "/js/userprofile.js": "/js/userprofile.js",
+    "/js/notifications.js": "/js/notifications.js",
+    "/js/icons.js": "/js/icons.js",
+    "/js/typography.js": "/js/typography.js",
+    "/js/regulartables.js": "/js/regulartables.js",
+    "/js/googlemaps.js": "/js/googlemaps.js",
+    "/js/upgrade.js": "/js/upgrade.js",
+    "/js/myprojects.js": "/js/myprojects.js",
+    "/js/project.js": "/js/project.js",
+    "/js/campaigns.js": "/js/campaigns.js",
+    "/js/campaign.js": "/js/campaign.js",
+    "/js/drillings.js": "/js/drillings.js",
     "/css/app.css": "/css/app.css"
 }

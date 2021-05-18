@@ -1,41 +1,34 @@
 <template>
+
   <v-app>
 
-    <!-- <v-snackbar
-      :timeout="-1"
-      :value="true"
-      absolute
-      bottom
-      color="primary"
-      left
-      text
-    >
-      Lorem ipsum dolor sit amet consectetur.
-    </v-snackbar> -->
+    <DashboardCoreAppBar />
 
-    <dashboard-core-app-bar />
+    <DashboardCoreDrawer />
 
-    <dashboard-core-drawer />
+    <DashboardCoreSettings />
 
-    <dashboard-core-view />
+    <DashboardCoreView />
 
-    <dashboard-core-settings />
   </v-app>
+
 </template>
 
 <script>
-  export default {
+import DashboardCoreAppBar from './components/core/AppBar'
+import DashboardCoreDrawer from './components/core/Drawer'
+import DashboardCoreSettings from './components/core/Settings'
+import DashboardCoreView from './components/core/View'
+
+export default {
     name: 'DashboardIndex',
 
     components: {
-      DashboardCoreAppBar: () => import('./components/core/AppBar'),
-      DashboardCoreDrawer: () => import('./components/core/Drawer'),
-      DashboardCoreSettings: () => import('./components/core/Settings'),
-      DashboardCoreView: () => import('./components/core/View'),
+      DashboardCoreAppBar, DashboardCoreDrawer, DashboardCoreSettings, DashboardCoreView
     },
 
     data: () => ({
       expandOnHover: false,
     }),
-  }
+}
 </script>

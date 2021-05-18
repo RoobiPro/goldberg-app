@@ -8,8 +8,7 @@ const routes = [
     {
       path: '/login',
       name: 'Login',
-      component: () => import('@/views/LoginNew'),
-      // component: () => import('@/views/Login'),
+      component: () => import(/* webpackChunkName: "Login" */'@/views/LoginNew'),
       props: true,
       meta: {
         guest: true
@@ -18,7 +17,7 @@ const routes = [
     {
       path: '/',
       redirect: '/dashboard',
-      component: () => import('@/views/dashboard/Index'),
+      component: () => import(/* webpackChunkName: "index" */'@/views/dashboard/Index'),
       props: true,
       meta: {
         requiresAuth: true
@@ -28,7 +27,7 @@ const routes = [
         {
           name: 'Dashboard',
           path: 'dashboard',
-          component: () => import('@/views/dashboard/Dashboard'),
+          component: () => import(/* webpackChunkName: "dashboard" */'@/views/dashboard/Dashboard'),
           props: true,
           meta: {
             requiresAuth: true
@@ -38,7 +37,7 @@ const routes = [
         {
           name: 'User Management',
           path: 'management/user',
-          component: () => import('@/views/dashboard/pages/Users'),
+          component: () => import(/* webpackChunkName: "usermanagement" */'@/views/dashboard/pages/Users'),
           props: true,
           meta: {
             requiresAuth: true
@@ -47,7 +46,7 @@ const routes = [
         {
           name: 'Project Management',
           path: 'management/project',
-          component: () => import('@/views/dashboard/pages/Projects'),
+          component: () => import(/* webpackChunkName: "projectmanagement" */'@/views/dashboard/pages/Projects'),
           props: true,
           meta: {
             requiresAuth: true
@@ -56,7 +55,7 @@ const routes = [
         {
           name: 'User Profile',
           path: '/pages/user',
-          component: () => import('@/views/dashboard/pages/UserProfile'),
+          component: () => import(/* webpackChunkName: "userprofile" */'@/views/dashboard/pages/UserProfile'),
           props: true,
           meta: {
             requiresAuth: true
@@ -65,7 +64,7 @@ const routes = [
         {
           name: 'Notifications',
           path: 'components/notifications',
-          component: () => import('@/views/dashboard/component/Notifications'),
+          component: () => import(/* webpackChunkName: "notifications" */'@/views/dashboard/component/Notifications'),
           props: true,
           meta: {
             requiresAuth: true
@@ -74,7 +73,7 @@ const routes = [
         {
           name: 'Icons',
           path: 'components/icons',
-          component: () => import('@/views/dashboard/component/Icons'),
+          component: () => import(/* webpackChunkName: "icons" */'@/views/dashboard/component/Icons'),
           props: true,
           meta: {
             requiresAuth: true
@@ -83,7 +82,7 @@ const routes = [
         {
           name: 'Typography',
           path: 'components/typography',
-          component: () => import('@/views/dashboard/component/Typography'),
+          component: () => import(/* webpackChunkName: "typography" */'@/views/dashboard/component/Typography'),
           props: true,
           meta: {
             requiresAuth: true
@@ -93,7 +92,7 @@ const routes = [
         {
           name: 'Regular Tables',
           path: 'tables/regular-tables',
-          component: () => import('@/views/dashboard/tables/RegularTables'),
+          component: () => import(/* webpackChunkName: "regulartables" */'@/views/dashboard/tables/RegularTables'),
           props: true,
           meta: {
             requiresAuth: true
@@ -103,7 +102,7 @@ const routes = [
         {
           name: 'Google Maps',
           path: 'maps/google-maps',
-          component: () => import('@/views/dashboard/maps/GoogleMapsNew'),
+          component: () => import(/* webpackChunkName: "googlemaps" */'@/views/dashboard/maps/GoogleMapsNew'),
           props: true,
           meta: {
             requiresAuth: true
@@ -113,7 +112,7 @@ const routes = [
         {
           name: 'Upgrade',
           path: 'upgrade',
-          component: () => import('@/views/dashboard/Upgrade'),
+          component: () => import(/* webpackChunkName: "upgrade" */'@/views/dashboard/Upgrade'),
           props: true,
           meta: {
             requiresAuth: true
@@ -122,7 +121,7 @@ const routes = [
         {
           name: 'My Projects',
           path: 'myprojects',
-          component: () => import('@/views/dashboard/pages/projects/ProjectsOverview'),
+          component: () => import(/* webpackChunkName: "myprojects" */'@/views/dashboard/pages/projects/ProjectsOverview'),
           props: true,
           meta: {
             requiresAuth: true
@@ -131,7 +130,7 @@ const routes = [
         {
           name: 'Project',
           path: 'project/:project_id/',
-          component: () => import('@/views/dashboard/pages/projects/SingleProject'),
+          component: () => import(/* webpackChunkName: "project" */'@/views/dashboard/pages/projects/SingleProject'),
           props: true,
           meta: {
             requiresAuth: true
@@ -140,7 +139,7 @@ const routes = [
         {
           name: 'Campaigns',
           path: 'project/:id/campaigns',
-          component: () => import('@/views/dashboard/pages/projects/tables/Campaigns'),
+          component: () => import(/* webpackChunkName: "campaigns" */'@/views/dashboard/pages/projects/tables/Campaigns'),
           props: true,
           meta: {
             requiresAuth: true
@@ -149,7 +148,7 @@ const routes = [
         {
           name: 'Campaign',
           path: 'project/:project_id/campaign/:campaign_id',
-          component: () => import('@/views/dashboard/pages/campaigns/Campaign'),
+          component: () => import(/* webpackChunkName: "campaign" */'@/views/dashboard/pages/campaigns/Campaign'),
           props: true,
           meta: {
             requiresAuth: true
@@ -158,7 +157,7 @@ const routes = [
         {
           name: 'Drillings',
           path: 'project/:project_id/campaign/:campaign_id/drillings',
-          component: () => import('@/views/dashboard/pages/campaigns/Drillings'),
+          component: () => import(/* webpackChunkName: "drillings" */'@/views/dashboard/pages/campaigns/Drillings'),
           props: true,
           meta: {
             requiresAuth: true
@@ -168,10 +167,11 @@ const routes = [
     },
     { path: '*', redirect: { name: 'Dashboard' }}
   ]
+
 const router = new Router({
-  routes: [
-    { path: '/', redirect: '/dashboard' }
-  ],
+  // routes: [
+  //   { path: '/', redirect: '/dashboard' }
+  // ],
   mode: 'history',
   base: process.env.BASE_URL,
   routes
