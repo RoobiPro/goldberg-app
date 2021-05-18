@@ -18,7 +18,7 @@ import Vue from 'vue'
 import App from './views/App.vue'
 import router from './vue-router/router'
 import store from './vuex/store'
-
+// "@babel/core": "^7.9.0",
 
 // ------------- Sorting ---------------
 import './plugins/base'
