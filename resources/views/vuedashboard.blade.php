@@ -8,15 +8,9 @@
         <title>App | Goldberg Resources</title>
         <!-- Favicon -->
         <link rel="icon" href="{{ URL::asset('/images/favicon.png') }}" type="image/x-icon"/>
-
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
-
-        <!-- Material-Design-Icons -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
     </head>
 
     <body class="font-sans antialiased">
