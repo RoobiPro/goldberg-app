@@ -15,7 +15,6 @@ const mix = require('laravel-mix');
 
 mix.js('resources/js/src/app.js', 'public/js')
     .vue()
-    .sourceMaps()
     .webpackConfig({
      resolve: {
        extensions: ['.js', '.vue', '.json', '.scss', '.sass'],
@@ -24,8 +23,10 @@ mix.js('resources/js/src/app.js', 'public/js')
         }
       }
     })
-    .postCss('resources/css/app.css', 'public/css', [
-    require('postcss-import'),
-    require('tailwindcss'),
-    require('autoprefixer'),
-    ]);
+    .sass('resources/css/app.scss', 'public/css')
+    .sourceMaps()
+    // .postCss('resources/css/app.default.css', 'public/css', [
+    // require('postcss-import'),
+    // require('tailwindcss'),
+    // require('autoprefixer'),
+    // ]);
