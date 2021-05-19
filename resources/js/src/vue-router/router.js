@@ -8,7 +8,7 @@ const routes = [
     {
       path: '/login',
       name: 'Login',
-      component: () => import(/* webpackChunkName: "Login" */'@/views/LoginNew'),
+      component: () => import(/* webpackChunkName: "Login" */'@/views/Login'),
       props: true,
       meta: {
         guest: true
@@ -61,33 +61,33 @@ const routes = [
             requiresAuth: true
           },
         },
-        {
-          name: 'Notifications',
-          path: 'components/notifications',
-          component: () => import(/* webpackChunkName: "notifications" */'@/views/dashboard/component/Notifications'),
-          props: true,
-          meta: {
-            requiresAuth: true
-          },
-        },
-        {
-          name: 'Icons',
-          path: 'components/icons',
-          component: () => import(/* webpackChunkName: "icons" */'@/views/dashboard/component/Icons'),
-          props: true,
-          meta: {
-            requiresAuth: true
-          },
-        },
-        {
-          name: 'Typography',
-          path: 'components/typography',
-          component: () => import(/* webpackChunkName: "typography" */'@/views/dashboard/component/Typography'),
-          props: true,
-          meta: {
-            requiresAuth: true
-          },
-        },
+        // {
+        //   name: 'Notifications',
+        //   path: 'components/notifications',
+        //   component: () => import(/* webpackChunkName: "notifications" */'@/views/dashboard/component/Notifications'),
+        //   props: true,
+        //   meta: {
+        //     requiresAuth: true
+        //   },
+        // },
+        // {
+        //   name: 'Icons',
+        //   path: 'components/icons',
+        //   component: () => import(/* webpackChunkName: "icons" */'@/views/dashboard/component/Icons'),
+        //   props: true,
+        //   meta: {
+        //     requiresAuth: true
+        //   },
+        // },
+        // {
+        //   name: 'Typography',
+        //   path: 'components/typography',
+        //   component: () => import(/* webpackChunkName: "typography" */'@/views/dashboard/component/Typography'),
+        //   props: true,
+        //   meta: {
+        //     requiresAuth: true
+        //   },
+        // },
         // Tables
         {
           name: 'Regular Tables',
