@@ -1,19 +1,11 @@
 <template>
-
-  <!-- :right="$vuetify.rtl" -->
-<v-navigation-drawer id="core-navigation-drawer"
-  v-model="drawer"
-  :dark="barColor !== 'rgba(228, 226, 226, 1), rgba(255, 255, 255, 0.7)'"
-  :expand-on-hover="expandOnHover"
-  :src="showBarImage ? barImage: '/public/images/blackbackground.png'"
-  mobile-breakpoint="960"
-  app
-  width="260"
-  v-bind="$attrs">
+<!-- :right="$vuetify.rtl" -->
+<v-navigation-drawer id="core-navigation-drawer" v-model="drawer" :dark="barColor !== 'rgba(228, 226, 226, 1), rgba(255, 255, 255, 0.7)'" :expand-on-hover="expandOnHover" :src="showBarImage ? barImage: '/public/images/blackbackground.png'"
+  mobile-breakpoint="960" app width="260" v-bind="$attrs">
   <template v-slot:img="props">
     <v-img :gradient="`to bottom, ${barColor}`" v-bind="props" />
   </template>
-  <v-divider/>
+  <v-divider />
   <v-list dense nav>
     <v-list-item>
       <v-list-item-avatar>
@@ -24,34 +16,28 @@
       </v-list-item-content>
     </v-list-item>
   </v-list>
-  <v-divider/>
-<div @click="goToProfile" style="cursor: pointer;">
-  <v-list dense nav class="d-flex justify-start" >
-    <div class="d-flex justify-content-center">
-      <v-list-item>
-        <v-hover
-          v-slot="{ hover }"
-        >
-          <v-avatar size="50" :class="{ 'on-hover': hover }">
-            <img
-              :class="{ 'on-hover': hover }"
-              :src="'/storage/user-avatar/'+user.avatar"
-              :alt="user.name"
-            >
-          </v-avatar>
-        </v-hover>
-      </v-list-item>
-      <v-list-item class="pl-0 ml-0">
-        <v-list-item-content>
-          <v-list-item-title class="text-subtitle-1">
-            {{user.name}}
-          </v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-    </div>
-  </v-list>
-</div>
-  <v-divider/>
+  <v-divider />
+  <div @click="goToProfile" style="cursor: pointer;">
+    <v-list dense nav class="d-flex justify-start">
+      <div class="d-flex justify-content-center">
+        <v-list-item>
+          <v-hover v-slot="{ hover }">
+            <v-avatar size="50" :class="{ 'on-hover': hover }">
+              <img :class="{ 'on-hover': hover }" :src="'/storage/user-avatar/'+user.avatar" :alt="user.name">
+            </v-avatar>
+          </v-hover>
+        </v-list-item>
+        <v-list-item class="pl-0 ml-0">
+          <v-list-item-content>
+            <v-list-item-title class="text-subtitle-1">
+              {{user.name}}
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </div>
+    </v-list>
+  </div>
+  <v-divider />
   <v-list expand nav>
     <div />
     <template v-for="(item, i) in computedItems">
@@ -62,18 +48,33 @@
     </template>
     <div />
   </v-list>
+
   <template #append>
-    <div class="pa-4 ml-3 text-left mouseover">
-      <div @click="signOut()">
-        <v-icon>power_settings_new</v-icon>
+    <div class="text-left mouseover">
+      <div @click="signOut()" class="v-list v-sheet theme--dark v-list--nav" style="bottom:0">
+        <a class="v-list-item v-list-item--link theme--dark" tabindex="0">
+          <div class="v-list-item__icon">
+            <i aria-hidden="true" class="v-icon notranslate mdi mdi-power theme--dark">
+            </i>
+          </div>
+          <div class="v-list-item__content">
+            <div class="v-list-item__title">Logout</div>
+            <div class="v-list-item__subtitle"></div>
+          </div>
+        </a>
       </div>
     </div>
   </template>
+
 </v-navigation-drawer>
 </template>
 <script>
 // Utilities
-import { mapState, mapActions, mapMutations } from 'vuex'
+import {
+  mapState,
+  mapActions,
+  mapMutations
+} from 'vuex'
 export default {
   name: 'DashboardCoreDrawer',
   props: {
@@ -83,19 +84,18 @@ export default {
     },
   },
   data: () => ({
-    useravatar:'',
+    useravatar: '',
     // user:'',
     isFetching: true,
-    items_admin:[
-      {
-        icon: 'mdi-account',
-        title: 'user',
-        to: '/pages/user',
+    items_admin: [{
+        icon: 'mdi-view-dashboard',
+        title: 'Dashboard',
+        to: '/dashboard',
       },
       {
-        icon: 'mdi-view-dashboard',
-        title: 'dashboard',
-        to: '/dashboard',
+        icon: 'mdi-account',
+        title: 'My Profile',
+        to: '/pages/user',
       },
       {
         icon: 'mdi-account-multiple',
@@ -106,29 +106,17 @@ export default {
         icon: 'mdi-briefcase',
         title: 'Project Management',
         to: '/management/project',
-      },
-      {
-        title: 'google',
-        icon: 'mdi-map-marker',
-        to: '/maps/google-maps',
-      },
-      {
-        title: 'google',
-        icon: 'mdi-map-marker',
-        to: '/maps/google-maps',
-      },
-
+      }
     ],
-    items_user:[
+    items_user: [{
+        icon: 'mdi-view-dashboard',
+        title: 'Dashboard',
+        to: '/dashboard',
+      },
       {
         icon: 'mdi-account',
-        title: 'user',
+        title: 'My Profile',
         to: '/pages/user',
-      },
-      {
-        icon: 'mdi-view-dashboard',
-        title: 'dashboard',
-        to: '/dashboard',
       },
       {
         icon: 'mdi-hammer-wrench',
@@ -136,16 +124,15 @@ export default {
         to: '/myprojects',
       }
     ],
-    items_client:[
-      {
-        icon: 'mdi-account',
-        title: 'user',
-        to: '/pages/user',
+    items_client: [{
+        icon: 'mdi-view-dashboard',
+        title: 'Dashboard',
+        to: '/dashboard',
       },
       {
-        icon: 'mdi-view-dashboard',
-        title: 'dashboard',
-        to: '/dashboard',
+        icon: 'mdi-account',
+        title: 'My Profile',
+        to: '/pages/user',
       },
       {
         icon: 'mdi-hammer-wrench',
@@ -155,7 +142,7 @@ export default {
     ],
     items: [{
         icon: 'mdi-view-dashboard',
-        title: 'dashboard',
+        title: 'Dashboard',
         to: '/dashboard',
       },
       {
@@ -175,7 +162,7 @@ export default {
       },
       {
         icon: 'mdi-account',
-        title: 'user',
+        title: 'My Profile',
         to: '/pages/user',
       },
       {
@@ -225,13 +212,11 @@ export default {
       },
     },
     computedItems() {
-      if(this.user.role==2){
+      if (this.user.role == 2) {
         return this.items_admin.map(this.mapItem)
-      }
-      else if(this.user.role==1){
+      } else if (this.user.role == 1) {
         return this.items_client.map(this.mapItem)
-      }
-      else{
+      } else {
         return this.items_user.map(this.mapItem)
       }
       return this.items.map(this.mapItem)
@@ -243,7 +228,7 @@ export default {
       }
     },
   },
-  created () {
+  created() {
     this.getUser();
     // this.successAlert()
   },
@@ -251,15 +236,17 @@ export default {
     ...mapActions({
       signOutAction: 'auth/signOut',
     }),
-    barImageFunction(){
-      if(this.showBarImage=='true'){
+    barImageFunction() {
+      if (this.showBarImage == 'true') {
         return this.barImage;
       }
     },
-    goToProfile(){
-      this.$router.push({ path: `/pages/user` }).catch(()=>{});
+    goToProfile() {
+      this.$router.push({
+        path: `/pages/user`
+      }).catch(() => {});
     },
-    getUser(){
+    getUser() {
       this.user = this.$store.getters["auth/user"]
     },
     async signOut() {

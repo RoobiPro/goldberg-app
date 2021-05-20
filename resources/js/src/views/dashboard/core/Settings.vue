@@ -8,10 +8,10 @@
       flat
       link
       min-width="100"
-      style="position: fixed; top: 115px; right: -35px; border-radius: 8px;"
+      style="position: fixed; bottom: -5px; right: -35px; border-radius: 8px;"
     >
       <v-icon large>
-        mdi-arrow-bottom-left
+        mdi-cog
       </v-icon>
     </v-card>
 
@@ -24,7 +24,7 @@
       left
       nudge-left="8"
       offset-x
-      origin="top right"
+      origin="bottom right"
       transition="scale-transition"
     >
       <v-card

@@ -7,7 +7,14 @@
     flat
     height="75"
   >
-    <v-btn
+
+  <button @click="setDrawer(!drawer)" class="hamburger hamburger--arrow theme" v-bind:class="{ 'is-active':drawer}" type="button">
+    <span class="hamburger-box">
+      <span class="hamburger-inner" v-bind:class="{'hamburger-inner-dark': this.$vuetify.theme.dark}"></span>
+    </span>
+  </button>
+
+    <!-- <v-btn
       class="mr-3"
       elevation="1"
       fab
@@ -17,45 +24,18 @@
       <v-icon v-if="value">
         mdi-view-quilt
       </v-icon>
-
       <v-icon v-else>
-        mdi-dots-vertical
+        mdi-menu
       </v-icon>
-    </v-btn>
-
+    </v-btn> -->
 
     <v-toolbar-title
       class="hidden-sm-and-down font-weight-light"
       v-text="$route.name"
     />
-
-
-
     <v-spacer />
 
-    <!-- <v-text-field
-      :label="$t('search')"
-      color="secondary"
-      hide-details
-      style="max-width: 165px;"
-    >
-      <template
-        v-if="$vuetify.breakpoint.mdAndUp"
-        v-slot:append-outer
-      >
-        <v-btn
-          class="mt-n2"
-          elevation="1"
-          fab
-          small
-        >
-          <v-icon>mdi-magnify</v-icon>
-        </v-btn>
-      </template>
-    </v-text-field> -->
-
     <div class="mx-3" />
-
     <v-btn
       class="ml-2"
       min-width="0"
@@ -64,7 +44,6 @@
     >
       <v-icon>mdi-view-dashboard</v-icon>
     </v-btn>
-
     <v-menu
       bottom
       left
@@ -88,12 +67,10 @@
             <template v-slot:badge>
               <span>5</span>
             </template>
-
             <v-icon>mdi-bell</v-icon>
           </v-badge>
         </v-btn>
       </template>
-
       <v-list
         :tile="false"
         nav
@@ -108,7 +85,6 @@
         </div>
       </v-list>
     </v-menu>
-
     <v-btn
       class="ml-2"
       min-width="0"
@@ -119,17 +95,13 @@
     </v-btn>
   </v-app-bar>
 </template>
-
 <script>
   // Components
   import { VHover, VListItem } from 'vuetify/lib'
-
   // Utilities
   import { mapState, mapMutations } from 'vuex'
-
   export default {
     name: 'DashboardCoreAppBar',
-
     components: {
       AppBarItem: {
         render (h) {
@@ -155,14 +127,12 @@
         },
       },
     },
-
     props: {
       value: {
         type: Boolean,
         default: false,
       },
     },
-
     data: () => ({
       notifications: [
         'Mike John Responded to your email',
@@ -172,11 +142,9 @@
         'Another one',
       ],
     }),
-
     computed: {
       ...mapState("hs", ['drawer']),
     },
-
     methods: {
       ...mapMutations({
         setDrawer: 'hs/SET_DRAWER',
