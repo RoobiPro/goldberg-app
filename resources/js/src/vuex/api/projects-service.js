@@ -1,5 +1,4 @@
 import { APIConfig } from './api-config.js';
-import qs from 'qs';
 import axios from 'axios';
 // import Jsona from 'jsona';
 
@@ -21,12 +20,6 @@ function projectusers(id) {
 }
 
 function getAll(params) {
-  const options = {
-    params: params,
-    paramsSerializer: function (params) {
-      return qs.stringify(params, {encode: false});
-    }
-  };
   // options = '?page[number]=1&page[size]=5'
   return axios.get(`${url}/api/projects`)
     .then(response => {
