@@ -25,7 +25,7 @@
     name: 'DashboardCoreView',
     computed:{
       checkNotificationStatus(){
-        return this.$store.getters['alerts/getNotificationStatus']
+        return this.$store.getters['NotificationsManager/getNotificationStatus']
       }
     },
     components: {

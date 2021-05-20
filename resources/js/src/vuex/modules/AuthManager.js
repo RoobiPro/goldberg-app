@@ -1,3 +1,5 @@
+import Notifications from '@/vuex/modules/NotificationsManager'
+import AuthAPI from '@/vuex/API/AuthAPI'
 import axios from 'axios'
 
 export default {
@@ -34,10 +36,21 @@ export default {
   },
 
   actions: {
-    async signIn ({ commit }, credentials) {
-    await axios.get('/sanctum/csrf-cookie')
+    signIn ({ commit }, credentials) {
+
+    // AuthAPI.signIn(credentials).then((response) => {
+    //   console.log('accessed this')
+    //   commit('SET_AUTHENTICATED', true)
+    //   commit('SET_USER', response.data.user)
+    // }).catch( (error) => {
+    //   console.log('accessed this error manager')
+    //
+    //   commit('SET_AUTHENTICATED', false)
+    //   commit('SET_USER', null)
+    // })
+    axios.get('/sanctum/csrf-cookie');
     // await axios.post('/login', credentials)
-    await axios.post('/login', credentials).then((response) => {
+    axios.post('/login', credentials).then((response) => {
       commit('SET_AUTHENTICATED', true)
       commit('SET_USER', response.data.user)
 

@@ -1,5 +1,5 @@
-import service from '@/vuex/api/users-service';
-import alerts from '@/vuex/modules/alerts-module';
+import Notifications from '@/vuex/modules/NotificationsManager';
+import APIService from '@/vuex/API/UsersAPI';
 
 const state = {
   list: {},
@@ -43,7 +43,7 @@ const mutations = {
 const actions = {
 
   list({commit, dispatch}, params) {
-    return service.list(params)
+    return APIService.list(params)
       .then(({list, meta}) => {
         commit('SET_LIST', list);
         commit('SET_META', meta);
@@ -51,27 +51,27 @@ const actions = {
   },
 
   getusers({commit, dispatch}, params) {
-    return service.listUsers(params)
+    return APIService.listUsers(params)
       .then(({list, meta}) => {
         commit('SET_USERSROLE', list);
       });
   },
 
   getclients({commit, dispatch}, params) {
-    return service.listClients(params)
+    return APIService.listClients(params)
       .then(({list, meta}) => {
         commit('SET_CLIENTSROLE', list);
       });
   },
 
   get({commit, dispatch}, params) {
-    return service.get(params)
+    return APIService.get(params)
       .then((user) => { commit('SET_RESOURCE', user); });
   },
 
   add({commit, dispatch}, params) {
     console.log(params);
-    return service.add(params)
+    return APIService.add(params)
       .then((response) => {
         console.log(response),
         commit('SET_RESPONSE', response);
@@ -85,15 +85,14 @@ const actions = {
   },
 
   update({commit, dispatch}, params) {
-    return service.update(params)
+    return APIService.update(params)
       .then((user) => { commit('SET_RESOURCE', user); });
   },
 
   destroy({commit, dispatch}, params) {
-    // dispatch('alerts/setNotificationStatus', null, {root:true})
-    // alerts.setNotificationStatus();
-    return service.destroy(params);
+    return APIService.destroy(params);
   }
+
 };
 
 const getters = {

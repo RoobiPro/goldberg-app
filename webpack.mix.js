@@ -23,7 +23,7 @@ mix.js('resources/js/src/app.js', 'public/js')
           }
         },
     })
-    .sass('resources/css/app.scss', 'public/css')
+    .sass('resources/scss/app.scss', 'public/css')
     .sourceMaps()
     // .postCss('resources/css/app.default.css', 'public/css', [
     // require('postcss-import'),

@@ -1,19 +1,9 @@
-import { APIConfig } from './api-config.js';
+import { APIConfig } from './APIConfig';
 import axios from 'axios';
-// import Jsona from 'jsona';
 
-// const url = process.env.VUE_APP_API_BASE_URL;
-const url = ''
-// const jsona = new Jsona();
 
 function projectusers(id) {
-  const options = {
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    }
-  };
-  return axios.get(`${url}/getProjectUsers/`+id)
+  return axios.get(`/getProjectUsers/`+id)
     .then(response => {
       return response.data;
     });
@@ -21,7 +11,7 @@ function projectusers(id) {
 
 function getAll(params) {
   // options = '?page[number]=1&page[size]=5'
-  return axios.get(`${url}/api/projects`)
+  return axios.get(`/api/projects`)
     .then(response => {
       // console.log(response.data.meta);
       return {
@@ -33,14 +23,8 @@ function getAll(params) {
 }
 
 function show(id) {
-  const options = {
-    headers: {
-      'Accept': 'application/vnd.api+json',
-      'Content-Type': 'application/vnd.api+json',
-    }
-  };
 
-  return axios.get(`${url}/api/projects/${id}`, options)
+  return axios.get(`/api/projects/${id}`, options)
     .then(response => {
       console.log(response.data)
       // let user = jsona.deserialize(response.data);
@@ -51,20 +35,9 @@ function show(id) {
 }
 
 function create(user) {
-  // const payload = jsona.serialize({
-  //   stuff: user,
-  //   includeNames: null
-  // });
   const payload = {
     stuff: user,
     includeNames: null
-  };
-
-  const options = {
-    headers: {
-      'Accept': 'application/vnd.api+json',
-      'Content-Type': 'application/vnd.api+json',
-    }
   };
 
   return axios.post(`${url}/users`, payload, options)
@@ -79,13 +52,6 @@ function update(user) {
     includeNames: []
   };
 
-  const options = {
-    headers: {
-      'Accept': 'application/vnd.api+json',
-      'Content-Type': 'application/vnd.api+json',
-    }
-  };
-
   return axios.patch(`${url}/users/${user.id}`, payload, options)
     .then(response => {
       return response.data;
@@ -93,13 +59,6 @@ function update(user) {
 }
 
 function destroy(id) {
-  const options = {
-    headers: {
-      'Accept': 'application/vnd.api+json',
-      'Content-Type': 'application/vnd.api+json',
-    }
-  };
-
   return axios.delete(`${url}/user/delete/${id}`, options);
 }
 
@@ -112,6 +71,7 @@ function upload(user, image) {
       return response.data.url;
     });
 }
+
 
 export default {
   getAll,

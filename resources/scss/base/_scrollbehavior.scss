@@ -1,0 +1,13 @@
+::-webkit-scrollbar {
+    width: 0 !important;
+    display: none;
+}
+
+html, body {
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: y mandatory;
+    // font-family: "scroll-behavior: smooth", sans-serif;
+}

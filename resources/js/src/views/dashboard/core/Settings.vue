@@ -167,7 +167,7 @@
 
 
     computed: {
-      ...mapState("hs", ['barImage']),
+      ...mapState("LayoutManager", ['barImage']),
     },
 
     watch: {
@@ -203,8 +203,8 @@
 
     methods: {
       ...mapMutations({
-        setBarImage: 'hs/SET_BAR_IMAGE',
-        toggleBarImage: 'hs/SET_SHOWBARIMAGE',
+        setBarImage: 'LayoutManager/SET_BAR_IMAGE',
+        toggleBarImage: 'LayoutManager/SET_SHOWBARIMAGE',
       }),
     },
   }

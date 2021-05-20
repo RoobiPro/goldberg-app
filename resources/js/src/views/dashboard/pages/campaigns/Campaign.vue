@@ -164,7 +164,7 @@ import axios from 'axios'
           });
       },
       async checkAuth(){
-        this.me = await this.$store.getters["auth/user"];
+        this.me = await this.$store.getters["AuthManager/user"];
         axios.get(`/getUserProjects/`+this.me.id)
           .then(response => {
             if(response.status == 200){
@@ -180,7 +180,7 @@ import axios from 'axios'
               }
             }
             else{
-              this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+              this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: response.data});
             }
           })
       },

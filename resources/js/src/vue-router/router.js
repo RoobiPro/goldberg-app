@@ -178,8 +178,8 @@ const router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
-  await store.dispatch("auth/refresh")
-  const authUser = store.getters["auth/authenticated"];
+  await store.dispatch("AuthManager/refresh")
+  const authUser = store.getters["AuthManager/authenticated"];
   const reqAuth = to.matched.some((record) => record.meta.requiresAuth);
   const loginQuery = { path: "/login", query: { redirect: to.fullPath } };
   if (reqAuth && !authUser) {

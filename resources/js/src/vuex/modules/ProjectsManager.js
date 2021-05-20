@@ -1,4 +1,6 @@
-import service from '@/vuex/api/projects-service';
+import APIService from '@/vuex/API/ProjectsAPI';
+import Notifications from '@/vuex/modules/NotificationsManager';
+
 
 const state = {
   list: {},
@@ -22,38 +24,38 @@ const mutations = {
 
 const actions = {
   filterUsers({commit, dispatch}, params) {
-    return service.projectusers(params)
+    return APIService.projectusers(params)
       .then((project) => { commit('SET_FILTEREDUSERS', project); });
   },
 
   selectedProject({commit, dispatch}, params) {
-    commit('SET_PROJECT', params); 
+    commit('SET_PROJECT', params);
   },
 
   getAll({commit, dispatch}, params) {
-    return service.getAll(params)
+    return APIService.getAll(params)
       .then(({list, meta}) => {
         commit('SET_LIST', list);
       });
   },
 
   show({commit, dispatch}, params) {
-    return service.show(params)
+    return APIService.show(params)
       .then((project) => { commit('SET_PROJECT', project); });
   },
 
   create({commit, dispatch}, params) {
-    return service.add(params)
+    return APIService.add(params)
       .then((project) => { commit('SET_RESOURCE', project); });
   },
 
   update({commit, dispatch}, params) {
-    return service.update(params)
+    return APIService.update(params)
       .then((project) => { commit('SET_RESOURCE', project); });
   },
 
   destroy({commit, dispatch}, params) {
-    return service.destroy(params);
+    return APIService.destroy(params);
   }
 };
 

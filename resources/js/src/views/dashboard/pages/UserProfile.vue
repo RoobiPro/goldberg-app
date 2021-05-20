@@ -115,11 +115,11 @@ export default {
     }
   },
   computed: {
-    ...mapState("hs", ['barColor', 'barImage']),
+    ...mapState("LayoutManager", ['barColor', 'barImage']),
 
   },
   mounted() {
-    const user =  this.$store.getters["auth/user"]
+    const user =  this.$store.getters["AuthManager/user"]
     this.myuser = JSON.parse(JSON.stringify(user));
     this.avatarImageUrl = this.avatarUrl
     this.fullAvatarUrl = '/storage/user-avatar/' + this.myuser.avatar
@@ -133,16 +133,16 @@ export default {
 
       axios.patch('/api/users/'+this.myuser.id, this.myuser)        .then(response => {
                 if(response.status == 200){
-                  this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
-                  this.$store.commit('auth/SET_USER', JSON.parse(JSON.stringify(this.myuser)));
+                  this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'green', text: response.data});
+                  this.$store.commit('AuthManager/SET_USER', JSON.parse(JSON.stringify(this.myuser)));
 
                 }
                 else{
-                  this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+                  this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: response.data});
                 }
               }).catch(error => {
                 if (error.response.status != 200){
-                  this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+                  this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: response.data});
                 }
               });
     },
@@ -159,14 +159,14 @@ export default {
         })
         .then((response) => {
           // console.log(response)
-          this.$store.commit('auth/SET_USERAVATAR', response.data.avatar)
+          this.$store.commit('AuthManager/SET_USERAVATAR', response.data.avatar)
           // console.log(response)
           this.avatarImageUrl = response.data.avatar_url
           this.myuser.avatar = response.data.avatar
           this.showUploadProgress = false
           this.processingUpload = false
           this.$emit('imageUrl', response.data.secure_url)
-          console.log(this.$store.getters["auth/user"])
+          console.log(this.$store.getters["AuthManager/user"])
         })
         .catch((error) => {
           if (error.response) {

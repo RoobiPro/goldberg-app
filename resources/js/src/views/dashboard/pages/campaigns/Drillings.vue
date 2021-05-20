@@ -423,7 +423,7 @@ import { required, decimal, numeric } from 'vuelidate/lib/validators'
           console.log('save drilling')
           axios.post('/api/drillings', this.newDrilling).then(response => {
             if(response.status == 200){
-              this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
+              this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'green', text: response.data});
               this.getCampaign()
               this.newDillingDialog = false
               this.$v.$reset()
@@ -442,7 +442,7 @@ import { required, decimal, numeric } from 'vuelidate/lib/validators'
                     }
             }
             else{
-              this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+              this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: response.data});
             }
           });
 
@@ -474,7 +474,7 @@ import { required, decimal, numeric } from 'vuelidate/lib/validators'
           console.log(this.project)
       },
       async checkAuth(){
-        this.me = await this.$store.getters["auth/user"];
+        this.me = await this.$store.getters["AuthManager/user"];
         axios.get(`/getUserProjects/`+this.me.id)
           .then(response => {
             if(response.status == 200){
@@ -493,7 +493,7 @@ import { required, decimal, numeric } from 'vuelidate/lib/validators'
               }
             }
             else{
-              this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+              this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: response.data});
             }
           })
       },

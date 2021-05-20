@@ -1,4 +1,14 @@
-// Creative Tim der HRSN
+// Theme JS  for Interacting with the Layout/UI
+//
+// ####################################
+// By Rob & Schahin
+// #Tim du bistn HRSN
+// Peilst du?
+// ####################################
+//
+//
+import Notifications from '@/vuex/modules/NotificationsManager';
+
 const state = {
   barColor: 'rgba(0, 0, 0, .8), rgba(0, 0, 0, .8)',
   showBarImage: !localStorage.getItem("showBarImage") ? false : (localStorage.getItem("showBarImage") == 'true' ? true : false),
@@ -7,6 +17,10 @@ const state = {
   dark: null
 };
 
+
+const getters = {
+  drawer: (state) => { return state.drawer  }
+};
 
 
 const mutations = {
@@ -46,12 +60,9 @@ const actions = {
   },
 };
 
-const getters = {
 
 
-};
-
-const hs = {
+const layout = {
   namespaced: true,
   state,
   getters,
@@ -59,4 +70,4 @@ const hs = {
   mutations
 };
 
-export default hs
+export default layout

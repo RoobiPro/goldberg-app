@@ -572,8 +572,8 @@ export default {
       }
     },
     async getProjects() {
-      await this.$store.dispatch("projects/getAll");
-      const projectsJson = await this.$store.getters["projects/list"];
+      await this.$store.dispatch("ProjectsManager/getAll");
+      const projectsJson = await this.$store.getters["ProjectsManager/list"];
       this.projects = projectsJson.map(projects => ({
         ...projects,
         project_start_date: this.formatDate(projects.project_start_date)
@@ -581,19 +581,19 @@ export default {
     },
 
     async getUsers() {
-      await this.$store.dispatch("users/getusers");
-      this.users = await this.$store.getters["users/users_role"];
+      await this.$store.dispatch("UsersManager/getusers");
+      this.users = await this.$store.getters["UsersManager/users_role"];
     },
     async getClients() {
-      await this.$store.dispatch("users/getclients");
-      this.clients = await this.$store.getters["users/clients_role"];
+      await this.$store.dispatch("UsersManager/getclients");
+      this.clients = await this.$store.getters["UsersManager/clients_role"];
     },
 
     async showAssignUser(item, project_id) {
-      await this.$store.dispatch("projects/filterUsers", project_id);
-      this.filteredUsers = await this.$store.getters["projects/filteredusers"];
+      await this.$store.dispatch("ProjectsManager/filterUsers", project_id);
+      this.filteredUsers = await this.$store.getters["ProjectsManager/filteredusers"];
       if (this.filteredUsers.length == 0) {
-        this.$store.dispatch('alerts/setNotificationStatus', {
+        this.$store.dispatch('NotificationsManager/setNotificationStatus', {
           type: 'red',
           text: 'No more users to assign for this project.'
         });
@@ -605,7 +605,7 @@ export default {
     },
     saveAssignedUser() {
       if (this.selectedUser === undefined) {
-        this.$store.dispatch('alerts/setNotificationStatus', {
+        this.$store.dispatch('NotificationsManager/setNotificationStatus', {
           type: 'red',
           text: 'Please select a user.'
         });
@@ -620,19 +620,19 @@ export default {
         .then(response => {
           if (response.status == 200) {
             this.getProjects();
-            this.$store.dispatch('alerts/setNotificationStatus', {
+            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
               type: 'green',
               text: response.data
             });
           } else {
-            this.$store.dispatch('alerts/setNotificationStatus', {
+            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
               type: 'red',
               text: response.data
             });
           }
         }).catch(error => {
           if (error.response.status != 200) {
-            this.$store.dispatch('alerts/setNotificationStatus', {
+            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
               type: 'red',
               text: response.data
             });
@@ -653,7 +653,7 @@ export default {
     },
     saveAssignedClient() {
       if (this.selectedClient === undefined) {
-        this.$store.dispatch('alerts/setNotificationStatus', {
+        this.$store.dispatch('NotificationsManager/setNotificationStatus', {
           type: 'red',
           text: 'Please select a user.'
         });
@@ -667,19 +667,19 @@ export default {
         .then(response => {
           if (response.status == 200) {
             this.getProjects();
-            this.$store.dispatch('alerts/setNotificationStatus', {
+            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
               type: 'green',
               text: response.data
             });
           } else {
-            this.$store.dispatch('alerts/setNotificationStatus', {
+            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
               type: 'red',
               text: response.data
             });
           }
         }).catch(error => {
           if (error.response.status != 200) {
-            this.$store.dispatch('alerts/setNotificationStatus', {
+            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
               type: 'red',
               text: response.data
             });
@@ -704,19 +704,19 @@ export default {
         .then(response => {
           if (response.status == 200) {
             this.getProjects();
-            this.$store.dispatch('alerts/setNotificationStatus', {
+            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
               type: 'green',
               text: response.data
             });
           } else {
-            this.$store.dispatch('alerts/setNotificationStatus', {
+            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
               type: 'red',
               text: response.data
             });
           }
         }).catch(error => {
           if (error.response.status != 200) {
-            this.$store.dispatch('alerts/setNotificationStatus', {
+            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
               type: 'red',
               text: response.data
             });
@@ -730,7 +730,7 @@ export default {
       var conditionOne = false;
       var conditionTwo = false;
       if (!this.newProject.name) {
-        this.$store.dispatch('alerts/setNotificationStatus', {
+        this.$store.dispatch('NotificationsManager/setNotificationStatus', {
           type: 'red',
           text: 'Please enter a project name.'
         });
@@ -738,7 +738,7 @@ export default {
         conditionOne = true;
       }
       if ((!this.hasDecimal(this.newProject.coordinates_x) || !this.hasDecimal(this.newProject.coordinates_y) || !this.hasDecimal(this.newProject.coordinates_z)) && conditionOne) {
-        this.$store.dispatch('alerts/setNotificationStatus', {
+        this.$store.dispatch('NotificationsManager/setNotificationStatus', {
           type: 'red',
           text: 'Coordinates only as decimal. Example: 10.22111'
         });
@@ -751,7 +751,7 @@ export default {
           .then(response => {
             if (response.status == 200) {
               this.getProjects();
-              this.$store.dispatch('alerts/setNotificationStatus', {
+              this.$store.dispatch('NotificationsManager/setNotificationStatus', {
                 type: 'green',
                 text: response.data
               });
@@ -763,7 +763,7 @@ export default {
                 coordinates_z: null,
               }
             } else {
-              this.$store.dispatch('alerts/setNotificationStatus', {
+              this.$store.dispatch('NotificationsManager/setNotificationStatus', {
                 type: 'red',
                 text: response.data
               });
@@ -788,19 +788,19 @@ export default {
         .then(response => {
           if (response.status == 200) {
             this.getProjects();
-            this.$store.dispatch('alerts/setNotificationStatus', {
+            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
               type: 'green',
               text: response.data
             });
           } else {
-            this.$store.dispatch('alerts/setNotificationStatus', {
+            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
               type: 'red',
               text: response.data
             });
           }
         }).catch(error => {
           if (error.response.status != 200) {
-            this.$store.dispatch('alerts/setNotificationStatus', {
+            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
               type: 'red',
               text: response.data
             });
@@ -832,14 +832,14 @@ export default {
         .then(response => {
           if (response.status == 200) {
             this.getProjects();
-            this.$store.dispatch('alerts/setNotificationStatus', {
+            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
               type: 'green',
               text: response.data
             });
             // this.newProject.name = null
             this.closeDialogs();
           } else {
-            this.$store.dispatch('alerts/setNotificationStatus', {
+            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
               type: 'red',
               text: response.data
             });
@@ -866,19 +866,19 @@ export default {
         .then(response => {
           if (response.status == 200) {
             this.getProjects();
-            this.$store.dispatch('alerts/setNotificationStatus', {
+            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
               type: 'green',
               text: response.data
             });
           } else {
-            this.$store.dispatch('alerts/setNotificationStatus', {
+            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
               type: 'red',
               text: response.data
             });
           }
         }).catch(error => {
           if (error.response.status != 200) {
-            this.$store.dispatch('alerts/setNotificationStatus', {
+            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
               type: 'red',
               text: response.data
             });

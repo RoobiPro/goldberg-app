@@ -36,7 +36,7 @@ const getters = {
   getNotificationStatus: (state) => { return state.showNotification   }
 };
 
-const alerts = {
+const notifications = {
   namespaced: true,
   state,
   getters,
@@ -44,4 +44,4 @@ const alerts = {
   mutations
 };
 
-export default alerts;
+export default notifications;

@@ -1,22 +1,22 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import auth from './modules/auth'
-import hs from './modules/hs'
-import users from './modules/users-module'
-import projects from './modules/projects-module'
-import alerts from './modules/alerts-module'
+import AuthManager from './modules/AuthManager'
+import LayoutManager from './modules/LayoutManager'
+import UsersManager from './modules/UsersManager'
+import ProjectsManager from './modules/ProjectsManager'
+import NotificationsManager from './modules/NotificationsManager'
 
 Vue.use(Vuex)
 
 
 const store = new Vuex.Store({
   modules: {
-    auth,
-    hs,
-    alerts,
-    users,
-    projects
+    AuthManager,
+    LayoutManager,
+    UsersManager,
+    ProjectsManager,
+    NotificationsManager
   },
 });
 

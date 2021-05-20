@@ -201,7 +201,7 @@ export default {
       }
     },
     async getProjects() {
-      var me = await this.$store.getters["auth/user"];
+      var me = await this.$store.getters["AuthManager/user"];
       console.log(me)
       axios.get(`/getUserProjects/`+me.id)
         .then(response => {
@@ -211,13 +211,13 @@ export default {
             console.log(response)
           }
           else{
-            this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+            this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: response.data});
           }
         })
     },
     async openProject(item){
-      await this.$store.dispatch('projects/selectedProject', item);
-      var pro = await this.$store.getters["projects/project"];
+      await this.$store.dispatch('ProjectsManager/selectedProject', item);
+      var pro = await this.$store.getters["ProjectsManager/project"];
       this.$router.push({ path: `/project/${item.id}` })
       console.log(pro)
       console.log("openning project")

@@ -1,4 +1,6 @@
-import service from '@/vuex/api/projects-service';
+import APIService from '@/vuex/API/ProjectsAPI';
+import Notifications from '@/vuex/modules/NotificationsManager';
+
 
 const state = {
   headers: [
@@ -31,18 +33,12 @@ const state = {
   ]
 };
 
-const mutations = {
 
+const mutations = {};
 
-};
+const actions = {};
 
-const actions = {
-
-};
-
-const getters = {
-
-};
+const getters = {};
 
 const projects = {
   namespaced: true,

@@ -51,7 +51,7 @@ export default {
       }
 
       if(barimage) {
-        this.$store.commit('hs/SET_BAR_IMAGE', barimage)
+        this.$store.commit('LayoutManager/SET_BAR_IMAGE', barimage)
       }
   },
 }

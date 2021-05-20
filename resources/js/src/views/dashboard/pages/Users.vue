@@ -499,8 +499,8 @@ export default {
         }
       },
      async getList () {
-       await this.$store.dispatch("users/list");
-       this.users = await this.$store.getters["users/list"];
+       await this.$store.dispatch("UsersManager/list");
+       this.users = await this.$store.getters["UsersManager/list"];
        console.log(this.users);
         },
 
@@ -519,9 +519,9 @@ export default {
       deleteItemConfirm () {
         console.log(this.editedItem)
         this.users.splice(this.editedIndex, 1)
-        this.$store.dispatch("users/destroy", this.editedItem.id).then((response) => {
+        this.$store.dispatch("UsersManager/destroy", this.editedItem.id).then((response) => {
           if(response.status==200){
-            this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
+            this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'green', text: response.data});
           }
           console.log(response.data)
         })
@@ -567,11 +567,11 @@ export default {
                 this.close();
                 this.newPassword = ''
                 this.newPassword_confirm = ''
-                this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
+                this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'green', text: response.data});
 
               }
               else{
-                this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+                this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: response.data});
               }
             });
           this.$v.$reset()
@@ -593,11 +593,11 @@ export default {
               if(response.status == 200){
                 this.getList();
                 this.close();
-                this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: response.data});
+                this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'green', text: response.data});
 
               }
               else{
-                this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: response.data});
+                this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: response.data});
               }
             });
           this.$v.$reset()
@@ -623,15 +623,15 @@ export default {
         }
         else{
           console.log("valid")
-          await this.$store.dispatch("users/add", this.user)
-          var resp = await this.$store.getters["users/response"]
+          await this.$store.dispatch("UsersManager/add", this.user)
+          var resp = await this.$store.getters["UsersManager/response"]
           if (resp.status==409){
-            this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: resp.data});
+            this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: resp.data});
             // this.dialog = false;
             // this.getList();
           }
           else if (resp.status==200){
-            this.$store.dispatch('alerts/setNotificationStatus', {type: 'green', text: resp.data});
+            this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'green', text: resp.data});
             this.dialog = false;
             this.getList();
             this.$v.$reset()
@@ -640,7 +640,7 @@ export default {
             this.newUserDialog = false;
           }
           else{
-            this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: resp.data});
+            this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: resp.data});
           }
         }
       },

@@ -1,21 +1,12 @@
-import { APIConfig } from './api-config.js';
-import qs from 'qs';
-import axios from 'axios';
-// import Jsona from 'jsona';
+import { APIConfig } from './APIConfig';
 
-// const url = process.env.VUE_APP_API_BASE_URL;
-const url = '';
-// const jsona = new Jsona();
+import axios from 'axios';
+
 
 function listClients(params) {
-  const options = {
-    params: params,
-    paramsSerializer: function (params) {
-      return qs.stringify(params, {encode: false});
-    }
-  };
+
   // options = '?page[number]=1&page[size]=5'
-  return axios.get(`${url}/getClients`)
+  return axios.get(`/getClients`)
     .then(response => {
       return {
         list: response.data.data,
@@ -25,14 +16,9 @@ function listClients(params) {
 }
 
 function listUsers(params) {
-  const options = {
-    params: params,
-    paramsSerializer: function (params) {
-      return qs.stringify(params, {encode: false});
-    }
-  };
+
   // options = '?page[number]=1&page[size]=5'
-  return axios.get(`${url}/getUsers`)
+  return axios.get(`/getUsers`)
     .then(response => {
       return {
         list: response.data.data,
@@ -42,14 +28,8 @@ function listUsers(params) {
 }
 
 function list(params) {
-  const options = {
-    params: params,
-    paramsSerializer: function (params) {
-      return qs.stringify(params, {encode: false});
-    }
-  };
   // options = '?page[number]=1&page[size]=5'
-  return axios.get(`${url}/api/users`)
+  return axios.get(`/api/users`)
     .then(response => {
       // console.log(response.data.data);
       // console.log(response.data.meta);
@@ -62,14 +42,8 @@ function list(params) {
 }
 
 function get(id) {
-  const options = {
-    headers: {
-      'Accept': 'application/vnd.api+json',
-      'Content-Type': 'application/vnd.api+json',
-    }
-  };
 
-  return axios.get(`${url}/users/${id}`, options)
+  return axios.get(`/users/${id}`, )
     .then(response => {
       // let user = jsona.deserialize(response.data);
       let user = response.data;
@@ -80,7 +54,7 @@ function get(id) {
 
 function add(user) {
   console.log(user);
-  return axios.post(`${url}/register`, user)
+  return axios.post(`/register`, user)
     .then(response => {
       console.log(response);
       return response;
@@ -100,28 +74,16 @@ function update(user) {
     includeNames: []
   };
 
-  const options = {
-    headers: {
-      'Accept': 'application/vnd.api+json',
-      'Content-Type': 'application/vnd.api+json',
-    }
-  };
 
-  return axios.patch(`${url}/users/${user.id}`, payload, options)
+  return axios.patch(`/users/${user.id}`, payload)
     .then(response => {
       return response.data;
     });
 }
 
 function destroy(id) {
-  const options = {
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    }
-  };
 
-  return axios.delete(`${url}/api/users/${id}`, options)
+  return axios.delete(`/api/users/${id}`)
     .then(response => {
       console.log(response);
 
@@ -133,7 +95,7 @@ function upload(user, image) {
   const bodyFormData = new FormData();
   bodyFormData.append('attachment', image);
 
-  return axios.post(`${url}/uploads/users/${user.id}/profile-image`, bodyFormData)
+  return axios.post(`/uploads/users/${user.id}/profile-image`, bodyFormData)
     .then(response => {
       return response.data.url;
     });

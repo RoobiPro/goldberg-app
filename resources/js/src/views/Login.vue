@@ -126,7 +126,7 @@ export default {
 
   computed: {
     // checkNotificationStatus(){
-    //   return this.$store.getters['alerts/getNotificationStatus']
+    //   return this.$store.getters['Notifications/getNotificationStatus']
     // },
     passwordErrors () {
       const errors = []
@@ -174,7 +174,7 @@ export default {
       this.$v.email.$touch()
       this.$v.password.$touch()
       if(this.$v.password.$invalid || this.$v.email.$invalid){
-        this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: 'Invalid inputs!'});
+        this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: 'Invalid inputs!'});
         this.loading=false;
       }
       else{
@@ -184,12 +184,12 @@ export default {
         }
         console.log('loggin in..')
         await this.signIn(data)
-        var login = this.$store.getters['auth/user']
+        var login = this.$store.getters['AuthManager/user']
         console.log(login)
         if(login ==null){
           this.showerror= true;
           setTimeout(() => this.showerror = false, 3500);
-          this.$store.dispatch('alerts/setNotificationStatus', {type: 'red', text: 'Invalid login credentials!'});
+          this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: 'Invalid login credentials!'});
           this.loading=false;
 
         }
@@ -215,7 +215,7 @@ export default {
       }, 1000);
     },
     ...mapActions({
-      signIn: 'auth/signIn'
+      signIn: 'AuthManager/signIn'
     }),
   }
 

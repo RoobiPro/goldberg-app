@@ -193,22 +193,23 @@ export default {
     ],
   }),
   computed: {
-    ...mapState("hs", ['barColor', 'barImage', 'showBarImage']),
-    // ...mapState("auth", ['user']),
+    ...mapState("LayoutManager", ['barColor', 'barImage', 'showBarImage']),
+    // ...mapState("AuthManager", ['user']),
     user: {
       get() {
-        return this.$store.state.auth.user
+        return this.$store.getters["AuthManager/user"]
       },
       set(val) {
-        this.$store.commit('auth/SET_USER', val)
+        this.$store.commit('AuthManager/SET_USER', val)
       },
     },
     drawer: {
       get() {
-        return this.$store.state.hs.drawer
+        console.log(this.$store);
+        return this.$store.getters["LayoutManager/drawer"]
       },
       set(val) {
-        this.$store.commit('hs/SET_DRAWER', val)
+        this.$store.commit('LayoutManager/SET_DRAWER', val)
       },
     },
     computedItems() {
@@ -234,7 +235,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      signOutAction: 'auth/signOut',
+      signOutAction: 'AuthManager/signOut',
     }),
     barImageFunction() {
       if (this.showBarImage == 'true') {
@@ -247,7 +248,7 @@ export default {
       }).catch(() => {});
     },
     getUser() {
-      this.user = this.$store.getters["auth/user"]
+      this.user = this.$store.getters["AuthManager/user"]
     },
     async signOut() {
       await this.signOutAction()
