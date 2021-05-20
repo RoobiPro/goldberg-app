@@ -1,16 +1,16 @@
-import Notifications from '@/vuex/modules/NotificationsManager'
 import AuthAPI from '@/vuex/API/AuthAPI'
+import Notifications from '@/vuex/modules/NotificationsManager'
+
+// We need to remove Axios here
 import axios from 'axios'
 
-export default {
-  namespaced: true,
 
-  state: {
+const state =  {
     authenticated: false,
     user: false
-  },
+}
 
-  getters: {
+const getters = {
     authenticated (state) {
       return state.authenticated
     },
@@ -18,9 +18,10 @@ export default {
     user (state) {
       return state.user
     },
-  },
 
-  mutations: {
+}
+
+const mutations = {
     SET_AUTHENTICATED (state, value) {
       state.authenticated = value
     },
@@ -33,41 +34,34 @@ export default {
       state.user.avatar = avatar
 
     }
-  },
+}
 
-  actions: {
+const actions =  {
     signIn ({ commit }, credentials) {
+    AuthAPI.csrfToken().then((response) => {
+      console.log(response);
+      
+      AuthAPI.login(credentials).then((response) => {
+        commit('SET_AUTHENTICATED', true)
+        console.log(response.data.user)
+        commit('SET_USER', response.data.user)
+      }).catch(() => {
+        commit('SET_AUTHENTICATED', false)
+        commit('SET_USER', null)
 
-    // AuthAPI.signIn(credentials).then((response) => {
-    //   console.log('accessed this')
-    //   commit('SET_AUTHENTICATED', true)
-    //   commit('SET_USER', response.data.user)
-    // }).catch( (error) => {
-    //   console.log('accessed this error manager')
-    //
-    //   commit('SET_AUTHENTICATED', false)
-    //   commit('SET_USER', null)
-    // })
-    axios.get('/sanctum/csrf-cookie');
-    // await axios.post('/login', credentials)
-    axios.post('/login', credentials).then((response) => {
-      commit('SET_AUTHENTICATED', true)
-      commit('SET_USER', response.data.user)
+        //Sending Notifications from here is possible.
+        this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: 'Invalid login credentials!'});
 
-      // this.$router.replace({ path: '/dashboard' })
-    }).catch(() => {
-      commit('SET_AUTHENTICATED', false)
-      commit('SET_USER', null)
-    })
-    },
+      })
+    });
 
-    async signOut ({ commit }) {
-      await axios.post('/logout').then((response) => {
+  },
+   signOut ({ commit }) {
+     axios.post('/logout').then((response) => {
         commit('SET_AUTHENTICATED', false)
         commit('SET_USER', null)
         // this.$router.replace({ path: '/login' })
       })
-
       // return dispatch('me')
     },
 
@@ -80,5 +74,13 @@ export default {
         commit('SET_USER', null)
       })
     }
-  }
+
+}
+
+export default {
+  namespaced: true,
+  state,
+  getters,
+  mutations,
+  actions
 }
