@@ -3,14 +3,21 @@ import Notifications from '@/vuex/modules/NotificationsManager';
 
 
 const state = {
-  list: {},
+  projects: {},
   filteredusers: {},
   project: {},
 };
 
+const getters = {
+  projects: state => state.projects,
+  project: state => state.project,
+  filteredusers: state => state.filteredusers
+
+};
+
 const mutations = {
-  SET_LIST: (state, list) => {
-    state.list = list;
+  SET_PROJECTS: (state, projects) => {
+    state.projects = projects;
   },
   SET_FILTEREDUSERS: (state, filteredusers) => {
     state.filteredusers = filteredusers;
@@ -23,6 +30,13 @@ const mutations = {
 
 
 const actions = {
+  assignUser({commit, dispatch}, project){
+    return APIService.assignUser(project)
+    .then((message) => {
+      console.log(message)
+      this.dispatch('NotificationsManager/setNotificationStatus', message); });
+  },
+
   filterUsers({commit, dispatch}, params) {
     return APIService.projectusers(params)
       .then((project) => { commit('SET_FILTEREDUSERS', project); });
@@ -34,8 +48,9 @@ const actions = {
 
   getAll({commit, dispatch}, params) {
     return APIService.getAll(params)
-      .then(({list, meta}) => {
-        commit('SET_LIST', list);
+      .then((projects) => {
+        console.log(projects)
+        commit('SET_PROJECTS', projects);
       });
   },
 
@@ -59,12 +74,7 @@ const actions = {
   }
 };
 
-const getters = {
-  list: state => state.list,
-  project: state => state.project,
-  filteredusers: state => state.filteredusers
 
-};
 
 const projects = {
   namespaced: true,

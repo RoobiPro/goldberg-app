@@ -573,8 +573,8 @@ export default {
     },
     async getProjects() {
       await this.$store.dispatch("ProjectsManager/getAll");
-      const projectsJson = await this.$store.getters["ProjectsManager/list"];
-      this.projects = projectsJson.map(projects => ({
+      const projectsJson = await this.$store.getters["ProjectsManager/projects"];
+      this.projects = projectsJson.projects.map(projects => ({
         ...projects,
         project_start_date: this.formatDate(projects.project_start_date)
       }))
@@ -616,30 +616,9 @@ export default {
         id: this.selectedUser.id,
         role: this.newrole
       }
-      axios.post(`/assignuser`, projectData)
-        .then(response => {
-          if (response.status == 200) {
-            this.getProjects();
-            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-              type: 'green',
-              text: response.data
-            });
-          } else {
-            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-              type: 'red',
-              text: response.data
-            });
-          }
-        }).catch(error => {
-          if (error.response.status != 200) {
-            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-              type: 'red',
-              text: response.data
-            });
-          }
-        });
+      this.$store.dispatch('ProjectsManager/assignUser', projectData)
       this.getProjects(),
-        this.projectToAssing = ''
+      this.projectToAssing = ''
       this.selectedUser.id = ''
       this.newrole = 0
       this.selectedUser = undefined

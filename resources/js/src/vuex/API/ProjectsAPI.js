@@ -9,15 +9,37 @@ function projectusers(id) {
     });
 }
 
+function assignUser(user) {
+  return axios.post(`/assignuser`, user)
+    .then(response => {
+      console.log(response)
+      if (response.status == 200) {
+        return {
+          type: 'green',
+          text: response.data
+        }
+      } else {
+        return {
+          type: 'red',
+          text: response.data
+        }
+      }
+    }).catch(error => {
+      // if (error.response.status != 200) {
+      //   return message = {
+      //     type: 'red',
+      //     text: response.data
+      //   }
+      // }
+    });
+}
+
 function getAll(params) {
-  // options = '?page[number]=1&page[size]=5'
   return axios.get(`/api/projects`)
     .then(response => {
-      // console.log(response.data.meta);
+      console.log(response)
       return {
-        // list: jsona.deserialize(response.data),
-        list: response.data.data,
-        meta: response.data.meta
+        projects: response.data.data,
       };
     });
 }
@@ -80,5 +102,6 @@ export default {
   update,
   destroy,
   upload,
-  projectusers
+  projectusers,
+  assignUser
 };
