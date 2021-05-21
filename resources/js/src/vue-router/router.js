@@ -177,7 +177,13 @@ const router = new Router({
   routes
 })
 
+
+
+
+
+
 router.beforeEach(async (to, from, next) => {
+  // console.log(from.name=='Dashboard')
   await store.dispatch("AuthManager/refresh")
   const authUser = store.getters["AuthManager/authenticated"];
   const reqAuth = to.matched.some((record) => record.meta.requiresAuth);

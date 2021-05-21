@@ -15,6 +15,8 @@ function listClients(params) {
     });
 }
 
+function updatePassword (userid, password){ return axios.patch(`/api/users/`+userid, password) }
+
 function listUsers(params) {
 
   // options = '?page[number]=1&page[size]=5'
@@ -69,16 +71,8 @@ function add(user) {
 }
 
 function update(user) {
-  const payload = {
-    stuff: user,
-    includeNames: []
-  };
+  return axios.patch('/api/users/'+user.id, user)
 
-
-  return axios.patch(`/users/${user.id}`, payload)
-    .then(response => {
-      return response.data;
-    });
 }
 
 function destroy(id) {

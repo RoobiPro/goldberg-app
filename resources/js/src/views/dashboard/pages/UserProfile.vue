@@ -130,21 +130,7 @@ export default {
   methods: {
     updateProfile(){
       console.log(this.myuser.name)
-
-      axios.patch('/api/users/'+this.myuser.id, this.myuser)        .then(response => {
-                if(response.status == 200){
-                  this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'green', text: response.data});
-                  this.$store.commit('AuthManager/SET_USER', JSON.parse(JSON.stringify(this.myuser)));
-
-                }
-                else{
-                  this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: response.data});
-                }
-              }).catch(error => {
-                if (error.response.status != 200){
-                  this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: response.data});
-                }
-              });
+      this.$store.dispatch('AuthManager/update', this.myuser)
     },
     updateAvatar() {
       console.log("uploading")

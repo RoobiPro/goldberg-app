@@ -36,8 +36,11 @@ class AuthController extends Controller
 
   // Refresh the User
   public function refresh(Request $request){
+    if(Auth::user()){
+      return response()->json([ "success" => true, "user" => Auth::user() ], 200);
+    }
+    return response()->json([ "success" => false ], 200);
 
-    return response()->json([ "success" => true, "user" => Auth::user() ], 200);
 
   }
 

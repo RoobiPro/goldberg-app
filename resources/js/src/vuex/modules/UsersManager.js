@@ -86,7 +86,18 @@ const actions = {
 
   update({commit, dispatch}, params) {
     return APIService.update(params)
-      .then((user) => { commit('SET_RESOURCE', user); });
+      .then((response) => {
+        console.log(response)
+        commit('SET_RESOURCE', response.user);
+        if(response.data.success){
+          // this.commit('AuthManager/SET_USER', response.data.user);
+
+          this.dispatch('NotificationsManager/setNotificationStatus', {type: 'green', text: response.data.msg});
+        }
+        else{
+          this.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: response.data.msg});
+        }
+       });
   },
 
   destroy({commit, dispatch}, params) {

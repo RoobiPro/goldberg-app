@@ -351,7 +351,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { validationMixin } from 'vuelidate'
 import { required, sameAs, minLength, email } from 'vuelidate/lib/validators'
 
@@ -556,24 +555,14 @@ export default {
         }
         else{
           console.log("valid")
-          var password = {
+          var user={
+            id: this.newPasswordId,
             password: this.newPassword
           }
-
-          axios.patch(`/api/users/`+this.newPasswordId, password)
-            .then(response => {
-              if(response.status == 200){
-                this.getList();
-                this.close();
-                this.newPassword = ''
-                this.newPassword_confirm = ''
-                this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'green', text: response.data});
-
-              }
-              else{
-                this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: response.data});
-              }
-            });
+          this.$store.dispatch('UsersManager/update', user)
+          this.newPassword = ''
+          this.newPassword_confirm = ''
+          this.newPasswordDialog = false
           this.$v.$reset()
         }
       },
@@ -587,19 +576,11 @@ export default {
           console.log('Invalid')
         }
         else{
-          console.log("valid")
-          axios.patch(`/api/users/`+this.editUser.id, this.editUser)
-            .then(response => {
-              if(response.status == 200){
-                this.getList();
-                this.close();
-                this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'green', text: response.data});
+          console.log(this.editUser)
 
-              }
-              else{
-                this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: response.data});
-              }
-            });
+          await this.$store.dispatch('UsersManager/update', this.editUser)
+          this.getList();
+          this.close()
           this.$v.$reset()
         }
 

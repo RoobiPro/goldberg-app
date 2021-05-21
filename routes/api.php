@@ -28,6 +28,7 @@ use App\Http\Controllers\AuthController;
 // });
 
 
+Route::get('/refresh', [AuthController::class, 'refresh']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -43,7 +44,6 @@ Route::middleware('auth:sanctum')->group(function () {
     //   return "HURENSOHN";
     // });
     Route::post('upload_avatar', 'UserController@upload_user_photo');
-    Route::get('/refresh', [AuthController::class, 'refresh']);
     // Route::get('user', [UserController::class, 'getLoggedInUser']);
     // Route::apiResource('user', UserController::class);
 });

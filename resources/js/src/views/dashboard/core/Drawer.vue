@@ -1,6 +1,6 @@
 <template>
 <!-- :right="$vuetify.rtl" -->
-<v-navigation-drawer id="core-navigation-drawer" v-model="drawer" :dark="barColor !== 'rgba(228, 226, 226, 1), rgba(255, 255, 255, 0.7)'" :expand-on-hover="expandOnHover" :src="showBarImage ? barImage: '/public/images/blackbackground.png'"
+<v-navigation-drawer v-if="!hide" id="core-navigation-drawer" v-model="drawer" :dark="barColor !== 'rgba(228, 226, 226, 1), rgba(255, 255, 255, 0.7)'" :expand-on-hover="expandOnHover" :src="showBarImage ? barImage: '/public/images/blackbackground.png'"
   mobile-breakpoint="960" app width="260" v-bind="$attrs">
   <template v-slot:img="props">
     <v-img :gradient="`to bottom, ${barColor}`" v-bind="props" />
@@ -84,6 +84,7 @@ export default {
     },
   },
   data: () => ({
+    hide: false,
     useravatar: '',
     // user:'',
     isFetching: true,
@@ -205,7 +206,7 @@ export default {
     },
     drawer: {
       get() {
-        console.log(this.$store);
+        // console.log(this.$store);
         return this.$store.getters["LayoutManager/drawer"]
       },
       set(val) {
@@ -251,10 +252,12 @@ export default {
       this.user = this.$store.getters["AuthManager/user"]
     },
     async signOut() {
+      this.hide = true
       await this.signOutAction()
       this.$router.replace({
         name: 'Login'
       })
+      console.log(this.$router.history)
     },
     mapItem(item) {
       return {

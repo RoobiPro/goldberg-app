@@ -21,6 +21,12 @@ const getters = {
 
 }
 
+// axios.interceptors.response.use(function (response) {
+//   return response;
+// }, function (error) {
+//   return Promise.reject(error);
+// });
+
 const mutations = {
     SET_AUTHENTICATED (state, value) {
       state.authenticated = value
@@ -40,36 +46,63 @@ const actions =  {
     signIn ({ commit }, credentials) {
     AuthAPI.csrfToken().then((response) => {
       console.log(response);
-      
-      AuthAPI.login(credentials).then((response) => {
+    });
+      return AuthAPI.login(credentials).then((response) => {
         commit('SET_AUTHENTICATED', true)
         console.log(response.data.user)
         commit('SET_USER', response.data.user)
       }).catch(() => {
         commit('SET_AUTHENTICATED', false)
         commit('SET_USER', null)
-
+        // console.log(this.dis)
         //Sending Notifications from here is possible.
-        this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: 'Invalid login credentials!'});
+        this.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: 'Invalid login credentials!'});
+
 
       })
-    });
+
 
   },
    signOut ({ commit }) {
-     axios.post('/logout').then((response) => {
+     return AuthAPI.logout().then((response) => {
         commit('SET_AUTHENTICATED', false)
         commit('SET_USER', null)
+        // self.router.push('/login')
         // this.$router.replace({ path: '/login' })
       })
       // return dispatch('me')
     },
 
+    update({commit, dispatch}, params) {
+      return AuthAPI.update(params)
+        .then((response) => {
+          console.log(response)
+          // commit('SET_RESOURCE', response.user);
+          if(response.data.success){
+            commit('SET_USER', response.data.user);
+
+            this.dispatch('NotificationsManager/setNotificationStatus', {type: 'green', text: response.data.msg});
+          }
+          else{
+            this.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: response.data.msg});
+          }
+         });
+    },
+
     refresh ({ commit }) {
-      return axios.get('/api/refresh').then((response) => {
-        commit('SET_AUTHENTICATED', true)
-        commit('SET_USER', response.data.user)
+      return AuthAPI.getAuthStatus().then((response) => {
+        console.log(response)
+        if(response.data.success==true){
+          commit('SET_AUTHENTICATED', true)
+          commit('SET_USER', response.data.user)
+        }
+        else{
+          commit('SET_AUTHENTICATED', false)
+          commit('SET_USER', null)
+        }
+
       }).catch(() => {
+        console.log("401 error")
         commit('SET_AUTHENTICATED', false)
         commit('SET_USER', null)
       })
