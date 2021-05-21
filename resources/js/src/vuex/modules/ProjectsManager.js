@@ -30,11 +30,33 @@ const mutations = {
 
 
 const actions = {
+  unassignUser({commit, dispatch}, project){
+    return APIService.unassignUser(project)
+      .then( (message) => {
+        this.dispatch('NotificationsManager/setNotificationStatus', message);
+      });
+  },
+
+  reassignUser({commit, dispatch}, project){
+    return APIService.reassignUser(project)
+      .then( (message) => {
+        this.dispatch('NotificationsManager/setNotificationStatus', message);
+      });
+  },
+
+  assignClient({commit, dispatch}, project){
+    return APIService.assignClient(project)
+    .then((message) => {
+      // console.log(message)
+      this.dispatch('NotificationsManager/setNotificationStatus', message); });
+  },
+
   assignUser({commit, dispatch}, project){
     return APIService.assignUser(project)
     .then((message) => {
-      console.log(message)
-      this.dispatch('NotificationsManager/setNotificationStatus', message); });
+      // console.log(message)
+      this.dispatch('NotificationsManager/setNotificationStatus', message);
+    });
   },
 
   filterUsers({commit, dispatch}, params) {
@@ -49,7 +71,7 @@ const actions = {
   getAll({commit, dispatch}, params) {
     return APIService.getAll(params)
       .then((projects) => {
-        console.log(projects)
+        // console.log(projects)
         commit('SET_PROJECTS', projects);
       });
   },
@@ -59,18 +81,27 @@ const actions = {
       .then((project) => { commit('SET_PROJECT', project); });
   },
 
-  create({commit, dispatch}, params) {
-    return APIService.add(params)
-      .then((project) => { commit('SET_RESOURCE', project); });
+  create({commit, dispatch}, project) {
+    return APIService.create(project)
+      .then((message) => {
+        // console.log(message)
+        this.dispatch('NotificationsManager/setNotificationStatus', message);
+      });
   },
 
-  update({commit, dispatch}, params) {
-    return APIService.update(params)
-      .then((project) => { commit('SET_RESOURCE', project); });
+  update({commit, dispatch}, project) {
+    return APIService.update(project)
+      .then((message) => {
+        this.dispatch('NotificationsManager/setNotificationStatus', message);
+      });
   },
 
-  destroy({commit, dispatch}, params) {
-    return APIService.destroy(params);
+  destroy({commit, dispatch}, project) {
+    // console.log(project)
+    return APIService.destroy(project)
+      .then((message) => {
+        this.dispatch('NotificationsManager/setNotificationStatus', message);
+    });
   }
 };
 

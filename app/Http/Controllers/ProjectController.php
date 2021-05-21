@@ -41,19 +41,25 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        $project = new Project;
-        $project->name = $request->name;
-        if ($request->has('client_id')){
-          $project->client_id = $request->client_id;
-        }
-        $project->project_start_date = $request->date;
-        // $project->project_start_date =  Carbon::parse($this->project_start_date)->format('d.m.Y');
 
-        $project->coordinates_x = $request->coordinates_x;
-        $project->coordinates_y = $request->coordinates_y;
-        $project->coordinates_z = $request->coordinates_z;
+        $project = new Project;
+        // if ($request->has('client_id')){
+        //   $project->client_id = $request->client_id;
+        // }
+        $data = $request->only($project->getFillable());
+        $project->fill($data);
+        $project->project_start_date = $request->date;
+
+        // $project->fill($data)->save();
+        // $project->project_start_date =  Carbon::parse($this->project_start_date)->format('d.m.Y');
+        // $project->name = $request->name;
+        // $project->project_start_date = $request->date;
+        // $project->coordinates_x = $request->coordinates_x;
+        // $project->coordinates_y = $request->coordinates_y;
+        // $project->coordinates_z = $request->coordinates_z;
         $project->save();
-        return response()->json("Project successfully created!", 200);
+        return response()->json([ "success" => true, "msg" => "Project successfully created!", "project" => $project ], 200);
+        // return response()->json("Project successfully created!", 200);
     }
 
     /**
@@ -143,7 +149,9 @@ class ProjectController extends Controller
         $project->coordinates_y = $request->coordinates_y;
         $project->coordinates_z = $request->coordinates_z;
         $project->save();
-        return response()->json("Project successfully updated!", 200);
+        // return response()->json("Project successfully updated!", 200);
+        return response()->json([ "success" => true, "msg" => "Project successfully updated!"], 200);
+
     }
 
     public function assignUser(Request $request)
@@ -180,7 +188,8 @@ class ProjectController extends Controller
       $project = Project::find($request->project_id);
       $project->users()->detach($user);
       $project->users()->attach($user, ['role' => $request->role]);
-      return response()->json("User role successfully changed!", 200);
+      return response()->json([ "success" => true, "msg" => "User role successfully changed!"], 200);
+      // return response()->json("User role successfully changed!", 200);
     }
 
     /**
@@ -192,9 +201,14 @@ class ProjectController extends Controller
     public function destroy($id)
     {
       $project = Project::find($id);
-      $project->users()->detach();
+
+      // Find Method to detach from PIVOT TABLE
+      // if($project->users()){
+      //   $project->users()->detach();
+      // }
       $project->delete();
-      return response()->json("Project successfully deleted!", 200);
+      return response()->json([ "success" => true, "msg" => "Project successfully deleted!"], 200);
+
     }
     public function getProjectUsers($id){
 

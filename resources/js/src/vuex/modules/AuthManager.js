@@ -45,11 +45,11 @@ const mutations = {
 const actions =  {
     signIn ({ commit }, credentials) {
     AuthAPI.csrfToken().then((response) => {
-      console.log(response);
+      // console.log(response);
     });
       return AuthAPI.login(credentials).then((response) => {
         commit('SET_AUTHENTICATED', true)
-        console.log(response.data.user)
+        // console.log(response.data.user)
         commit('SET_USER', response.data.user)
       }).catch(() => {
         commit('SET_AUTHENTICATED', false)
@@ -76,7 +76,7 @@ const actions =  {
     update({commit, dispatch}, params) {
       return AuthAPI.update(params)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           // commit('SET_RESOURCE', response.user);
           if(response.data.success){
             commit('SET_USER', response.data.user);
@@ -91,7 +91,7 @@ const actions =  {
 
     refresh ({ commit }) {
       return AuthAPI.getAuthStatus().then((response) => {
-        console.log(response)
+        // console.log(response)
         if(response.data.success==true){
           commit('SET_AUTHENTICATED', true)
           commit('SET_USER', response.data.user)
@@ -102,7 +102,7 @@ const actions =  {
         }
 
       }).catch(() => {
-        console.log("401 error")
+        // console.log("401 error")
         commit('SET_AUTHENTICATED', false)
         commit('SET_USER', null)
       })

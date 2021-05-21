@@ -603,7 +603,7 @@ export default {
       }
 
     },
-    saveAssignedUser() {
+    async saveAssignedUser() {
       if (this.selectedUser === undefined) {
         this.$store.dispatch('NotificationsManager/setNotificationStatus', {
           type: 'red',
@@ -616,7 +616,8 @@ export default {
         id: this.selectedUser.id,
         role: this.newrole
       }
-      this.$store.dispatch('ProjectsManager/assignUser', projectData)
+      await this.$store.dispatch('ProjectsManager/assignUser', projectData)
+
       this.getProjects(),
       this.projectToAssing = ''
       this.selectedUser.id = ''
@@ -630,7 +631,7 @@ export default {
       this.projectToAssing = project_id;
       this.assignClientDialog = true;
     },
-    saveAssignedClient() {
+    async saveAssignedClient() {
       if (this.selectedClient === undefined) {
         this.$store.dispatch('NotificationsManager/setNotificationStatus', {
           type: 'red',
@@ -642,28 +643,9 @@ export default {
         projectId: this.projectToAssing,
         client_id: this.selectedClient.id,
       }
-      axios.post(`/assignclient`, ClientData)
-        .then(response => {
-          if (response.status == 200) {
-            this.getProjects();
-            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-              type: 'green',
-              text: response.data
-            });
-          } else {
-            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-              type: 'red',
-              text: response.data
-            });
-          }
-        }).catch(error => {
-          if (error.response.status != 200) {
-            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-              type: 'red',
-              text: response.data
-            });
-          }
-        });
+
+      await this.$store.dispatch('ProjectsManager/assignClient', ClientData);
+      this.getProjects(),
       this.selectedClient = undefined;
       this.assignClientDialog = false;
       this.closeDialogs()
@@ -674,38 +656,18 @@ export default {
       this.unassignUserDialog = true;
       this.UnassignFromProjectID = item.pivot.project_id
     },
-    saveUnassignUser() {
+    async saveUnassignUser() {
       var deleteUser = {
         user_id: this.UserToUnassign.id,
         project_id: this.UnassignFromProjectID
       }
-      axios.post(`/unassignUser`, deleteUser)
-        .then(response => {
-          if (response.status == 200) {
-            this.getProjects();
-            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-              type: 'green',
-              text: response.data
-            });
-          } else {
-            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-              type: 'red',
-              text: response.data
-            });
-          }
-        }).catch(error => {
-          if (error.response.status != 200) {
-            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-              type: 'red',
-              text: response.data
-            });
-          }
-        });
+
+      await this.$store.dispatch('ProjectsManager/unassignUser', deleteUser)
       this.getProjects(),
-        this.closeDialogs()
+      this.closeDialogs()
     },
 
-    saveNewProject() {
+    async saveNewProject() {
       var conditionOne = false;
       var conditionTwo = false;
       if (!this.newProject.name) {
@@ -726,30 +688,17 @@ export default {
       }
 
       if (conditionOne && conditionTwo) {
-        axios.post(`/api/projects`, this.newProject)
-          .then(response => {
-            if (response.status == 200) {
-              this.getProjects();
-              this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-                type: 'green',
-                text: response.data
-              });
-              this.newProject = {
-                name: null,
-                date: new Date().toISOString().substr(0, 10),
-                coordinates_x: null,
-                coordinates_y: null,
-                coordinates_z: null,
-              }
-            } else {
-              this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-                type: 'red',
-                text: response.data
-              });
-            }
-          });
+        await this.$store.dispatch('ProjectsManager/create', this.newProject)
+        this.getProjects()
+        // axios.post(`/api/projects`, this.newProject)
+        this.newProject = {
+            name: null,
+            date: new Date().toISOString().substr(0, 10),
+            coordinates_x: null,
+            coordinates_y: null,
+            coordinates_z: null,
+          }
         this.newProjectDialog = false;
-
         this.closeDialogs()
       }
 
@@ -762,36 +711,38 @@ export default {
       this.UserToEdit.project_id = item.pivot.project_id
       this.editUserRoleDialog = true
     },
-    saveEditUserRole() {
-      axios.post(`/reassignUser`, this.UserToEdit)
-        .then(response => {
-          if (response.status == 200) {
-            this.getProjects();
-            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-              type: 'green',
-              text: response.data
-            });
-          } else {
-            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-              type: 'red',
-              text: response.data
-            });
-          }
-        }).catch(error => {
-          if (error.response.status != 200) {
-            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-              type: 'red',
-              text: response.data
-            });
-          }
-        });
+    async saveEditUserRole() {
+      await this.$store.dispatch('ProjectsManager/reassignUser', this.UserToEdit)
+      // axios.post(`/reassignUser`, this.UserToEdit)
+      //   .then(response => {
+      //     if (response.status == 200) {
+      //       this.getProjects();
+      //       this.$store.dispatch('NotificationsManager/setNotificationStatus', {
+      //         type: 'green',
+      //         text: response.data
+      //       });
+      //     } else {
+      //       this.$store.dispatch('NotificationsManager/setNotificationStatus', {
+      //         type: 'red',
+      //         text: response.data
+      //       });
+      //     }
+      //   }).catch(error => {
+      //     if (error.response.status != 200) {
+      //       this.$store.dispatch('NotificationsManager/setNotificationStatus', {
+      //         type: 'red',
+      //         text: response.data
+      //       });
+      //     }
+      //   });
+      this.getProjects()
       this.UserToEdit = {
           name: '',
           role: 0,
           user_id: 0,
           project_id: 0
         },
-        this.editUserRoleDialog = false;
+      this.editUserRoleDialog = false;
       this.closeDialogs()
     },
 
@@ -806,24 +757,27 @@ export default {
       this.projectToEdit.coordinates_z = item.coordinates_z
     },
 
-    saveEditProject() {
-      axios.patch(`/api/projects/` + this.projectToEdit.id, this.projectToEdit)
-        .then(response => {
-          if (response.status == 200) {
-            this.getProjects();
-            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-              type: 'green',
-              text: response.data
-            });
-            // this.newProject.name = null
-            this.closeDialogs();
-          } else {
-            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-              type: 'red',
-              text: response.data
-            });
-          }
-        });
+    async saveEditProject() {
+      await this.$store.dispatch('ProjectsManager/update', this.projectToEdit)
+      // axios.patch(`/api/projects/` + this.projectToEdit.id, this.projectToEdit)
+      //   .then(response => {
+      //     if (response.status == 200) {
+      //       this.getProjects();
+      //       this.$store.dispatch('NotificationsManager/setNotificationStatus', {
+      //         type: 'green',
+      //         text: response.data
+      //       });
+      //       // this.newProject.name = null
+      //       this.closeDialogs();
+      //     } else {
+      //       this.$store.dispatch('NotificationsManager/setNotificationStatus', {
+      //         type: 'red',
+      //         text: response.data
+      //       });
+      //     }
+      //   });
+      this.getProjects()
+      this.closeDialogs();
     },
 
     getBottomLine(project_id, index) {
@@ -840,29 +794,31 @@ export default {
       this.deleteProjectDialog = true;
     },
 
-    deleteProjectConfirm() {
-      axios.delete(`/api/projects/` + this.projectToDelete)
-        .then(response => {
-          if (response.status == 200) {
-            this.getProjects();
-            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-              type: 'green',
-              text: response.data
-            });
-          } else {
-            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-              type: 'red',
-              text: response.data
-            });
-          }
-        }).catch(error => {
-          if (error.response.status != 200) {
-            this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-              type: 'red',
-              text: response.data
-            });
-          }
-        });
+    async deleteProjectConfirm() {
+      console.log(this.projectToDelete)
+      await this.$store.dispatch('ProjectsManager/destroy', this.projectToDelete)
+      // axios.delete(`/api/projects/` + this.projectToDelete)
+      //   .then(response => {
+      //     if (response.status == 200) {
+      //       this.getProjects();
+      //       this.$store.dispatch('NotificationsManager/setNotificationStatus', {
+      //         type: 'green',
+      //         text: response.data
+      //       });
+      //     } else {
+      //       this.$store.dispatch('NotificationsManager/setNotificationStatus', {
+      //         type: 'red',
+      //         text: response.data
+      //       });
+      //     }
+      //   }).catch(error => {
+      //     if (error.response.status != 200) {
+      //       this.$store.dispatch('NotificationsManager/setNotificationStatus', {
+      //         type: 'red',
+      //         text: response.data
+      //       });
+      //     }
+      //   });
       this.getProjects()
       this.closeDialogs()
     },

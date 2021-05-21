@@ -20,7 +20,7 @@ class CreateProjectsTable extends Migration
             $table->date('project_start_date')->nullable();
             $table->decimal('coordinates_x', 10, 7)->nullable();
             $table->decimal('coordinates_y', 10, 7)->nullable();
-            $table->float('coordinates_z', 6, 4)->nullable();
+            $table->decimal('coordinates_z', 6, 4)->nullable();
             $table->timestamps();
         });
     }
