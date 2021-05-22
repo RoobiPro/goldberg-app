@@ -78,7 +78,6 @@
 import { validationMixin } from 'vuelidate'
 import { required, sameAs, minLength, email } from 'vuelidate/lib/validators'
 import { mapActions } from 'vuex'
-import axios from 'axios'
 export default {
   mounted() {
     this.width = this.$refs.mycard.offsetWidth;

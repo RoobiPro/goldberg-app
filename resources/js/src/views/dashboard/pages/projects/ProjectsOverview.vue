@@ -55,8 +55,6 @@ style="margin-top:10vh;">
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
   data: vm => ({
     mydate:null,
@@ -202,18 +200,8 @@ export default {
     },
     async getProjects() {
       var me = await this.$store.getters["AuthManager/user"];
-      console.log(me)
-      axios.get(`/getUserProjects/`+me.id)
-        .then(response => {
-          if(response.status == 200){
-            const projectsJson = response.data
-            this.projects = projectsJson.map(projects => ({...projects, project_start_date: this.formatDate(projects.project_start_date), role: this.getRoleName(projects.pivot.role)}))
-            console.log(response)
-          }
-          else{
-            this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: response.data});
-          }
-        })
+      await this.$store.dispatch('UsersManager/userprojects', me.id);
+      this.projects = await this.$store.getters["UsersManager/projects"];
     },
     async openProject(item){
       await this.$store.dispatch('ProjectsManager/selectedProject', item);

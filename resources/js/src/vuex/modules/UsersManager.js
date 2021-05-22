@@ -5,6 +5,7 @@ const state = {
   list: {},
   user: {},
   meta: {},
+  projects:{},
   response: {},
   users_role: {},
   clients_role: {},
@@ -38,9 +39,20 @@ const mutations = {
   SET_ADMINSROLE: (state, adminsrole) => {
     state.admins_role = adminsrole;
   },
+  SET_USERPROJECTS: (state, projects) => {
+    state.projects = projects
+  }
 };
 
 const actions = {
+
+  userprojects({commit, dispatch}, params) {
+    return APIService.getUserProjects(params)
+      .then((project) => {
+        commit('SET_USERPROJECTS', project);
+        // this.dispatch('NotificationsManager/setNotificationStatus', message);
+      });
+  },
 
   list({commit, dispatch}, params) {
     return APIService.list(params)
@@ -114,6 +126,7 @@ const getters = {
   users_role: state => state.users_role,
   clients_role: state => state.clients_role,
   admins_role: state => state.admins_role,
+  projects: state => state.projects
 
 };
 

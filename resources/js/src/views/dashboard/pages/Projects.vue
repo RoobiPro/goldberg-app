@@ -421,8 +421,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
   data: vm => ({
     itemsPerPage: [10, 20, 30, -1],
@@ -690,7 +688,6 @@ export default {
       if (conditionOne && conditionTwo) {
         await this.$store.dispatch('ProjectsManager/create', this.newProject)
         this.getProjects()
-        // axios.post(`/api/projects`, this.newProject)
         this.newProject = {
             name: null,
             date: new Date().toISOString().substr(0, 10),
@@ -713,28 +710,6 @@ export default {
     },
     async saveEditUserRole() {
       await this.$store.dispatch('ProjectsManager/reassignUser', this.UserToEdit)
-      // axios.post(`/reassignUser`, this.UserToEdit)
-      //   .then(response => {
-      //     if (response.status == 200) {
-      //       this.getProjects();
-      //       this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-      //         type: 'green',
-      //         text: response.data
-      //       });
-      //     } else {
-      //       this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-      //         type: 'red',
-      //         text: response.data
-      //       });
-      //     }
-      //   }).catch(error => {
-      //     if (error.response.status != 200) {
-      //       this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-      //         type: 'red',
-      //         text: response.data
-      //       });
-      //     }
-      //   });
       this.getProjects()
       this.UserToEdit = {
           name: '',
@@ -759,23 +734,6 @@ export default {
 
     async saveEditProject() {
       await this.$store.dispatch('ProjectsManager/update', this.projectToEdit)
-      // axios.patch(`/api/projects/` + this.projectToEdit.id, this.projectToEdit)
-      //   .then(response => {
-      //     if (response.status == 200) {
-      //       this.getProjects();
-      //       this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-      //         type: 'green',
-      //         text: response.data
-      //       });
-      //       // this.newProject.name = null
-      //       this.closeDialogs();
-      //     } else {
-      //       this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-      //         type: 'red',
-      //         text: response.data
-      //       });
-      //     }
-      //   });
       this.getProjects()
       this.closeDialogs();
     },
@@ -797,28 +755,6 @@ export default {
     async deleteProjectConfirm() {
       console.log(this.projectToDelete)
       await this.$store.dispatch('ProjectsManager/destroy', this.projectToDelete)
-      // axios.delete(`/api/projects/` + this.projectToDelete)
-      //   .then(response => {
-      //     if (response.status == 200) {
-      //       this.getProjects();
-      //       this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-      //         type: 'green',
-      //         text: response.data
-      //       });
-      //     } else {
-      //       this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-      //         type: 'red',
-      //         text: response.data
-      //       });
-      //     }
-      //   }).catch(error => {
-      //     if (error.response.status != 200) {
-      //       this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-      //         type: 'red',
-      //         text: response.data
-      //       });
-      //     }
-      //   });
       this.getProjects()
       this.closeDialogs()
     },

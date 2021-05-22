@@ -9,6 +9,8 @@ use App\Models\User;
 use Illuminate\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
+
 
 class UserController extends Controller
 {
@@ -68,8 +70,18 @@ class UserController extends Controller
     }
 
     public function getUserProjects($id){
+      // return true;
       $user = User::find($id);
-      return response()->json($user->projects, 200);
+      // return $user;
+      $projects = $user->projects;
+      $index = 0;
+
+      foreach ($projects as $project){
+        $projects[$index]->project_start_date = Carbon::parse($projects[$index]->project_start_date)->format('d.m.Y');
+        $projects[$index]->role = getRoleName($projects[$index]->pivot->role);
+        $index++;
+      }
+      return response()->json($projects, 200);
     }
 
     /**

@@ -15,6 +15,14 @@ function listClients(params) {
     });
 }
 
+function getUserProjects(id){
+  return axios.get('/getUserProjects/'+id)
+    .then(response => {
+      console.log(response);
+      return response.data;
+    });
+}
+
 function updatePassword (userid, password){ return axios.patch(`/api/users/`+userid, password) }
 
 function listUsers(params) {
@@ -96,6 +104,7 @@ function upload(user, image) {
 }
 
 export default {
+  getUserProjects,
   listUsers,
   listClients,
   list,
