@@ -126,12 +126,12 @@
   </v-card>
 </template>
 <script>
-import axios from 'axios'
   export default {
     data: () => ({
       ready: false,
       project: null,
-      campaign: null,
+      // campaign: null,
+      campaign: {name:'John Doe'},
       me: null
     }),
     mounted() {
@@ -155,34 +155,26 @@ import axios from 'axios'
         console.log('openSpatial')
       },
       async getCampaign(){
-        await axios.get('/getCampaign/'+this.$route.params.campaign_id).then(response => {
-          if(response.status == 200){
-            this.campaign = response.data
-            console.log(this.campaign)
-            this.ready = true
-          }
-          });
+        await this.$store.dispatch('CampaignManager/getcampaign', this.$route.params.campaign_id);
+        this.campaign = this.$store.getters["CampaignManager/campaign"];
+        this.ready = true
       },
       async checkAuth(){
         this.me = await this.$store.getters["AuthManager/user"];
-        axios.get(`/getUserProjects/`+this.me.id)
-          .then(response => {
-            if(response.status == 200){
-              const projectsJson = response.data
-              console.log(this.$route.params.project_id)
-              const projects = projectsJson.map(projects => ({...projects}))
-              this.project = projects.filter(obj => {
-                return obj.id == this.$route.params.project_id
-              })[0]
-              if(this.project==undefined){
-                console.log('Not authorized!')
-                this.$router.push({ path: '/myprojects' })
-              }
-            }
-            else{
-              this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: response.data});
-            }
-          })
+        console.log(this.me)
+        await this.$store.dispatch('UsersManager/userprojects', this.me.id);
+        this.projects = await this.$store.getters["UsersManager/projects"];
+        this.project = this.projects.filter(obj => {
+          return obj.id == this.$route.params.project_id
+        })[0]
+        if(this.project==undefined){
+          console.log('Not authorized!')
+          this.$router.push({ path: '/myprojects' })
+        }
+        else{
+          console.log('authorized!')
+          // this.ready = true
+        }
       },
     }
   }

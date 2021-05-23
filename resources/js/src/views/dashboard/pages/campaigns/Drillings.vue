@@ -220,7 +220,6 @@
   </v-container>
 </template>
 <script>
-import axios from 'axios'
 import { validationMixin } from 'vuelidate'
 import { required, decimal, numeric } from 'vuelidate/lib/validators'
   export default {
@@ -421,31 +420,23 @@ import { required, decimal, numeric } from 'vuelidate/lib/validators'
           console.log(this.newDrilling)
           this.newDrilling.campaign_id = this.campaign.id
           console.log('save drilling')
-          axios.post('/api/drillings', this.newDrilling).then(response => {
-            if(response.status == 200){
-              this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'green', text: response.data});
-              this.getCampaign()
-              this.newDillingDialog = false
-              this.$v.$reset()
-              this.newDrilling={
-                      campaign_id:'',
-                      coordinates_x:'',
-                      coordinates_y:'',
-                      coordinates_z:'',
-                      azimuth:'',
-                      dip:'',
-                      length:'',
-                      start_date: new Date().toISOString().substr(0, 10),
-                      start_date_formatted: this.formatDate(new Date().toISOString().substr(0, 10)),
-                      end_date: new Date().toISOString().substr(0, 10),
-                      end_date_formatted: this.formatDate(new Date().toISOString().substr(0, 10))
-                    }
-            }
-            else{
-              this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: response.data});
-            }
-          });
-
+          this.$store.dispatch('CampaignManager/createDrilling', this.newDrilling);
+          this.getCampaign()
+          this.newDillingDialog = false
+          this.$v.$reset()
+          this.newDrilling={
+            campaign_id:'',
+            coordinates_x:'',
+            coordinates_y:'',
+            coordinates_z:'',
+            azimuth:'',
+            dip:'',
+            length:'',
+            start_date: new Date().toISOString().substr(0, 10),
+            start_date_formatted: this.formatDate(new Date().toISOString().substr(0, 10)),
+            end_date: new Date().toISOString().substr(0, 10),
+            end_date_formatted: this.formatDate(new Date().toISOString().substr(0, 10))
+          }
         }
 
       },
@@ -465,37 +456,28 @@ import { required, decimal, numeric } from 'vuelidate/lib/validators'
         console.log('openSpatial')
       },
       async getCampaign(){
-        await axios.get('/getCampaign/'+this.$route.params.campaign_id).then(response => {
-          if(response.status == 200){
-            this.campaign = response.data
-            this.ready = true
-          }
-          });
-          console.log(this.project)
+
+        await this.$store.dispatch('CampaignManager/getcampaign', this.$route.params.campaign_id);
+        this.campaign = this.$store.getters["CampaignManager/campaign"];
+        this.ready = true
       },
       async checkAuth(){
         this.me = await this.$store.getters["AuthManager/user"];
-        axios.get(`/getUserProjects/`+this.me.id)
-          .then(response => {
-            if(response.status == 200){
-              const projectsJson = response.data
-              console.log(this.$route.params.project_id)
-              const projects = projectsJson.map(projects => ({...projects}))
-              this.project = projects.filter(obj => {
-                return obj.id == this.$route.params.project_id
-              })[0]
-              if(this.project==undefined){
-                console.log('Not authorized!')
-                this.$router.push({ path: '/myprojects' })
-              }
-              else{
-                this.auth=true;
-              }
-            }
-            else{
-              this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: response.data});
-            }
-          })
+        console.log(this.me)
+        await this.$store.dispatch('UsersManager/userprojects', this.me.id);
+        this.projects = await this.$store.getters["UsersManager/projects"];
+        this.project = this.projects.filter(obj => {
+          return obj.id == this.$route.params.project_id
+        })[0]
+        if(this.project==undefined){
+          console.log('Not authorized!')
+          this.$router.push({ path: '/myprojects' })
+        }
+        else{
+          console.log('authorized!')
+          this.auth=true
+          // this.ready = true
+        }
       },
     }
   }

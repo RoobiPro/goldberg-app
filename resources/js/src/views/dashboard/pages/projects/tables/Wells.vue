@@ -344,7 +344,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { validationMixin } from 'vuelidate'
 import { required, sameAs, minLength, email } from 'vuelidate/lib/validators'
 
@@ -540,64 +539,8 @@ export default {
         })
       },
 
-      saveNewPassword(){
-        this.$v.newPassword.$touch()
-        this.$v.newPassword_confirm.$touch()
-        if(this.$v.newPassword.$invalid ||
-          this.$v.newPassword_confirm.$invalid){
-          console.log('Invalid')
-        }
-        else{
-          console.log("valid")
-          var password = {
-            password: this.newPassword
-          }
-
-          axios.patch(`/api/users/`+this.newPasswordId, password)
-            .then(response => {
-              if(response.status == 200){
-                this.getList();
-                this.close();
-                this.newPassword = ''
-                this.newPassword_confirm = ''
-                this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'green', text: response.data});
-
-              }
-              else{
-                this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: response.data});
-              }
-            });
-          this.$v.$reset()
-        }
-      },
-
-      async saveEditUser () {
-        console.log(this.editUser)
-        this.$v.editUser.name.$touch()
-        this.$v.editUser.email.$touch()
-        if(this.$v.editUser.name.$invalid ||
-          this.$v.editUser.email.$invalid){
-          console.log('Invalid')
-        }
-        else{
-          console.log("valid")
-          axios.patch(`/api/users/`+this.editUser.id, this.editUser)
-            .then(response => {
-              if(response.status == 200){
-                this.getList();
-                this.close();
-                this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'green', text: response.data});
-
-              }
-              else{
-                this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: response.data});
-              }
-            });
-          this.$v.$reset()
-        }
 
 
-      },
       async save () {
 
 

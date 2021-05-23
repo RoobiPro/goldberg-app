@@ -31,7 +31,8 @@ class CampaignController extends Controller
         $campaign = new Campaign();
         $data = $request->only($campaign->getFillable());
         $campaign->fill($data)->save();
-        return response()->json("Campaign successfully created!", 200);
+        return response()->json([ "success" => true, "msg" => "Campaign successfully created!"], 200);
+
     }
 
     /**
