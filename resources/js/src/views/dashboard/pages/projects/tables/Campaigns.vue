@@ -236,14 +236,11 @@ export default {
   created() {
     this.getCampaings()
     this.getProject()
-    console.log(this.campaigns)
     this.$v.$reset()
     // this.getList();
   },
   methods: {
     openCampaign(item) {
-      console.log("opening campaign")
-      console.log(`/project/${this.$route.params.id}/campaign/${item.id}`)
       this.$router.push({
         path: `/project/${this.$route.params.id}/campaign/${item.id}`
       })
@@ -255,7 +252,6 @@ export default {
       this.project = projects.filter(obj => {
         return obj.id == this.$route.params.id
       })[0]
-      console.log(this.project)
       this.roleFetched = true
     },
     parseDate(date) {
@@ -268,9 +264,7 @@ export default {
       this.$v.newCampaign.description.$touch()
       if (this.$v.newCampaign.name.$invalid ||
         this.$v.newCampaign.description.$invalid) {
-        console.log('Invalid')
       } else {
-        console.log('saving..')
         this.newCampaign.project_id = this.$route.params.id
         await this.$store.dispatch('CampaignManager/create', this.newCampaign);
         this.getCampaings()
@@ -306,13 +300,11 @@ export default {
       this.editUserDialog = true
     },
     deleteItem(item) {
-      console.log(item)
       this.editedIndex = this.users.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
     },
     deleteItemConfirm() {
-      console.log(this.editedItem)
       this.users.splice(this.editedIndex, 1)
       this.$store.dispatch("UsersManager/destroy", this.editedItem.id).then((response) => {
         if (response.status == 200) {
@@ -321,7 +313,6 @@ export default {
             text: response.data
           });
         }
-        console.log(response.data)
       })
       this.closeDelete()
     },

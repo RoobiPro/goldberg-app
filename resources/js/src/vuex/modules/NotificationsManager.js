@@ -26,7 +26,6 @@ const actions = {
     // commit('SET_NOTIFICATIONSTATUS', false)
     commit('SET_NOTIFICATIONSTATUS', true)
     commit('SET_TYPE', payload.type)
-    console.log(payload.text)
     commit('SET_TEXT', payload.text)
     setTimeout(() => {  commit('SET_NOTIFICATIONSTATUS', false); }, 3500);
   }

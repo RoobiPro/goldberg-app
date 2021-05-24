@@ -20,9 +20,7 @@
               <i aria-hidden="true" class="v-icon notranslate mdi mdi-account theme--dark" style="font-size: 32px;">
               </i>
             </div>
-
             <v-toolbar-title>User Management</v-toolbar-title>
-
             <v-divider
               class="mx-4"
               inset
@@ -36,7 +34,6 @@
               class="mx-4"
               single-line
               hide-details
-
             ></v-text-field>
             <v-spacer></v-spacer>
             <v-divider
@@ -49,32 +46,25 @@
               dark
               class="mb-2"
               v-on:click="showNewUserDialog"
-
             >
               New User
               <v-icon size=26 :color="'white'" style="padding-left:10px">
                 mdi-account-plus
               </v-icon>
             </v-btn>
-
             <v-dialog
               ref="newUser"
               v-model="newUserDialog"
               max-width="500px"
             >
-
-
-
               <v-card>
                 <v-card-title>
                   <span class="headline">New User</span>
                 </v-card-title>
-
                 <v-card-text>
                   <v-container>
                     <v-row>
                       <v-form style="width: 100%">
-
                         <v-col cols="12" sm="12" md="12">
                           <v-text-field
                             v-model="user.name"
@@ -84,9 +74,7 @@
                             @input="$v.user.name.$touch()"
                             @blur="$v.user.name.$touch()"
                           ></v-text-field>
-
                         </v-col>
-
                         <v-col cols="12" sm="12" md="12">
                           <v-text-field
                             v-model="user.email"
@@ -98,38 +86,34 @@
                           ></v-text-field>
                           <!-- <v-text-field v-model="editedItem.email" label="E-mail" required></v-text-field> -->
                         </v-col>
-
                         <v-col cols="12" sm="12" md="12">
                         <v-text-field
                           label="Password"
                           v-model="user.password"
                           :error-messages="passwordErrors"
-                          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                          :type="show1 ? 'text' : 'password'"
+                          :append-icon="hidePw ? 'mdi-eye' : 'mdi-eye-off'"
+                          :type="hidePw ? 'text' : 'password'"
                           name="input-10-1"
                           hint="At least 8 characters"
                           counter
-                          @click:append="show1 = !show1"
+                          @click:append="hidePw = !hidePw"
                           required
                         ></v-text-field>
-
                         </v-col>
-
                         <v-col cols="12" sm="12" md="12">
                         <v-text-field
-                          :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                          :append-icon="hidePwRepeat ? 'mdi-eye' : 'mdi-eye-off'"
                           v-model="user.repeatPassword"
                           :error-messages="repeatPasswordErrors"
-                          :type="show2 ? 'text' : 'password'"
+                          :type="hidePwRepeat ? 'text' : 'password'"
                           name="input-10-2"
                           label="Password confirmation"
                           hint="At least 8 characters"
                           class="input-group--focused"
-                          @click:append="show2 = !show2"
+                          @click:append="hidePwRepeat = !hidePwRepeat"
                           required
                         ></v-text-field>
                         </v-col>
-
                         <v-col cols="12" sm="12" md="12">
                           <v-radio-group v-model="user.role" required>
                           <v-radio
@@ -149,62 +133,52 @@
                           ></v-radio>
                           </v-radio-group>
                         </v-col>
-
                     </v-form>
                     </v-row>
                   </v-container>
                 </v-card-text>
-
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
                   <v-btn color="blue darken-1" text @click="save">Create</v-btn>
                 </v-card-actions>
               </v-card>
-
             </v-dialog>
-
             <v-dialog
               v-model="editUserDialog"
               max-width="500px"
             >
-
               <v-card>
                 <v-card-title>
                   <span class="headline">Edit User</span>
                 </v-card-title>
-
                 <v-card-text>
                   <v-container>
                     <v-row>
                       <v-form style="width: 100%">
-
                         <v-col cols="12" sm="12" md="12">
                           <v-text-field
-                            v-model="editUser.name"
-                            :error-messages="editNameErrors"
+                            v-model="user.name"
+                            :error-messages="nameErrors"
                             label="Name"
                             required
-                            @input="$v.editUser.name.$touch()"
-                            @blur="$v.editUser.name.$touch()"
+                            @input="$v.user.name.$touch()"
+                            @blur="$v.user.name.$touch()"
                           ></v-text-field>
-
                         </v-col>
-
                         <v-col cols="12" sm="12" md="12">
                           <v-text-field
-                            v-model="editUser.email"
-                            :error-messages="editEmailErrors"
+                            v-model="user.email"
+                            :error-messages="emailErrors"
                             label="E-mail"
                             required
-                            @input="$v.editUser.email.$touch()"
-                            @blur="$v.editUser.email.$touch()"
+                            @input="$v.user.email.$touch()"
+                            @blur="$v.user.email.$touch()"
                           ></v-text-field>
                           <!-- <v-text-field v-model="editedItem.email" label="E-mail" required></v-text-field> -->
                         </v-col>
-
                         <v-col cols="12" sm="12" md="12">
-                          <v-radio-group v-model="editUser.role" required>
+                          <v-radio-group v-model="user.role" required>
                           <v-radio
                             :key="0"
                             :label="`User`"
@@ -222,86 +196,72 @@
                           ></v-radio>
                           </v-radio-group>
                         </v-col>
-
                     </v-form>
                     </v-row>
                   </v-container>
                 </v-card-text>
-
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-                  <v-btn color="blue darken-1" text @click="saveEditUser">Create</v-btn>
+                  <v-btn color="blue darken-1" text @click="saveEditUser">Update</v-btn>
                 </v-card-actions>
               </v-card>
-
             </v-dialog>
-
             <v-dialog
               v-model="newPasswordDialog"
               max-width="500px"
             >
-
               <v-card>
                 <v-card-title>
                   <span class="headline">New password for user</span>
                 </v-card-title>
-
                 <v-card-text>
                   <v-container>
                     <v-row>
                       <v-form style="width: 100%">
-
                         <v-col cols="12" sm="12" md="12">
                         <v-text-field
                           label="Password"
-                          v-model="newPassword"
-                          :error-messages="newPasswordErrors"
-                          @input="$v.newPassword.$touch()"
-                          @blur="$v.newPassword.$touch()"
-                          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                          :type="show1 ? 'text' : 'password'"
+                          v-model="user.password"
+                          :error-messages="passwordErrors"
+                          @input="$v.user.password.$touch()"
+                          @blur="$v.user.password.$touch()"
+                          :append-icon="hidePw ? 'mdi-eye' : 'mdi-eye-off'"
+                          :type="hidePw ? 'text' : 'password'"
                           name="input-10-1"
                           hint="At least 8 characters"
                           counter
-                          @click:append="show1 = !show1"
+                          @click:append="hidePw = !hidePw"
                           required
                         ></v-text-field>
-
                         </v-col>
-
                         <v-col cols="12" sm="12" md="12">
                         <v-text-field
-                          :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-                          v-model="newPassword_confirm"
-                          :error-messages="newRepeatPasswordErrors"
-                          @input="$v.newPassword_confirm.$touch()"
-                          @blur="$v.newPassword_confirm.$touch()"
-                          :type="show2 ? 'text' : 'password'"
+                          :append-icon="hidePwRepeat ? 'mdi-eye' : 'mdi-eye-off'"
+                          v-model="user.repeatPassword"
+                          :error-messages="repeatPasswordErrors"
+                          @input="$v.user.repeatPassword.$touch()"
+                          @blur="$v.user.repeatPassword.$touch()"
+                          :type="hidePwRepeat ? 'text' : 'password'"
                           name="input-10-2"
                           label="Password confirmation"
                           hint="At least 8 characters"
                           class="input-group--focused"
-                          @click:append="show2 = !show2"
+                          @click:append="hidePwRepeat = !hidePwRepeat"
                           required
                         ></v-text-field>
                         </v-col>
-
                     </v-form>
                     </v-row>
                   </v-container>
                 </v-card-text>
-
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-                  <v-btn color="blue darken-1" text @click="saveNewPassword">Create</v-btn>
+                  <v-btn color="blue darken-1" text @click="saveNewPassword">Update</v-btn>
                 </v-card-actions>
               </v-card>
-
             </v-dialog>
-
-
             <v-dialog v-model="dialogDelete" max-width="400px">
               <v-card>
                 <v-card-title class="text-heading-5">Are you sure you want to delete this User?</v-card-title>
@@ -313,7 +273,6 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
-
           </v-toolbar>
         </template>
         <template  v-slot:item.avatar="{ item }">
@@ -322,7 +281,6 @@
           </v-avatar>
         </template>
         <template  v-slot:item.actions="{ item }">
-
           <v-icon v-show="canBeDeleted(item)"
             small
             class="mr-2"
@@ -344,33 +302,19 @@
             mdi-delete
           </v-icon>
         </template>
-
       </v-data-table>
-
 </v-container>
 </template>
-
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, sameAs, minLength, email } from 'vuelidate/lib/validators'
-
 export default {
   mixins: [validationMixin],
   data: () => ({
-      newPasswordId: '',
-      newPassword: '',
-      newPassword_confirm: '',
-      editUser:{},
-      user:{
-        name:'',
-        email:'',
-        password: '',
-        repeatPassword: '',
-        role:0,
-      },
+      user: null,
       submitStatus: null,
-      show1: false,
-      show2: false,
+      hidePw: false,
+      hidePwRepeat: false,
       users: [],
       search: '',
       newUserDialog: false,
@@ -378,9 +322,7 @@ export default {
       newPasswordDialog: false,
       dialogDelete: false,
       editedIndex: -1,
-
     }),
-
     validations: {
       user:{
         name: { required },
@@ -390,22 +332,9 @@ export default {
           required,
           sameAsPassword: sameAs('password')
         }
-      },
-      editUser:{
-        name: { required },
-        email: { required, email },
-
-      },
-      newPassword: { required, minLength: minLength(8) },
-      newPassword_confirm: {
-        required,
-        sameAsPassword: sameAs('newPassword')
       }
-
     },
-
     computed: {
-
       nameErrors () {
         const errors = []
         if (!this.$v.user.name.$dirty) return errors
@@ -433,34 +362,6 @@ export default {
         !this.$v.user.repeatPassword.sameAsPassword && errors.push('Must match password')
         return errors
       },
-      editNameErrors () {
-        const errors = []
-        if (!this.$v.editUser.name.$dirty) return errors
-        !this.$v.editUser.name.required && errors.push('Name is required.')
-        return errors
-      },
-      editEmailErrors () {
-        const errors = []
-        if (!this.$v.editUser.email.$dirty) return errors
-        !this.$v.editUser.email.email && errors.push('Must be valid e-mail')
-        !this.$v.editUser.email.required && errors.push('E-mail is required')
-        return errors
-      },
-      newPasswordErrors () {
-        const errors = []
-        if (!this.$v.newPassword.$dirty) return errors
-        !this.$v.newPassword.minLength && errors.push('Must have at least 8 characters')
-        !this.$v.newPassword.required && errors.push('Password is required')
-        return errors
-      },
-      newRepeatPasswordErrors () {
-        const errors = []
-        if (!this.$v.newPassword_confirm.$dirty) return errors
-        !this.$v.newPassword.required && errors.push('Password confirmation is required')
-        !this.$v.newPassword_confirm.sameAsPassword && errors.push('Must match password')
-        return errors
-      },
-
       headers () {
         return [
           { text: 'ID', align: 'start', value: 'id', },
@@ -472,22 +373,11 @@ export default {
         ]
       },
     },
-
-    watch: {
-      dialog (val) {
-        val || this.close()
-      },
-      dialogDelete (val) {
-        val || this.closeDelete()
-      },
-
-    },
-
     created () {
+      this.user = this.userDefaultState();
       this.$v.$reset()
       this.getList();
     },
-
     methods: {
       canBeDeleted(item) {
         if(item.id == 1 || item.id == 2){
@@ -497,47 +387,39 @@ export default {
           return true;
         }
       },
+      userDefaultState(){
+        return{ id:'',
+                name:'',
+                email:'',
+                password: '',
+                repeatPassword: '',
+                role:0 }
+      },
      async getList () {
-       await this.$store.dispatch("UsersManager/list");
-       this.users = await this.$store.getters["UsersManager/list"];
-       console.log(this.users);
+       await this.$store.dispatch("UsersManager/getAll");
+       this.users = await this.$store.getters["UsersManager/users"];
         },
-
       showEditItem (item) {
-        this.editUser = item
+        this.user = item
         this.editUserDialog = true
       },
-
       deleteItem (item) {
-         console.log(item)
         this.editedIndex = this.users.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
       },
-
       deleteItemConfirm () {
-        console.log(this.editedItem)
         this.users.splice(this.editedIndex, 1)
-        this.$store.dispatch("UsersManager/destroy", this.editedItem.id).then((response) => {
-          if(response.status==200){
-            this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'green', text: response.data});
-          }
-          console.log(response.data)
-        })
-
+        this.$store.dispatch("UsersManager/destroy", this.editedItem.id)
         this.closeDelete()
-
       },
-
       close () {
         this.newUserDialog = false
         this.editUserDialog = false
         this.newPasswordDialog = false
         this.$v.$reset()
-        this.user = []
-        this.editUser = []
+        this.user = this.userDefaultState()
       },
-
       closeDelete () {
         this.dialogDelete = false
         this.$nextTick(() => {
@@ -545,94 +427,55 @@ export default {
           this.editedIndex = -1
         })
       },
-
       saveNewPassword(){
-        this.$v.newPassword.$touch()
-        this.$v.newPassword_confirm.$touch()
-        if(this.$v.newPassword.$invalid ||
-          this.$v.newPassword_confirm.$invalid){
-          console.log('Invalid')
+        this.$v.user.password.$touch()
+        this.$v.user.repeatPassword.$touch()
+        if(this.$v.user.password.$invalid ||
+          this.$v.user.repeatPassword.$invalid){
         }
         else{
-          console.log("valid")
-          var user={
-            id: this.newPasswordId,
-            password: this.newPassword
-          }
-          this.$store.dispatch('UsersManager/update', user)
-          this.newPassword = ''
-          this.newPassword_confirm = ''
+          this.$store.dispatch('UsersManager/update', this.user)
           this.newPasswordDialog = false
+          this.user = this.userDefaultState()
           this.$v.$reset()
         }
       },
-
       async saveEditUser () {
-        console.log(this.editUser)
-        this.$v.editUser.name.$touch()
-        this.$v.editUser.email.$touch()
-        if(this.$v.editUser.name.$invalid ||
-          this.$v.editUser.email.$invalid){
-          console.log('Invalid')
+        this.$v.user.name.$touch()
+        this.$v.user.email.$touch()
+        if(this.$v.user.name.$invalid ||
+          this.$v.user.email.$invalid){
         }
         else{
-          console.log(this.editUser)
-
-          await this.$store.dispatch('UsersManager/update', this.editUser)
+          await this.$store.dispatch('UsersManager/update', this.user)
           this.getList();
           this.close()
           this.$v.$reset()
         }
-
-
       },
       async save () {
-
-
         this.$v.user.name.$touch()
         this.$v.user.email.$touch()
         this.$v.user.password.$touch()
         this.$v.user.repeatPassword.$touch()
-
         if(this.$v.user.name.$invalid ||
           this.$v.user.email.$invalid ||
           this.$v.user.password.$invalid ||
           this.$v.user.repeatPassword.$invalid){
-          console.log('Invalid')
-
-          // this.$v.$reset()
         }
         else{
-          console.log("valid")
           await this.$store.dispatch("UsersManager/add", this.user)
-          var resp = await this.$store.getters["UsersManager/response"]
-          if (resp.status==409){
-            this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: resp.data});
-            // this.dialog = false;
-            // this.getList();
-          }
-          else if (resp.status==200){
-            this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'green', text: resp.data});
-            this.dialog = false;
-            this.getList();
-            this.$v.$reset()
-            this.user = []
-            this.user.role=0
-            this.newUserDialog = false;
-          }
-          else{
-            this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: resp.data});
-          }
+          this.newUserDialog=false;
+          this.user = this.userDefaultState()
+          this.getList();
         }
       },
       showNewUserDialog(){
         this.$v.$reset()
-        console.log('alo')
         this.newUserDialog = true;
       },
-
       showNewPasswordDialog(item){
-        this.newPasswordId = item.id
+        this.user.id = item.id
         this.newPasswordDialog = true
       }
     },

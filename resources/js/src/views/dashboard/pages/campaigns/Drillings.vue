@@ -388,15 +388,12 @@ import { required, decimal, numeric } from 'vuelidate/lib/validators'
         return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
       },
       editItem(item){
-        console.log('delete Item')
         console.log(item)
       },
       removeItem(item){
-        console.log('remove Item')
         console.log(item)
       },
       closeDialogs(){
-        console.log('close dialogs')
         this.newDillingDialog = false
       },
       saveDrilling(){
@@ -414,12 +411,9 @@ import { required, decimal, numeric } from 'vuelidate/lib/validators'
           this.$v.newDrilling.dip.$invalid||
           this.$v.newDrilling.length.$invalid
         ){
-          console.log('invalid!')
         }
         else{
-          console.log(this.newDrilling)
           this.newDrilling.campaign_id = this.campaign.id
-          console.log('save drilling')
           this.$store.dispatch('CampaignManager/createDrilling', this.newDrilling);
           this.getCampaign()
           this.newDillingDialog = false
@@ -441,9 +435,6 @@ import { required, decimal, numeric } from 'vuelidate/lib/validators'
 
       },
       openDrillings(){
-        console.log('openDrillings')
-        console.log(this.project)
-        console.log(this.$route.params)
         this.$router.push({ path: '/project/'+this.$route.params.project_id+'/campaign/'+this.$route.params.campaign_id+'/drillings' })
       },
       openWells(){
@@ -463,18 +454,15 @@ import { required, decimal, numeric } from 'vuelidate/lib/validators'
       },
       async checkAuth(){
         this.me = await this.$store.getters["AuthManager/user"];
-        console.log(this.me)
         await this.$store.dispatch('UsersManager/userprojects', this.me.id);
         this.projects = await this.$store.getters["UsersManager/projects"];
         this.project = this.projects.filter(obj => {
           return obj.id == this.$route.params.project_id
         })[0]
         if(this.project==undefined){
-          console.log('Not authorized!')
           this.$router.push({ path: '/myprojects' })
         }
         else{
-          console.log('authorized!')
           this.auth=true
           // this.ready = true
         }

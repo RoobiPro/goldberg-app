@@ -753,7 +753,6 @@ export default {
     },
 
     async deleteProjectConfirm() {
-      console.log(this.projectToDelete)
       await this.$store.dispatch('ProjectsManager/destroy', this.projectToDelete)
       this.getProjects()
       this.closeDialogs()

@@ -17,7 +17,7 @@ class CreateDrillingsTable extends Migration
             $table->id();
 
 
-            $table->foreignId('campaign_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('project_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
 
             $table->decimal('coordinates_x', 10, 7)->nullable();
             $table->decimal('coordinates_y', 10, 7)->nullable();

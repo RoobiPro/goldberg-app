@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Data;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MineralizationData extends Model
+class Survey extends Model
 {
     use HasFactory;
 }

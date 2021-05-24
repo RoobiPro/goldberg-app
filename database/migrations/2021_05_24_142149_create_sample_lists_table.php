@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRockCodeDataTable extends Migration
+class CreateSampleListsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class CreateRockCodeDataTable extends Migration
      */
     public function up()
     {
-        Schema::create('rock_code_data', function (Blueprint $table) {
+        Schema::create('sample_lists', function (Blueprint $table) {
             $table->id();
+            $table->morphs('samplelistable');
             $table->timestamps();
+
         });
     }
 
@@ -26,6 +28,6 @@ class CreateRockCodeDataTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rock_code_data');
+        Schema::dropIfExists('sample_lists');
     }
 }

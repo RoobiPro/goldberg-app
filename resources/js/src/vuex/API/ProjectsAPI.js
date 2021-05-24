@@ -12,7 +12,6 @@ function projectusers(id) {
 function assignUser(user) {
   return axios.post(`/assignuser`, user)
     .then(response => {
-      // console.log(response)
       if (response.status == 200) {
         return {
           type: 'green',
@@ -24,13 +23,6 @@ function assignUser(user) {
           text: response.data
         }
       }
-    }).catch(error => {
-      // if (error.response.status != 200) {
-      //   return message = {
-      //     type: 'red',
-      //     text: response.data
-      //   }
-      // }
     });
 }
 
@@ -71,7 +63,6 @@ function reassignUser(project){
 function assignClient(client) {
   return axios.post(`/assignclient`, client)
     .then(response => {
-      // console.log(response)
       if (response.status == 200) {
         return {
           type: 'green',
@@ -83,20 +74,12 @@ function assignClient(client) {
           text: response.data
         }
       }
-    }).catch(error => {
-      // if (error.response.status != 200) {
-      //   return message = {
-      //     type: 'red',
-      //     text: response.data
-      //   }
-      // }
     });
 }
 
 function getAll(params) {
   return axios.get(`/api/projects`)
     .then(response => {
-      // console.log(response)
       return {
         projects: response.data.data,
       };
@@ -107,8 +90,6 @@ function show(id) {
 
   return axios.get(`/api/projects/${id}`, options)
     .then(response => {
-      console.log(response.data)
-      // let user = jsona.deserialize(response.data);
       let user = response.data;
       delete user.links;
       return user;
@@ -118,7 +99,6 @@ function show(id) {
 function create(project) {
   return axios.post('/api/projects', project)
     .then( response => {
-      // console.log(response)
       if (response.status == 200) {
         return {
           type: 'green',
@@ -136,7 +116,6 @@ function create(project) {
 function update(project) {
   return axios.patch('/api/projects/'+project.id, project)
   .then( response => {
-    // console.log(response)
     if (response.status == 200) {
       return {
         type: 'green',
@@ -152,10 +131,8 @@ function update(project) {
 }
 
 function destroy(project) {
-  // console.log(project)
   return axios.delete('/api/projects/' + project)
     .then( response => {
-      // console.log(response)
       if (response.status == 200) {
         return {
           type: 'green',

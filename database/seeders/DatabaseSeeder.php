@@ -21,11 +21,11 @@ class DatabaseSeeder extends Seeder
         $this->call([
                       UsersSeeder::class,
                       ProjectSeeder::class,
-                      CampaignSeeder::class,
-                      DrillingSeeder::class,
-                      WellSeeder::class,
-                      ChemicalElementsSeeder::class,
-                      SurveryDataSeeder::class
+                      // CampaignSeeder::class,
+                      // DrillingSeeder::class,
+                      // WellSeeder::class,
+                      // ChemicalElementsSeeder::class,
+                      // SurveryDataSeeder::class
                     ]);
 
 

@@ -162,12 +162,8 @@ export default {
           email: this.email,
           password: this.password
         }
-        console.log('loggin in..')
-        // await this.signIn(data)
-        // await this.$store.commit('AuthManager/signIn')
         await this.$store.dispatch('AuthManager/signIn', data)
         var login = this.$store.getters['AuthManager/user']
-        console.log(login)
         if(login ==null){
           this.showerror= true;
           setTimeout(() => this.showerror = false, 3500);

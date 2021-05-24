@@ -123,18 +123,12 @@ export default {
     this.myuser = JSON.parse(JSON.stringify(user));
     this.avatarImageUrl = this.avatarUrl
     this.fullAvatarUrl = '/storage/user-avatar/' + this.myuser.avatar
-    console.log(this.fullAvatarUrl)
-    console.log(this.avatarUrl)
-    console.log(this.user)
   },
   methods: {
     updateProfile(){
-      console.log(this.myuser.name)
       this.$store.dispatch('AuthManager/update', this.myuser)
     },
     updateAvatar() {
-      console.log("uploading")
-      console.log(this.file)
       let formData = new FormData()
       formData.append('avatar', this.file)
       axios.post('/api/upload_avatar', formData, {
@@ -144,22 +138,14 @@ export default {
           }
         })
         .then((response) => {
-          // console.log(response)
           this.$store.commit('AuthManager/SET_USERAVATAR', response.data.avatar)
-          // console.log(response)
           this.avatarImageUrl = response.data.avatar_url
           this.myuser.avatar = response.data.avatar
           this.showUploadProgress = false
           this.processingUpload = false
           this.$emit('imageUrl', response.data.secure_url)
-          console.log(this.$store.getters["AuthManager/user"])
         })
         .catch((error) => {
-          if (error.response) {
-            console.log(error.message)
-          } else {
-            console.log(error)
-          }
           this.showUploadProgress = false
           this.processingUpload = false
         })
@@ -176,18 +162,12 @@ export default {
           })
           .then((response) => {
             this.avatarImageUrl = response.data.avatar_url
-            console.log("ALOS")
             this.myuser.avatar = response.data.avatar_url
             this.showUploadProgress = false
             this.processingUpload = false
             this.$emit('imageUrl', response.data.secure_url)
           })
           .catch((error) => {
-            if (error.response) {
-              console.log(error.message)
-            } else {
-              console.log(error)
-            }
             this.showUploadProgress = false
             this.processingUpload = false
           })

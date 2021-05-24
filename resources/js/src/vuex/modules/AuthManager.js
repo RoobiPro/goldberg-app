@@ -21,12 +21,6 @@ const getters = {
 
 }
 
-// axios.interceptors.response.use(function (response) {
-//   return response;
-// }, function (error) {
-//   return Promise.reject(error);
-// });
-
 const mutations = {
     SET_AUTHENTICATED (state, value) {
       state.authenticated = value
@@ -45,17 +39,13 @@ const mutations = {
 const actions =  {
     signIn ({ commit }, credentials) {
     AuthAPI.csrfToken().then((response) => {
-      // console.log(response);
     });
       return AuthAPI.login(credentials).then((response) => {
         commit('SET_AUTHENTICATED', true)
-        // console.log(response.data.user)
         commit('SET_USER', response.data.user)
       }).catch(() => {
         commit('SET_AUTHENTICATED', false)
         commit('SET_USER', null)
-        // console.log(this.dis)
-        //Sending Notifications from here is possible.
         this.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: 'Invalid login credentials!'});
 
 
@@ -67,20 +57,14 @@ const actions =  {
      return AuthAPI.logout().then((response) => {
         commit('SET_AUTHENTICATED', false)
         commit('SET_USER', null)
-        // self.router.push('/login')
-        // this.$router.replace({ path: '/login' })
       })
-      // return dispatch('me')
     },
 
     update({commit, dispatch}, params) {
       return AuthAPI.update(params)
         .then((response) => {
-          // console.log(response)
-          // commit('SET_RESOURCE', response.user);
           if(response.data.success){
             commit('SET_USER', response.data.user);
-
             this.dispatch('NotificationsManager/setNotificationStatus', {type: 'green', text: response.data.msg});
           }
           else{
@@ -91,7 +75,6 @@ const actions =  {
 
     refresh ({ commit }) {
       return AuthAPI.getAuthStatus().then((response) => {
-        // console.log(response)
         if(response.data.success==true){
           commit('SET_AUTHENTICATED', true)
           commit('SET_USER', response.data.user)
@@ -102,7 +85,6 @@ const actions =  {
         }
 
       }).catch(() => {
-        // console.log("401 error")
         commit('SET_AUTHENTICATED', false)
         commit('SET_USER', null)
       })

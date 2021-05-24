@@ -28,13 +28,6 @@ export default {
     LMarker,
 
   },
-  created(){
-    console.log(this.coordinates_x)
-    console.log(this.coordinates_y)
-    console.log(typeof(this.coordinates_x))
-    console.log(typeof(this.coordinates_y))
-
-  },
   data () {
     return {
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',

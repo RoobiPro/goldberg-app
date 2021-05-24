@@ -25,7 +25,6 @@ const getters = {
 
 const mutations = {
   SET_BAR_IMAGE (state, payload) {
-    console.log(payload)
     if(state.showBarImage == false){
       localStorage.setItem('barImage', '')
       state.barImage = ''

@@ -62,24 +62,19 @@ export default {
 
   methods: {
     openCampaings(){
-      console.log('opening project campaings')
-      console.log('/project/'+this.$route.params.project_id+'/campaigns')
       this.$router.push({ path: this.$route.params.project_id+'/campaigns' })
     },
     async checkAuth(){
       this.me = await this.$store.getters["AuthManager/user"];
-      console.log(this.me)
       await this.$store.dispatch('UsersManager/userprojects', this.me.id);
       this.projects = await this.$store.getters["UsersManager/projects"];
       this.project = this.projects.filter(obj => {
         return obj.id == this.$route.params.project_id
       })[0]
       if(this.project==undefined){
-        console.log('Not authorized!')
         this.$router.push({ path: '/myprojects' })
       }
       else{
-        console.log('authorized!')
         this.ready = true
       }
     },

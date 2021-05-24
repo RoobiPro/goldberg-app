@@ -175,11 +175,8 @@
         this.$vuetify.theme.dark = newValue;
         localStorage.setItem("dark\_theme", this.$vuetify.theme.dark.toString());
 
-        //called whenever switch1 changes
-        console.log(newValue);
       },
       image() {
-        console.log(this.image)
         this.setBarImage(this.image)
       },
       color (val) {
@@ -188,7 +185,6 @@
         localStorage.setItem("color", val);
       },
       showImg (val) {
-        console.log(val)
           if (!val) {
             this.toggleBarImage(false)
             this.setBarImage('')

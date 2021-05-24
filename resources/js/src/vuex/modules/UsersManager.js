@@ -2,11 +2,9 @@ import Notifications from '@/vuex/modules/NotificationsManager';
 import APIService from '@/vuex/API/UsersAPI';
 
 const state = {
-  list: {},
+  users: {},
   user: {},
-  meta: {},
   projects:{},
-  response: {},
   users_role: {},
   clients_role: {},
   admins_role: {},
@@ -18,17 +16,11 @@ const state = {
 };
 
 const mutations = {
-  SET_LIST: (state, list) => {
-    state.list = list;
+  SET_USERS: (state, users) => {
+    state.users = users;
   },
   SET_RESOURCE: (state, user) => {
     state.user = user;
-  },
-  SET_META: (state, meta) => {
-    state.meta = meta;
-  },
-  SET_RESPONSE: (state, resp) => {
-    state.response = resp;
   },
   SET_USERSROLE: (state, usersrole) => {
     state.users_role = usersrole;
@@ -54,24 +46,23 @@ const actions = {
       });
   },
 
-  list({commit, dispatch}, params) {
-    return APIService.list(params)
-      .then(({list, meta}) => {
-        commit('SET_LIST', list);
-        commit('SET_META', meta);
+  getAll({commit, dispatch}, params) {
+    return APIService.getAll(params)
+      .then((users) => {
+        commit('SET_USERS', users);
       });
   },
 
   getusers({commit, dispatch}, params) {
     return APIService.listUsers(params)
-      .then(({list, meta}) => {
+      .then((list) => {
         commit('SET_USERSROLE', list);
       });
   },
 
   getclients({commit, dispatch}, params) {
     return APIService.listClients(params)
-      .then(({list, meta}) => {
+      .then((list) => {
         commit('SET_CLIENTSROLE', list);
       });
   },
@@ -81,29 +72,18 @@ const actions = {
       .then((user) => { commit('SET_RESOURCE', user); });
   },
 
-  add({commit, dispatch}, params) {
-    console.log(params);
-    return APIService.add(params)
-      .then((response) => {
-        console.log(response),
-        commit('SET_RESPONSE', response);
-      })
-      .catch(error => {
-        if (error.response.status != 200){
-          console.log(error);
-          commit('SET_RESPONSE', error.response);
-        }
-      });
+  add({commit, dispatch}, user) {
+    return APIService.add(user)
+    .then((response) => {
+        this.dispatch('NotificationsManager/setNotificationStatus', {type: response.type, text: response.msg});
+       });
   },
 
   update({commit, dispatch}, params) {
     return APIService.update(params)
       .then((response) => {
-        console.log(response)
         commit('SET_RESOURCE', response.user);
         if(response.data.success){
-          // this.commit('AuthManager/SET_USER', response.data.user);
-
           this.dispatch('NotificationsManager/setNotificationStatus', {type: 'green', text: response.data.msg});
         }
         else{
@@ -113,15 +93,17 @@ const actions = {
   },
 
   destroy({commit, dispatch}, params) {
-    return APIService.destroy(params);
+    return APIService.destroy(params)
+        .then((response) => {
+            this.dispatch('NotificationsManager/setNotificationStatus', {type: response.type, text: response.msg});
+           });
   }
 
 };
 
 const getters = {
-  list: state => state.list,
+  users: state => state.users,
   user: state => state.user,
-  meta: state => state.meta,
   response: state => state.response,
   users_role: state => state.users_role,
   clients_role: state => state.clients_role,

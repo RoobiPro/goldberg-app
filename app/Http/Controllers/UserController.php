@@ -122,7 +122,7 @@ class UserController extends Controller
       $user = User::find($id);
       $user->projects()->detach();
       $user->delete();
-      return response()->json('User was successfully deleted!', 200);
+      return response()->json([ "success" => true, "msg" => "User was successfully deleted!"], 200);
     }
 
     public function upload_user_photo(Request $request){

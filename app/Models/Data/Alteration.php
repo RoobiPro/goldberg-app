@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Data;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LithologyData extends Model
+class Alteration extends Model
 {
     use HasFactory;
 }

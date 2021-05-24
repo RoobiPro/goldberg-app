@@ -28,32 +28,33 @@ class Project extends Model
         ->withPivot(['role']);
     }
 
-    public function campaigns(){
-      return $this->hasMany(Campaign::class);
-    }
-
     public function client(){
       return $this->belongsTo(User::class);
     }
 
     public function drillings()
     {
-        return $this->hasManyThrough(Drilling::class, Campaign::class);
+        return $this->hasMany(\Campaigns\Drilling::class);
     }
 
     public function wells()
     {
-        return $this->hasManyThrough(Well::class, Campaign::class);
+        return $this->hasMany(\Campaigns\Well::class);
     }
 
     public function spatial()
     {
-        return $this->hasManyThrough(Spatial::class, Campaign::class);
+        return $this->hasMany(\Campaigns\Spatial::class);
     }
 
-    public function samples()
+    public function handsamples()
     {
-        return $this->hasManyThrough(Sample::class, Campaign::class);
+        return $this->hasMany(\Campaigns\HandSample::class);
+    }
+
+    public function samplelist()
+    {
+        return $this->hasMany(\Campaigns\SampleList::class);
     }
     // public function users()
     // {

@@ -206,7 +206,6 @@ export default {
     },
     drawer: {
       get() {
-        // console.log(this.$store);
         return this.$store.getters["LayoutManager/drawer"]
       },
       set(val) {
@@ -257,7 +256,6 @@ export default {
       this.$router.replace({
         name: 'Login'
       })
-      console.log(this.$router.history)
     },
     mapItem(item) {
       return {

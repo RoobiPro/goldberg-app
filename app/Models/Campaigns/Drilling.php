@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Campaigns;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Well extends Model
+class Drilling extends Model
 {
     use HasFactory;
 
@@ -24,7 +24,12 @@ class Well extends Model
       'updated_at'
     ];
 
-    public function campaign(){
-      return $this->belongsTo(\App\Models\Campaign::class);
+    public function project(){
+      return $this->belongsTo(\App\Models\Project::class);
+    }
+
+    public function samplelist()
+    {
+        return $this->morphMany(\App\Models\SampleList::class, 'samplelistable');
     }
 }

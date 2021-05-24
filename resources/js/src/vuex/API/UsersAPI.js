@@ -5,7 +5,6 @@ import axios from 'axios';
 
 function listClients(params) {
 
-  // options = '?page[number]=1&page[size]=5'
   return axios.get(`/getClients`)
     .then(response => {
       return {
@@ -18,7 +17,6 @@ function listClients(params) {
 function getUserProjects(id){
   return axios.get('/getUserProjects/'+id)
     .then(response => {
-      console.log(response);
       return response.data;
     });
 }
@@ -27,27 +25,19 @@ function updatePassword (userid, password){ return axios.patch(`/api/users/`+use
 
 function listUsers(params) {
 
-  // options = '?page[number]=1&page[size]=5'
   return axios.get(`/getUsers`)
     .then(response => {
       return {
         list: response.data.data,
-        meta: response.data.meta
       };
     });
 }
 
-function list(params) {
-  // options = '?page[number]=1&page[size]=5'
+function getAll(params) {
   return axios.get(`/api/users`)
     .then(response => {
-      // console.log(response.data.data);
-      // console.log(response.data.meta);
-      return {
-        // list: jsona.deserialize(response.data),
-        list: response.data.data,
-        meta: response.data.meta
-      };
+      return response.data.data
+
     });
 }
 
@@ -63,19 +53,20 @@ function get(id) {
 }
 
 function add(user) {
-  console.log(user);
   return axios.post(`/register`, user)
     .then(response => {
-      console.log(response);
-      return response;
-    }).catch(error => {
-      if (error.response.status != 200){
-        console.log(error);
-        return error;
-        // commit('SET_RESPONSE', response);
+      if (response.status == 200) {
+        return {
+          type: 'green',
+          msg: response.data.msg
+        }
+      } else {
+        return {
+          type: 'red',
+          msg: response.data.msg
+        }
       }
     });
-
 }
 
 function update(user) {
@@ -87,9 +78,17 @@ function destroy(id) {
 
   return axios.delete(`/api/users/${id}`)
     .then(response => {
-      console.log(response);
-
-      return response;
+      if (response.status == 200) {
+        return {
+          type: 'green',
+          msg: response.data.msg
+        }
+      } else {
+        return {
+          type: 'red',
+          msg: response.data.msg
+        }
+      }
     });
 }
 
@@ -107,7 +106,7 @@ export default {
   getUserProjects,
   listUsers,
   listClients,
-  list,
+  getAll,
   get,
   add,
   update,

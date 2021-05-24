@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\SampleListController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +29,7 @@ use App\Http\Controllers\CampaignController;
 //   Route::post('upload_avatar', [UserController::class, 'upload_user_photo']);
 // });
 
+Route::get('/sampletest', [SampleListController::class, 'index']);
 // Route::post('upload_avatar', [UserController::class, 'upload_user_photo']);
 // Route::post('/login', 'AuthController@login');
 Route::post('/login', [AuthController::class, 'login']);

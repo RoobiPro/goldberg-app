@@ -47,14 +47,12 @@ const actions = {
   assignClient({commit, dispatch}, project){
     return APIService.assignClient(project)
     .then((message) => {
-      // console.log(message)
       this.dispatch('NotificationsManager/setNotificationStatus', message); });
   },
 
   assignUser({commit, dispatch}, project){
     return APIService.assignUser(project)
     .then((message) => {
-      // console.log(message)
       this.dispatch('NotificationsManager/setNotificationStatus', message);
     });
   },
@@ -71,7 +69,6 @@ const actions = {
   getAll({commit, dispatch}, params) {
     return APIService.getAll(params)
       .then((projects) => {
-        // console.log(projects)
         commit('SET_PROJECTS', projects);
       });
   },
@@ -84,7 +81,6 @@ const actions = {
   create({commit, dispatch}, project) {
     return APIService.create(project)
       .then((message) => {
-        // console.log(message)
         this.dispatch('NotificationsManager/setNotificationStatus', message);
       });
   },
@@ -97,7 +93,6 @@ const actions = {
   },
 
   destroy({commit, dispatch}, project) {
-    // console.log(project)
     return APIService.destroy(project)
       .then((message) => {
         this.dispatch('NotificationsManager/setNotificationStatus', message);

@@ -207,9 +207,6 @@ export default {
       await this.$store.dispatch('ProjectsManager/selectedProject', item);
       var pro = await this.$store.getters["ProjectsManager/project"];
       this.$router.push({ path: `/project/${item.id}` })
-      console.log(pro)
-      console.log("openning project")
-      console.log(item)
     }
   },
 }

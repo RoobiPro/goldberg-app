@@ -491,9 +491,8 @@ export default {
         }
       },
      async getList () {
-       await this.$store.dispatch("UsersManager/list");
-       this.users = await this.$store.getters["UsersManager/list"];
-       console.log(this.users);
+       await this.$store.dispatch("UsersManager/getAll");
+       this.users = await this.$store.getters["UsersManager/users"];
         },
 
       showEditItem (item) {
@@ -502,20 +501,17 @@ export default {
       },
 
       deleteItem (item) {
-         console.log(item)
         this.editedIndex = this.users.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
       },
 
       deleteItemConfirm () {
-        console.log(this.editedItem)
         this.users.splice(this.editedIndex, 1)
         this.$store.dispatch("UsersManager/destroy", this.editedItem.id).then((response) => {
           if(response.status==200){
             this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'green', text: response.data});
           }
-          console.log(response.data)
         })
 
         this.closeDelete()
@@ -553,12 +549,10 @@ export default {
           this.$v.user.email.$invalid ||
           this.$v.user.password.$invalid ||
           this.$v.user.repeatPassword.$invalid){
-          console.log('Invalid')
 
           // this.$v.$reset()
         }
         else{
-          console.log("valid")
           await this.$store.dispatch("UsersManager/add", this.user)
           var resp = await this.$store.getters["UsersManager/response"]
           if (resp.status==409){
@@ -582,7 +576,6 @@ export default {
       },
       showNewUserDialog(){
         this.$v.$reset()
-        console.log('alo')
         this.newUserDialog = true;
       },
 
