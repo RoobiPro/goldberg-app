@@ -12,18 +12,18 @@ class Project extends Model
 
     protected $fillable = [
       'name',
+      'type',
       'client_id',
-      'created_at',
-      'updated_at',
       'project_start_date',
-      'coordinates_x',
-      'coordinates_y',
-      'coordinates_z'
+      'utm_x',
+      'utm_y',
+      'utm_z',
+      'created_at',
+      'updated_at'
     ];
 
     public function users()
     {
-        // return $this->belongsToMany(User::class);
         return $this->belongsToMany(User::class, 'project_user', 'project_id', 'user_id')
         ->withPivot(['role']);
     }
@@ -54,7 +54,12 @@ class Project extends Model
 
     public function samplelist()
     {
-        return $this->hasMany(\Campaigns\SampleList::class);
+        return $this->hasMany(SampleList::class);
+    }
+
+    public function survey()
+    {
+        return $this->hasMany(\Data\Survey::class);
     }
     // public function users()
     // {

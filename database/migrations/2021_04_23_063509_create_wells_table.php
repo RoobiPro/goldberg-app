@@ -15,18 +15,15 @@ class CreateWellsTable extends Migration
     {
         Schema::create('wells', function (Blueprint $table) {
           $table->id();
-
           $table->foreignId('project_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-
-          $table->decimal('coordinates_x', 10, 7)->nullable();
-          $table->decimal('coordinates_y', 10, 7)->nullable();
-          $table->float('coordinates_z', 6, 4)->nullable();
-          $table->float('dip', 6, 4)->nullable();
-          $table->float('azimuth', 6, 4)->nullable();
-          $table->float('length', 6, 4)->nullable();
-          $table->string('drilling_type')->nullable();
-          $table->timestamp('start_date')->nullable();
-          $table->timestamp('end_date')->nullable();
+          $table->string('type')->nullable();
+          $table->decimal('utm_x', 10, 2)->nullable();
+          $table->decimal('utm_y', 10, 2)->nullable();
+          $table->decimal('utm_z', 10, 2)->nullable();
+          $table->timestamp('date')->nullable();
+          $table->decimal('dip', 10, 2)->nullable();
+          $table->decimal('length', 10, 2)->nullable();
+          $table->decimal('azimuth', 10, 2)->nullable();
           $table->timestamps();
         });
     }

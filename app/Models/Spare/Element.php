@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Spare;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ChemicalElement extends Model
+class Element extends Model
 {
     use HasFactory;
 
     public $timestamps = false;
-    
+
     protected $fillable = [
       'name',
       'symbol',

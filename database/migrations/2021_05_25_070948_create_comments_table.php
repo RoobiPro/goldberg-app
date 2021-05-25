@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLithologyDataTable extends Migration
+class CreateCommentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class CreateLithologyDataTable extends Migration
      */
     public function up()
     {
-        Schema::create('lithology_data', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->id();
+            $table->morphs('commentable');
+            $table->longText('text')->nullable();            
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ class CreateLithologyDataTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lithology_data');
+        Schema::dropIfExists('comments');
     }
 }

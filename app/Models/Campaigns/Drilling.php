@@ -10,16 +10,16 @@ class Drilling extends Model
     use HasFactory;
 
     protected $fillable = [
-      'campaign_id',
-      'coordinates_x',
-      'coordinates_y',
-      'coordinates_z',
-      'azimuth',
-      'dip',
-      'length',
-      'drilling_type',
+      'project_id',
+      'type',
+      'utm_x',
+      'utm_y',
+      'utm_z',
       'start_date',
       'end_date',
+      'dip',
+      'length',
+      'azimuth',
       'created_at',
       'updated_at'
     ];
@@ -30,6 +30,16 @@ class Drilling extends Model
 
     public function samplelist()
     {
-        return $this->morphMany(\App\Models\SampleList::class, 'samplelistable');
+        return $this->morphMany(\App\Models\SampleList::class, 'listabel_campaign');
+    }
+
+    public function surveys()
+    {
+      return $this->morphMany(\App\Models\Survey::class, 'suveryable');
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(\App\Models\Spare\Comment::class, 'commentable');
     }
 }

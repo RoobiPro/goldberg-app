@@ -10,16 +10,15 @@ class Well extends Model
     use HasFactory;
 
     protected $fillable = [
-      'campaign_id',
-      'coordinates_x',
-      'coordinates_y',
-      'coordinates_z',
-      'azimuth',
+      'project_id',
+      'type',
+      'utm_x',
+      'utm_y',
+      'utm_z',
+      'date',
       'dip',
       'length',
-      'drilling_type',
-      'start_date',
-      'end_date',
+      'azimuth',
       'created_at',
       'updated_at'
     ];
@@ -30,6 +29,16 @@ class Well extends Model
 
     public function samplelist()
     {
-        return $this->morphMany(SampleList::class, 'samplelistable');
+        return $this->morphMany(\App\Models\SampleList::class, 'listabel_campaign');
+    }
+    
+    public function surveys()
+    {
+      return $this->morphMany(\App\Models\Survey::class, 'suveryable');
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(\App\Models\Spare\Comment::class, 'commentable');
     }
 }

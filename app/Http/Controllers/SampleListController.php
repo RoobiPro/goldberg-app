@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SampleList;
 use App\Models\Campaigns\Drilling;
+use App\Models\Data\Lithology;
 
 class SampleListController extends Controller
 {
@@ -15,12 +16,19 @@ class SampleListController extends Controller
      */
     public function index()
     {
-        $drilling = Drilling::find(1);
+        // $drilling = Drilling::find(1);
+        // $lithology = Lithology::find(1);
         // $sampleList = new SampleList();
-        // $sampleList->VATER= 'alo';
+        // // $sampleList->VATER= 'alo';
+        // $lithology->samplelist()->save($sampleList);
         // $drilling->samplelist()->save($sampleList);
 
-        return $drilling->samplelist;
+        $sampleList = Lithology::find(1)->samplelist->listabel_campaign->project;
+        // $sampleList = class_basename(SampleList::find(1)->listabel_campaign);
+        // $sampleList = SampleList::find(1)->project;
+
+
+        return $sampleList;
     }
 
     /**

@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\ChemicalElement;
+use App\Models\Element;
 
-class ChemicalElementsSeeder extends Seeder
+class ElementsSeeder extends Seeder
 {
     /**
      * Run the database seeds.

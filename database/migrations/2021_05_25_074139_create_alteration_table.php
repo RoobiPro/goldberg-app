@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDrillingsTable extends Migration
+class CreateAlterationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,16 @@ class CreateDrillingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('drillings', function (Blueprint $table) {
+        Schema::create('alterations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('project_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->string('type')->nullable();
+            $table->foreignId('sample_list_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->integer('intensity')->nullable();
             $table->decimal('utm_x', 10, 2)->nullable();
             $table->decimal('utm_y', 10, 2)->nullable();
             $table->decimal('utm_z', 10, 2)->nullable();
-            $table->timestamp('start_date')->nullable();
-            $table->timestamp('end_date')->nullable();
-            $table->decimal('dip', 10, 2)->nullable();
-            $table->decimal('length', 10, 2)->nullable();
-            $table->decimal('azimuth', 10, 2)->nullable();
+            $table->decimal('from', 10, 2)->nullable();
+            $table->decimal('to', 10, 2)->nullable();
+            $table->longText('alteration_description')->nullable();
             $table->timestamps();
         });
     }
@@ -36,6 +34,6 @@ class CreateDrillingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('drillings');
+        Schema::dropIfExists('alteration_data');
     }
 }

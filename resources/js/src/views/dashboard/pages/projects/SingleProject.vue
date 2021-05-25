@@ -11,7 +11,7 @@
       ></v-progress-linear>
     </template>
 
-    <MapsComponent v-if="(typeof project.coordinates_x !== 'undefined')" :coordinates_x="project.coordinates_x"  :coordinates_y="project.coordinates_y"/>
+    <MapsComponent v-if="(typeof project.utm_x !== 'undefined')" :coordinates_x="project.latitude"  :coordinates_y="project.longitude"/>
 
     <v-card-title>{{this.project.name}}</v-card-title>
     <v-card-text>
@@ -19,9 +19,9 @@
       <div class="my-4 subtitle-1">
         My role: <i><u>{{project.role}}</u></i><br>
         Start date: {{project.project_start_date}} <br>
-        Coordinate X: {{project.coordinates_x}} <br>
-        Coordinate Y: {{project.coordinates_y}} <br>
-        Coordinate Z: {{project.coordinates_z}} <br>
+        Coordinate X: {{project.utm_x}} <br>
+        Coordinate Y: {{project.utm_y}} <br>
+        Coordinate Z: {{project.utm_z}} <br>
       </div>
 
     </v-card-text>
@@ -71,6 +71,7 @@ export default {
       this.project = this.projects.filter(obj => {
         return obj.id == this.$route.params.project_id
       })[0]
+      console.log(this.project)
       if(this.project==undefined){
         this.$router.push({ path: '/myprojects' })
       }

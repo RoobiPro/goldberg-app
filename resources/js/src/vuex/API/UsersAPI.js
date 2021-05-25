@@ -7,10 +7,8 @@ function listClients(params) {
 
   return axios.get(`/getClients`)
     .then(response => {
-      return {
-        list: response.data.data,
-        meta: response.data.meta
-      };
+      return response.data.data
+
     });
 }
 

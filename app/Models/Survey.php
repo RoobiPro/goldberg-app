@@ -5,25 +5,25 @@ namespace App\Models\Data;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Mineralization extends Model
+class Survey extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-      'sample_list_id',
-      'intensity',
-      'utm_x',
-      'utm_y',
-      'utm_z',
+      'suveryable_type',
+      'suveryable_id',
+      'type',
       'from',
       'to',
-      'mineralization_description',
+      'azimuth',
+      'dip',
       'created_at',
       'updated_at',
     ];
 
-    public function samplelist()
+
+    public function surveyable()
     {
-      return $this->morphOne(\App\Models\SampleList::class, 'listabel_data');
+        return $this->morphTo();
     }
 }

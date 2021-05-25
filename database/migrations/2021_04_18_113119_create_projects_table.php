@@ -16,11 +16,12 @@ class CreateProjectsTable extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('type')->nullable();
             $table->unsignedInteger('client_id')->nullable();
             $table->date('project_start_date')->nullable();
-            $table->decimal('coordinates_x', 10, 7)->nullable();
-            $table->decimal('coordinates_y', 10, 7)->nullable();
-            $table->decimal('coordinates_z', 6, 4)->nullable();
+            $table->decimal('utm_x', 10, 2)->nullable();
+            $table->decimal('utm_y', 10, 2)->nullable();
+            $table->decimal('utm_z', 10, 2)->nullable();
             $table->timestamps();
         });
     }

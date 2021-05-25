@@ -70,15 +70,22 @@ class UserController extends Controller
     }
 
     public function getUserProjects($id){
+      // return utm2ll(514085.99, 7429756.22, 19,false);
       // return true;
       $user = User::find($id);
       // return $user;
       $projects = $user->projects;
       $index = 0;
-
+      // dd($projects[2]->utm_x);
       foreach ($projects as $project){
+
+        $cords = utm2ll($projects[$index]->utm_x, $projects[$index]->utm_y, 19, false);
+        // dd($cords['lat']);
+        $projects[$index]->latitude = $cords['lat'];
+        $projects[$index]->longitude = $cords['lon'];
         $projects[$index]->project_start_date = Carbon::parse($projects[$index]->project_start_date)->format('d.m.Y');
         $projects[$index]->role = getRoleName($projects[$index]->pivot->role);
+        // dd($projects[$index]);
         $index++;
       }
       return response()->json($projects, 200);

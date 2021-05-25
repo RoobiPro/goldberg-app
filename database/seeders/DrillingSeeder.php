@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Drilling;
+use App\Models\Campaigns\Drilling;
 
 
 class DrillingSeeder extends Seeder
@@ -16,32 +16,28 @@ class DrillingSeeder extends Seeder
     public function run()
     {
       Drilling::create([
-          'campaign_id' => 1,
-          'coordinates_x' => 176.0944492,
-          'coordinates_y' => -43.6173664,
-          'coordinates_z' => 15.55,
-          'azimuth' => 18.44,
-          'dip' => 20.51,
-          'length' => 15.5,
-          'drilling_type' => 'Gravel',
+          'project_id' => 1,
+          'type' => 'Type A',
+          'utm_x' => 176.0944492,
+          'utm_y' => -43.6173664,
+          'utm_z' => 15.55,
           'start_date' => now(),
           'end_date' => now(),
-          'created_at' => now(),
-          'updated_at' => now()
+          'dip' => 20.51,
+          'length' => 15.5,
+          'azimuth' => 10.3
       ]);
       Drilling::create([
-          'campaign_id' => 1,
-          'coordinates_x' => 150.0944492,
-          'coordinates_y' => -43.6173664,
-          'coordinates_z' => 15.55,
-          'azimuth' => 18.44,
-          'dip' => 20.51,
-          'length' => 15.5,
-          'drilling_type' => 'Gravel',
-          'start_date' => now(),
-          'end_date' => now(),
-          'created_at' => now(),
-          'updated_at' => now()
+        'project_id' => 2,
+        'type' => 'Type A',
+        'utm_x' => 176.0944492,
+        'utm_y' => -43.6173664,
+        'utm_z' => 15.55,
+        'start_date' => now(),
+        'end_date' => now(),
+        'dip' => 20.51,
+        'length' => 15.5,
+        'azimuth' => 10.3
       ]);
     }
 }

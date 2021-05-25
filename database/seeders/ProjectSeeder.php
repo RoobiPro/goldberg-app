@@ -37,9 +37,9 @@ class ProjectSeeder extends Seeder
           Project::create([
               'name' => $comp,
               'project_start_date' => $faker->date('Y-m-d', $timestamp),
-              'coordinates_x' => rand(12, 57) / 10,
-              'coordinates_y' => rand(12, 57) / 10,
-              'coordinates_z' => rand(12, 57) / 10,
+              'utm_x' => rand(12, 57) / 10,
+              'utm_y' => rand(12, 57) / 10,
+              'utm_z' => rand(12, 57) / 10,
               'created_at' => now(),
               'updated_at' => now(),
           ]);

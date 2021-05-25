@@ -138,18 +138,18 @@ export default {
           value: 'project_start_date'
         },
         {
-          text: 'Coordinate X',
-          value: 'coordinates_x',
+          text: 'UTM X',
+          value: 'utm_x',
           sortable: false
         },
         {
-          text: 'Coordinate Y',
-          value: 'coordinates_y',
+          text: 'UTM Y',
+          value: 'utm_y',
           sortable: false
         },
         {
-          text: 'Coordinate Z',
-          value: 'coordinates_z',
+          text: 'UTM Z',
+          value: 'utm_z',
           sortable: false
         },
         {

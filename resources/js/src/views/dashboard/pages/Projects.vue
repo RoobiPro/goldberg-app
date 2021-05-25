@@ -490,9 +490,7 @@ export default {
     editComputedDateFormatted() {
       return this.formatDate(this.projectToEdit.date)
     },
-    formTitle() {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-    },
+
     headers() {
       return [{
           text: 'ID',
@@ -508,18 +506,18 @@ export default {
           value: 'project_start_date'
         },
         {
-          text: 'Coordinate X',
-          value: 'coordinates_x',
+          text: 'UTM X',
+          value: 'utm_x',
           sortable: false
         },
         {
-          text: 'Coordinate Y',
-          value: 'coordinates_y',
+          text: 'UTM Y',
+          value: 'utm_y',
           sortable: false
         },
         {
-          text: 'Coordinate Z',
-          value: 'coordinates_z',
+          text: 'UTM Z',
+          value: 'utm_z',
           sortable: false
         },
         {
@@ -572,6 +570,7 @@ export default {
     async getProjects() {
       await this.$store.dispatch("ProjectsManager/getAll");
       const projectsJson = await this.$store.getters["ProjectsManager/projects"];
+      console.log(projectsJson)
       this.projects = projectsJson.projects.map(projects => ({
         ...projects,
         project_start_date: this.formatDate(projects.project_start_date)
@@ -585,6 +584,7 @@ export default {
     async getClients() {
       await this.$store.dispatch("UsersManager/getclients");
       this.clients = await this.$store.getters["UsersManager/clients_role"];
+      console.log(this.clients)
     },
 
     async showAssignUser(item, project_id) {

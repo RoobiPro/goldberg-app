@@ -15,7 +15,11 @@ class CreateSampleListsTable extends Migration
     {
         Schema::create('sample_lists', function (Blueprint $table) {
             $table->id();
-            $table->morphs('samplelistable');
+            $table->string('listabel_campaign_type')->nullable();
+            $table->integer('listabel_campaign_id')->nullable();
+            $table->string('listabel_data_type')->nullable();
+            $table->integer('listabel_data_id')->nullable();
+            // $table->morphs('listabel_data')->nullable();
             $table->timestamps();
 
         });

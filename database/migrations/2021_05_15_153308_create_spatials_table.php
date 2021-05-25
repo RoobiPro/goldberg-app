@@ -15,9 +15,9 @@ class CreateSpatialsTable extends Migration
     {
         Schema::create('spatials', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignId('campaign_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-
+            $table->foreignId('project_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->string('attachment')->nullable();
+            $table->string('file_type')->nullable();
             $table->timestamps();
 
         });
