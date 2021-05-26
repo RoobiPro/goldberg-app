@@ -80,13 +80,35 @@
 
                 <v-row>
                   <v-col cols="12">
-                    <v-text-field v-model="newProject.name" label="Project name"></v-text-field>
+                    <v-text-field
+                      v-model="project.name"
+                      label="Project name"
+                      @input="$v.project.name.$touch()"
+                      @blur="$v.project.name.$touch()"
+                      :error-messages="name_Errors"
+                    ></v-text-field>
+
+                    <v-text-field
+                      v-model="project.project_code"
+                      label="Project Code"
+                      @input="$v.project.project_code.$touch()"
+                      @blur="$v.project.project_code.$touch()"
+                      :error-messages="project_code_Errors"
+                    ></v-text-field>
+
+                    <v-text-field
+                      v-model="project.type"
+                      label="Type"
+                      @input="$v.project.type.$touch()"
+                      @blur="$v.project.type.$touch()"
+                      :error-messages="type_Errors"
+                    ></v-text-field>
 
                     <v-menu
                     ref="menu"
                     v-model="menu"
                     :close-on-content-click="false"
-                    :return-value.sync="newProject.dateFormatted"
+                    :return-value.sync="project.dateFormatted"
                     transition="scale-transition"
                     offset-y min-width="auto">
                       <template v-slot:activator="{ on, attrs }">
@@ -96,11 +118,11 @@
                           prepend-icon="mdi-calendar"
                           readonly v-bind="attrs"
                           v-on="on"
-                          @blur="date = parseDate(newProject.dateFormatted)">
+                          @blur="date = parseDate(project.dateFormatted)">
                         </v-text-field>
                       </template>
                       <v-date-picker
-                        v-model="newProject.date"
+                        v-model="project.date"
                         color="primary"
                         no-title
                         scrollable
@@ -110,18 +132,35 @@
                         <v-btn text color="primary" @click="menu = false">
                           Cancel
                         </v-btn>
-                        <v-btn text color="primary" @click="$refs.menu.save(newProject.date)">
+                        <v-btn text color="primary" @click="$refs.menu.save(project.date)">
                           OK
                         </v-btn>
                       </v-date-picker>
                     </v-menu>
 
-                    <v-text-field v-model="newProject.coordinates_x" label="Main coordinate X"></v-text-field>
+                    <v-text-field
+                    v-model="project.utm_x"
+                    label="Main UTM X"
+                    @input="$v.project.utm_x.$touch()"
+                    @blur="$v.project.utm_x.$touch()"
+                    :error-messages="utm_x_Errors"
+                    ></v-text-field>
 
-                    <v-text-field v-model="newProject.coordinates_y" label="Main coordinate Y"></v-text-field>
+                    <v-text-field
+                    v-model="project.utm_y"
+                    label="Main UTM Y"
+                    @input="$v.project.utm_y.$touch()"
+                    @blur="$v.project.utm_y.$touch()"
+                    :error-messages="utm_y_Errors"
+                    ></v-text-field>
 
-                    <v-text-field v-model="newProject.coordinates_z" label="Main coordinate Z"></v-text-field>
-
+                    <v-text-field
+                    v-model="project.utm_z"
+                    label="Main UTM Z"
+                    @input="$v.project.utm_z.$touch()"
+                    @blur="$v.project.utm_z.$touch()"
+                    :error-messages="utm_z_Errors"
+                    ></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -151,26 +190,67 @@
 
                 <v-row>
                   <v-col cols="12">
-                    <v-text-field v-model="projectToEdit.name" label="Project name"></v-text-field>
+                    <v-text-field
+                      v-model="project.name"
+                      label="Project name"
+                      @input="$v.project.name.$touch()"
+                      @blur="$v.project.name.$touch()"
+                      :error-messages="name_Errors"
+                    ></v-text-field>
 
-                    <v-menu ref="menu2" v-model="menu2" :close-on-content-click="false" :return-value.sync="projectToEdit.dateFormatted" transition="scale-transition" offset-y min-width="auto">
+                    <v-text-field
+                      v-model="project.project_code"
+                      label="Project Code"
+                      @input="$v.project.project_code.$touch()"
+                      @blur="$v.project.project_code.$touch()"
+                      :error-messages="project_code_Errors"
+                    ></v-text-field>
+
+                    <v-text-field
+                      v-model="project.type"
+                      label="Type"
+                      @input="$v.project.type.$touch()"
+                      @blur="$v.project.type.$touch()"
+                      :error-messages="type_Errors"
+                    ></v-text-field>
+
+
+                    <v-menu ref="menu2" v-model="menu2" :close-on-content-click="false" :return-value.sync="project.dateFormatted" transition="scale-transition" offset-y min-width="auto">
                       <template v-slot:activator="{ on, attrs }">
-                        <v-text-field v-model="editComputedDateFormatted" label="Project start date" prepend-icon="mdi-calendar" v-bind="attrs" v-on="on" @blur="projectToEdit.date = parseDate(projectToEdit.dateFormatted)"></v-text-field>
+                        <v-text-field v-model="editComputedDateFormatted" label="Project start date" prepend-icon="mdi-calendar" v-bind="attrs" v-on="on" @blur="project.date = parseDate(project.dateFormatted)"></v-text-field>
                       </template>
 
-                      <v-date-picker v-model="projectToEdit.date" color="primary" no-title scrollable style="background: white;" @input="menu2 = false">
+                      <v-date-picker v-model="project.date" color="primary" no-title scrollable style="background: white;" @input="menu2 = false">
                         <v-spacer></v-spacer>
                         <v-btn text color="primary" @click="menu2 = false">Cancel</v-btn>
-                        <v-btn text color="primary" @click="$refs.menu2.save(projectToEdit.dateFormatted)">OK</v-btn>
+                        <v-btn text color="primary" @click="$refs.menu2.save(project.dateFormatted)">OK</v-btn>
                       </v-date-picker>
 
                     </v-menu>
 
-                    <v-text-field v-model="projectToEdit.coordinates_x" label="Main coordinate X"></v-text-field>
+                    <v-text-field
+                    v-model="project.utm_x"
+                    label="Main UTM X"
+                    @input="$v.project.utm_x.$touch()"
+                    @blur="$v.project.utm_x.$touch()"
+                    :error-messages="utm_x_Errors"
+                    ></v-text-field>
 
-                    <v-text-field v-model="projectToEdit.coordinates_y" label="Main coordinate Y"></v-text-field>
+                    <v-text-field
+                    v-model="project.utm_y"
+                    label="Main UTM Y"
+                    @input="$v.project.utm_y.$touch()"
+                    @blur="$v.project.utm_y.$touch()"
+                    :error-messages="utm_y_Errors"
+                    ></v-text-field>
 
-                    <v-text-field v-model="projectToEdit.coordinates_z" label="Main coordinate Z"></v-text-field>
+                    <v-text-field
+                    v-model="project.utm_z"
+                    label="Main UTM Z"
+                    @input="$v.project.utm_z.$touch()"
+                    @blur="$v.project.utm_z.$touch()"
+                    :error-messages="utm_z_Errors"
+                    ></v-text-field>
 
                   </v-col>
                 </v-row>
@@ -421,7 +501,11 @@
 </template>
 
 <script>
+import { validationMixin } from 'vuelidate'
+import { required, decimal, numeric } from 'vuelidate/lib/validators'
+
 export default {
+  mixins: [validationMixin],
   data: vm => ({
     ready:false,
     itemsPerPage: [10, 20, 30, -1],
@@ -432,13 +516,15 @@ export default {
     menu2: false,
 
     singleExpand: true,
-    newProject: {
+    project: {
       name: null,
+      project_code: null,
+      type: null,
       date: new Date().toISOString().substr(0, 10),
       dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
-      coordinates_x: null,
-      coordinates_y: null,
-      coordinates_z: null,
+      utm_x: null,
+      utm_y: null,
+      utm_z: null,
     },
     editProjectDialog: false,
     editUserRoleDialog: false,
@@ -458,16 +544,6 @@ export default {
     selectedUser: undefined,
     users: [],
 
-    projectToEdit: {
-      id: null,
-      name: null,
-      date: new Date().toISOString().substr(0, 10),
-      dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
-      coordinates_x: null,
-      coordinates_y: null,
-      coordinates_z: null,
-    },
-
     UserToEdit: {
       name: '',
       role: 0,
@@ -485,28 +561,103 @@ export default {
 
   }),
 
+  validations: {
+    project:{
+      name: { required },
+      project_code: { required },
+      type: { required },
+      utm_x: {
+        required,
+        mydecimal(utm_x) {
+          return (
+            /^\d{1,8}$|^\d{1,8}\.\d{1,10}$/.test(utm_x)
+          );
+        }
+      },
+      utm_y: {
+        required,
+        mydecimal(utm_y) {
+          return (
+            /^\d{1,8}$|^\d{1,8}\.\d{1,10}$/.test(utm_y)
+          );
+        }
+      },
+      utm_z: {
+        required,
+        mydecimal(utm_z) {
+          return (
+            /^\d{1,8}$|^\d{1,8}\.\d{1,10}$/.test(utm_z)
+          );
+        }
+      }
+    }
+  },
+
   computed: {
+    name_Errors () {
+      const errors = []
+      if (!this.$v.project.name.$dirty) return errors
+      !this.$v.project.name.required && errors.push('Name is required.')
+      return errors
+    },
+    project_code_Errors () {
+      const errors = []
+      if (!this.$v.project.project_code.$dirty) return errors
+      !this.$v.project.project_code.required && errors.push('Project Code is required.')
+      return errors
+    },
+    type_Errors () {
+      const errors = []
+      if (!this.$v.project.type.$dirty) return errors
+      !this.$v.project.type.required && errors.push('Type is required.')
+      return errors
+    },
+    utm_x_Errors () {
+      const errors = []
+      if (!this.$v.project.utm_x.$dirty) return errors
+      !this.$v.project.utm_x.required && errors.push('UTM X is required.')
+      !this.$v.project.utm_x.mydecimal && errors.push('Max number XXXXXXXX.YY')
+      return errors
+    },
+    utm_y_Errors () {
+      const errors = []
+      if (!this.$v.project.utm_y.$dirty) return errors
+      !this.$v.project.utm_y.required && errors.push('UTM Y is required.')
+      !this.$v.project.utm_y.mydecimal && errors.push('Max number XXXXXXXX.YY')
+      return errors
+    },
+    utm_z_Errors () {
+      const errors = []
+      if (!this.$v.project.utm_z.$dirty) return errors
+      !this.$v.project.utm_z.required && errors.push('UTM Z is required.')
+      !this.$v.project.utm_z.mydecimal && errors.push('Max number XXXXXXXX.YY')
+      return errors
+    },
     computedDateFormatted() {
-      return this.formatDate(this.newProject.date)
+      return this.formatDate(this.project.date)
     },
     editComputedDateFormatted() {
-      return this.formatDate(this.projectToEdit.date)
+      return this.formatDate(this.project.date)
     },
   },
   watch: {
-    'newProject.date': function(val) {
-      this.newProject.dateFormatted = this.formatDate(this.newProject.date)
+    'project.date': function(val) {
+      this.project.dateFormatted = this.formatDate(this.project.date)
     },
-    'projectToEdit.date': function(val) {
-      this.projectToEdit.dateFormatted = this.formatDate(this.projectToEdit.date)
+    'project.date': function(val) {
+      this.project.dateFormatted = this.formatDate(this.project.date)
     }
   },
 
   async created() {
       await this.$store.dispatch("TableManager/get", 'projects');
       this.headers = this.$store.getters["TableManager/headers"];
-      this.getProjects(),
-      this.getUsers(),
+      var actions = {
+        text: '', value: 'data-table-expand'
+      }
+      this.headers.push(actions)
+      this.getProjects()
+      this.getUsers()
       this.getClients()
       this.ready=true;
 
@@ -629,41 +780,39 @@ export default {
         user_id: this.UserToUnassign.id,
         project_id: this.UnassignFromProjectID
       }
-
       await this.$store.dispatch('ProjectsManager/unassignUser', deleteUser)
       this.getProjects(),
       this.closeDialogs()
     },
 
     async saveNewProject() {
-      var conditionOne = false;
-      var conditionTwo = false;
-      if (!this.newProject.name) {
-        this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-          type: 'red',
-          text: 'Please enter a project name.'
-        });
-      } else {
-        conditionOne = true;
-      }
-      if ((!this.hasDecimal(this.newProject.coordinates_x) || !this.hasDecimal(this.newProject.coordinates_y) || !this.hasDecimal(this.newProject.coordinates_z)) && conditionOne) {
-        this.$store.dispatch('NotificationsManager/setNotificationStatus', {
-          type: 'red',
-          text: 'Coordinates only as decimal. Example: 10.22111'
-        });
-      } else {
-        conditionTwo = true;
-      }
-
-      if (conditionOne && conditionTwo) {
-        await this.$store.dispatch('ProjectsManager/create', this.newProject)
+      this.$v.project.name.$touch()
+      this.$v.project.project_code.$touch()
+      this.$v.project.type.$touch()
+      this.$v.project.utm_x.$touch()
+      this.$v.project.utm_y.$touch()
+      this.$v.project.utm_z.$touch()
+      if(
+        this.$v.project.name.$invalid||
+        this.$v.project.project_code.$invalid||
+        this.$v.project.type.$invalid||
+        this.$v.project.utm_x.$invalid||
+        this.$v.project.utm_y.$invalid||
+        this.$v.project.utm_z.$invalid
+      ){}
+      else{
+        this.$v.$reset()
+        await this.$store.dispatch('ProjectsManager/create', this.project)
         this.getProjects()
-        this.newProject = {
+        this.project = {
             name: null,
-            date: new Date().toISOString().substr(0, 10),
+            project_code: null,
+            type: null,
             coordinates_x: null,
-            coordinates_y: null,
-            coordinates_z: null,
+            date: new Date().toISOString().substr(0, 10),
+            utm_x: null,
+            utm_y: null,
+            utm_z: null,
           }
         this.newProjectDialog = false;
         this.closeDialogs()
@@ -693,19 +842,49 @@ export default {
 
     showEditProjectDialog(item, item_id) {
       this.editProjectDialog = true;
-      this.projectToEdit.id = item.id
-      this.projectToEdit.name = item.name
-      this.projectToEdit.date = this.parseDate(item.project_start_date)
-      this.projectToEdit.dateFormatted = item.project_start_date
-      this.projectToEdit.coordinates_x = item.coordinates_x
-      this.projectToEdit.coordinates_y = item.coordinates_y
-      this.projectToEdit.coordinates_z = item.coordinates_z
+      this.project.id = item.id
+      this.project.name = item.name
+      this.project.project_code = item.project_code
+      this.project.type = item.type
+      this.project.date = this.parseDate(item.project_start_date)
+      this.project.dateFormatted = item.project_start_date
+      this.project.utm_x = item.utm_x
+      this.project.utm_y = item.utm_y
+      this.project.utm_z = item.utm_z
     },
 
     async saveEditProject() {
-      await this.$store.dispatch('ProjectsManager/update', this.projectToEdit)
-      this.getProjects()
-      this.closeDialogs();
+      this.$v.project.name.$touch()
+      this.$v.project.project_code.$touch()
+      this.$v.project.type.$touch()
+      this.$v.project.utm_x.$touch()
+      this.$v.project.utm_y.$touch()
+      this.$v.project.utm_z.$touch()
+      if(
+        this.$v.project.name.$invalid||
+        this.$v.project.project_code.$invalid||
+        this.$v.project.type.$invalid||
+        this.$v.project.utm_x.$invalid||
+        this.$v.project.utm_y.$invalid||
+        this.$v.project.utm_z.$invalid
+      ){}
+      else{
+        this.$v.$reset()
+        await this.$store.dispatch('ProjectsManager/update', this.project)
+        this.getProjects()
+        this.closeDialogs();
+        this.project = {
+            name: null,
+            project_code: null,
+            type: null,
+            coordinates_x: null,
+            date: new Date().toISOString().substr(0, 10),
+            utm_x: null,
+            utm_y: null,
+            utm_z: null,
+          }
+      }
+
     },
 
     getBottomLine(project_id, index) {

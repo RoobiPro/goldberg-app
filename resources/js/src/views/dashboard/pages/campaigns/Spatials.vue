@@ -1,5 +1,5 @@
 <template>
   <div>
-    Drillings
+    Spatials
   </div>
 </template>

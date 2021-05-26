@@ -137,32 +137,59 @@ const routes = [
           },
         },
         {
-          name: 'Campaigns',
-          path: 'project/:id/campaigns',
-          component: () => import(/* webpackChunkName: "campaigns" */'@/views/dashboard/pages/projects/tables/Campaigns'),
-          props: true,
-          meta: {
-            requiresAuth: true
-          },
-        },
-        {
-          name: 'Campaign',
-          path: 'project/:project_id/campaign/:campaign_id',
-          component: () => import(/* webpackChunkName: "campaign" */'@/views/dashboard/pages/campaigns/Campaign'),
-          props: true,
-          meta: {
-            requiresAuth: true
-          },
-        },
-        {
           name: 'Drillings',
-          path: 'project/:project_id/campaign/:campaign_id/drillings',
+          path: 'project/:id/drillings',
           component: () => import(/* webpackChunkName: "drillings" */'@/views/dashboard/pages/campaigns/Drillings'),
           props: true,
           meta: {
             requiresAuth: true
           },
         },
+        {
+          name: 'Hand Samples',
+          path: 'project/:id/handsamples',
+          component: () => import(/* webpackChunkName: "handsamples" */'@/views/dashboard/pages/campaigns/HandSamples'),
+          props: true,
+          meta: {
+            requiresAuth: true
+          },
+        },
+        {
+          name: 'Spatials',
+          path: 'project/:id/spatials',
+          component: () => import(/* webpackChunkName: "spatials" */'@/views/dashboard/pages/campaigns/Spatials'),
+          props: true,
+          meta: {
+            requiresAuth: true
+          },
+        },
+        {
+          name: 'Wells',
+          path: 'project/:id/wells',
+          component: () => import(/* webpackChunkName: "wells" */'@/views/dashboard/pages/campaigns/Wells'),
+          props: true,
+          meta: {
+            requiresAuth: true
+          },
+        },
+        {
+          name: 'Sample List',
+          path: 'project/:id/samplelist',
+          component: () => import(/* webpackChunkName: "samplelist" */'@/views/dashboard/pages/projects/SampleList'),
+          props: true,
+          meta: {
+            requiresAuth: true
+          },
+        },
+        // {
+        //   name: 'Drillings',
+        //   path: 'project/:project_id/campaign/:campaign_id/drillings',
+        //   component: () => import(/* webpackChunkName: "drillings" */'@/views/dashboard/pages/campaigns/Drillings'),
+        //   props: true,
+        //   meta: {
+        //     requiresAuth: true
+        //   },
+        // },
       ],
     },
     { path: '*', redirect: { name: 'Dashboard' }}

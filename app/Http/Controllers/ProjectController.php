@@ -144,10 +144,12 @@ class ProjectController extends Controller
     {
         $project = Project::find($request->id);
         $project->name = $request->name;
+        $project->project_code = $request->project_code;
+        $project->type = $request->type;
         $project->project_start_date = $request->date;
-        $project->coordinates_x = $request->coordinates_x;
-        $project->coordinates_y = $request->coordinates_y;
-        $project->coordinates_z = $request->coordinates_z;
+        $project->utm_x = $request->utm_x;
+        $project->utm_y = $request->utm_y;
+        $project->utm_z = $request->utm_z;
         $project->save();
         // return response()->json("Project successfully updated!", 200);
         return response()->json([ "success" => true, "msg" => "Project successfully updated!"], 200);

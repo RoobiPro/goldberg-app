@@ -1,5 +1,5 @@
 <template>
   <div>
-    Drillings
+    Hand Samples
   </div>
 </template>

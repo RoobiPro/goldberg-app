@@ -1,5 +1,5 @@
 <template>
   <div>
-    Drillings
+    Sample List
   </div>
 </template>

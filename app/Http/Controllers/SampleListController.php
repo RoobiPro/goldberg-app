@@ -17,20 +17,7 @@ class SampleListController extends Controller
      */
     public function index()
     {
-        // $drilling = Drilling::find(1);
-        // $lithology = Lithology::find(1);
-        // $sampleList = new SampleList();
-        // // $sampleList->VATER= 'alo';
-        // $lithology->samplelist()->save($sampleList);
-        // $drilling->samplelist()->save($sampleList);
-
-        // $sampleList = Lithology::find(1)->samplelist->listabel_campaign->project;
-        // $columns = Schema::getColumnListing('assays');
         $userHeaders = getTableHeaders('users'); // dump the result and die
-        // $sampleList = class_basename(SampleList::find(1)->listabel_campaign);
-        // $sampleList = SampleList::find(1)->project;
-
-
         return $userHeaders;
     }
 

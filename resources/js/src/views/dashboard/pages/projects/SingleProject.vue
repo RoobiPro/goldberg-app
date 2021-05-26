@@ -17,6 +17,11 @@
     <v-card-text>
 
       <div class="my-4 subtitle-1">
+        Project code: <i><u>{{project.project_code}}</u></i><br>
+        Type: {{project.type}} <br>
+      </div>
+
+      <div class="my-4 subtitle-1">
         My role: <i><u>{{project.role}}</u></i><br>
         Start date: {{project.project_start_date}} <br>
         UTM X: {{project.utm_x}} <br>
@@ -31,11 +36,12 @@
     <v-card-title>View data</v-card-title>
 
     <v-card-text>
-      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('spatial')">Spatial Data</v-btn>
+      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('spatials')">Spatial Data</v-btn>
       <v-btn class="ma-2" rounded color="primary" dark @click="goTo('handsamples')">Hand Samples</v-btn>
       <v-btn class="ma-2" rounded color="primary" dark @click="goTo('drillings')">Drillings</v-btn>
       <v-btn class="ma-2" rounded color="primary" dark @click="goTo('wells')">Wells</v-btn>
-      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('samples')">Sample List</v-btn>
+      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('samplelist')">Sample List</v-btn>
+
     </v-card-text>
 
   </v-card>
@@ -60,7 +66,7 @@ export default {
 
   methods: {
     goTo(destination){
-      this.$router.push({ path: this.$route.params.project_id+'/campaigns' })
+      this.$router.push({ path: this.$route.params.project_id+'/'+destination })
     },
     async checkAuth(){
       this.me = await this.$store.getters["AuthManager/user"];

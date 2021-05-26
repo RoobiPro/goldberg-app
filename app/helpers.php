@@ -17,10 +17,9 @@ function formatDBField($field){
   if($field=='id'){
     return 'ID';
   }
-  else if(str_contains($field, '_id')){
+  else if(str_contains($field, '_id')||str_contains($field, 'created_at')||str_contains($field, 'updated_at')){
     return false;
   }
-
   else{
     $field=str_replace('_', ' ', $field);
     $field=str_replace('utm', 'UTM', $field);
@@ -33,7 +32,6 @@ function getTableHeaders($tablename){
   $header_array=[];
   $index = 0;
   foreach($columns as $column) {
-
       $myObject = new stdClass();
       $myObject->text=formatDBField($columns[$index]);
       if($myObject->text==false){
@@ -43,7 +41,6 @@ function getTableHeaders($tablename){
       $myObject->align = "start";
       $myObject->value=$columns[$index];
       array_push($header_array,$myObject);
-      // $columns[$index]=formatDBField($columns[$index]);
       $index++;
   }
   return $header_array;

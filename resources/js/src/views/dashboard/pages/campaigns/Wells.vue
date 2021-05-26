@@ -1,5 +1,5 @@
 <template>
   <div>
-    Drillings
+    Wells
   </div>
 </template>

@@ -1,5 +1,6 @@
 <template>
 <v-container
+v-if="ready"
 id="regular-tables"
 class="d-flex justify-center"
 tag="section"
@@ -57,8 +58,9 @@ style="margin-top:10vh;">
 <script>
 export default {
   data: vm => ({
+    ready:false,
     mydate:null,
-
+    headers:null,
     menu: false,
     menu2: false,
 
@@ -119,44 +121,6 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
     },
-    headers() {
-      return [{
-          text: 'ID',
-          align: 'start',
-          value: 'id',
-        },
-        {
-          text: 'Name',
-          value: 'name'
-        },
-        {
-          text: 'My role',
-          value: 'role'
-        },
-        {
-          text: 'Start date',
-          value: 'project_start_date'
-        },
-        {
-          text: 'UTM X',
-          value: 'utm_x',
-          sortable: false
-        },
-        {
-          text: 'UTM Y',
-          value: 'utm_y',
-          sortable: false
-        },
-        {
-          text: 'UTM Z',
-          value: 'utm_z',
-          sortable: false
-        },
-        {
-           text: 'Actions', align: 'center' ,value: 'actions'
-        },
-      ]
-    },
   },
   watch: {
     'newProject.date': function(val){
@@ -167,8 +131,26 @@ export default {
     }
   },
 
-  created() {
-    this.getProjects()
+  async created() {
+    await this.$store.dispatch("TableManager/get", 'projects');
+    this.headers = this.$store.getters["TableManager/headers"];
+    console.log(this.headers)
+    var role = {
+      text: 'My Role',
+      value: 'role'
+    }
+    this.headers.splice(2, 0, role);
+    var actions = {
+      text: 'Actions',
+      align: 'center',
+      value: 'actions'
+    }
+    this.headers.push(actions)
+    console.log(this.headers)
+    // this.headers[this.headers.length]=role
+    await this.getProjects()
+    console.log(this.projects)
+    this.ready=true
     // this.getUsers(),
     // this.getClients()
   },
