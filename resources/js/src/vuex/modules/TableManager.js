@@ -1,46 +1,31 @@
-import APIService from '@/vuex/API/ProjectsAPI';
-import Notifications from '@/vuex/modules/NotificationsManager';
-
+import TableAPI from '@/vuex/API/TableAPI';
 
 const state = {
-  headers: [
-    {
-        text: 'ID',
-        align: 'start',
-        value: 'id',
-      },
-      {
-        text: 'Name',
-        value: 'name'
-      },
-      {
-        text: 'E-mail',
-        value: 'created_at'
-      },
-      {
-        text: 'Role',
-        value: 'updated_at'
-      },
-      {
-        text: 'Actions',
-        value: 'actions',
-        sortable: false
-      },
-      {
-        text: '',
-        value: 'data-table-expand'
-      },
-  ]
+  headers:[]
 };
 
+const getters = {
+  headers (state) {
+    return state.headers
+  }
+};
 
-const mutations = {};
+const mutations = {
+  SET_HEADERS (state, value) {
+    state.headers = value
+  }
+};
 
-const actions = {};
+const actions = {
+  get ({commit, dispatch}, params) {
+    return TableAPI.get(params).then((response) => {
+        console.log(response)
+       commit('SET_HEADERS', response)
+     })
+   },
+};
 
-const getters = {};
-
-const projects = {
+const headers = {
   namespaced: true,
   state,
   getters,
@@ -48,4 +33,4 @@ const projects = {
   mutations
 };
 
-export default projects;
+export default headers;

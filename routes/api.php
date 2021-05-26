@@ -30,9 +30,12 @@ use App\Http\Controllers\AuthController;
 
 Route::get('/refresh', [AuthController::class, 'refresh']);
 
+Route::get('tableheader/{tablename}',  'TableController@index');
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('upload_avatar', [UserController::class, 'upload_user_photo']);
+    Route::apiResource('projects', ProjectController::class);
     Route::apiResource('users', UserController::class);
     Route::apiResource('projects', ProjectController::class);
     Route::apiResource('drillings', DrillingController::class);

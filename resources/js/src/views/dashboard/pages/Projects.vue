@@ -1,5 +1,5 @@
 <template>
-<v-container id="regular-tables" class="d-flex justify-center" tag="section" style="margin-top:10vh;">
+<v-container v-if="ready" id="regular-tables" class="d-flex justify-center" tag="section" style="margin-top:10vh;">
 
   <v-data-table
     class="elevation-0"
@@ -423,8 +423,10 @@
 <script>
 export default {
   data: vm => ({
+    ready:false,
     itemsPerPage: [10, 20, 30, -1],
     mydate: null,
+    headers: null,
 
     menu: false,
     menu2: false,
@@ -490,42 +492,6 @@ export default {
     editComputedDateFormatted() {
       return this.formatDate(this.projectToEdit.date)
     },
-
-    headers() {
-      return [{
-          text: 'ID',
-          align: 'start',
-          value: 'id',
-        },
-        {
-          text: 'Name',
-          value: 'name'
-        },
-        {
-          text: 'Start date',
-          value: 'project_start_date'
-        },
-        {
-          text: 'UTM X',
-          value: 'utm_x',
-          sortable: false
-        },
-        {
-          text: 'UTM Y',
-          value: 'utm_y',
-          sortable: false
-        },
-        {
-          text: 'UTM Z',
-          value: 'utm_z',
-          sortable: false
-        },
-        {
-          text: '',
-          value: 'data-table-expand'
-        },
-      ]
-    },
   },
   watch: {
     'newProject.date': function(val) {
@@ -536,10 +502,14 @@ export default {
     }
   },
 
-  created() {
-    this.getProjects(),
+  async created() {
+      await this.$store.dispatch("TableManager/get", 'projects');
+      this.headers = this.$store.getters["TableManager/headers"];
+      this.getProjects(),
       this.getUsers(),
       this.getClients()
+      this.ready=true;
+
   },
   methods: {
     formatDate(date) {

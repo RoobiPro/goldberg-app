@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\SampleList;
 use App\Models\Campaigns\Drilling;
 use App\Models\Data\Lithology;
+use Illuminate\Support\Facades\Schema;
 
 class SampleListController extends Controller
 {
@@ -23,12 +24,14 @@ class SampleListController extends Controller
         // $lithology->samplelist()->save($sampleList);
         // $drilling->samplelist()->save($sampleList);
 
-        $sampleList = Lithology::find(1)->samplelist->listabel_campaign->project;
+        // $sampleList = Lithology::find(1)->samplelist->listabel_campaign->project;
+        // $columns = Schema::getColumnListing('assays');
+        $userHeaders = getTableHeaders('users'); // dump the result and die
         // $sampleList = class_basename(SampleList::find(1)->listabel_campaign);
         // $sampleList = SampleList::find(1)->project;
 
 
-        return $sampleList;
+        return $userHeaders;
     }
 
     /**

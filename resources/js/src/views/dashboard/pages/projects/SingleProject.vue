@@ -19,9 +19,9 @@
       <div class="my-4 subtitle-1">
         My role: <i><u>{{project.role}}</u></i><br>
         Start date: {{project.project_start_date}} <br>
-        Coordinate X: {{project.utm_x}} <br>
-        Coordinate Y: {{project.utm_y}} <br>
-        Coordinate Z: {{project.utm_z}} <br>
+        UTM X: {{project.utm_x}} <br>
+        UTM Y: {{project.utm_y}} <br>
+        UTM Z: {{project.utm_z}} <br>
       </div>
 
     </v-card-text>
@@ -31,13 +31,11 @@
     <v-card-title>View data</v-card-title>
 
     <v-card-text>
-      <v-chip-group
-        active-class="deep-purple accent-4 white--text"
-        column
-      >
-        <v-chip @click="openCampaings">Campaings</v-chip>
-
-      </v-chip-group>
+      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('spatial')">Spatial Data</v-btn>
+      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('handsamples')">Hand Samples</v-btn>
+      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('drillings')">Drillings</v-btn>
+      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('wells')">Wells</v-btn>
+      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('samples')">Sample List</v-btn>
     </v-card-text>
 
   </v-card>
@@ -61,7 +59,7 @@ export default {
   },
 
   methods: {
-    openCampaings(){
+    goTo(destination){
       this.$router.push({ path: this.$route.params.project_id+'/campaigns' })
     },
     async checkAuth(){

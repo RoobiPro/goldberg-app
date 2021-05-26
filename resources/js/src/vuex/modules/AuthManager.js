@@ -2,7 +2,6 @@ import AuthAPI from '@/vuex/API/AuthAPI'
 import Notifications from '@/vuex/modules/NotificationsManager'
 
 // We need to remove Axios here
-import axios from 'axios'
 
 
 const state =  {

@@ -6,6 +6,7 @@ import LayoutManager from './modules/LayoutManager'
 import UsersManager from './modules/UsersManager'
 import ProjectsManager from './modules/ProjectsManager'
 import CampaignManager from './modules/CampaignManager'
+import TableManager from './modules/TableManager'
 import NotificationsManager from './modules/NotificationsManager'
 
 
@@ -19,6 +20,7 @@ const store = new Vuex.Store({
     UsersManager,
     ProjectsManager,
     CampaignManager,
+    TableManager,
     NotificationsManager
   },
 });
