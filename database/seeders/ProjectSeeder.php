@@ -16,7 +16,20 @@ class ProjectSeeder extends Seeder
      * @return void
      */
     public function run(){
+      $timestamp = mt_rand(1430438400, time());
       $faker = Faker::create();
+
+      Project::create([
+          'name' => 'SPERLING',
+          'type' => 'Exploration',
+          'project_start_date' => $faker->date('Y-m-d', $timestamp),
+          'utm_x' => rand(262713.00, 381291.00),
+          'utm_y' => rand(6533033.22, 6544702.06),
+          'utm_z' => rand(0, 1000),
+          'created_at' => now(),
+          'updated_at' => now(),
+      ]);
+
       $companies = [
         'Antofagasta plc',
         'CAP S.A.',
@@ -37,9 +50,9 @@ class ProjectSeeder extends Seeder
           Project::create([
               'name' => $comp,
               'project_start_date' => $faker->date('Y-m-d', $timestamp),
-              'utm_x' => rand(12, 57) / 10,
-              'utm_y' => rand(12, 57) / 10,
-              'utm_z' => rand(12, 57) / 10,
+              'utm_x' => rand(262713.00, 381291.00),
+              'utm_y' => rand(6533033.22, 6544702.06),
+              'utm_z' => rand(0, 1000),
               'created_at' => now(),
               'updated_at' => now(),
           ]);
