@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\SampleListController;
+use App\Http\Controllers\FileImportController;
 
 
 /*
@@ -18,7 +19,7 @@ use App\Http\Controllers\SampleListController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::post('/importcsv', [FileImportController::class, 'index']);
 
 // Route::get('/login', function () {
 //     // return view('welcome');

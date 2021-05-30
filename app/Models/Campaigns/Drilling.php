@@ -11,6 +11,7 @@ class Drilling extends Model
 
     protected $fillable = [
       'project_id',
+      'drilling_code',
       'type',
       'utm_x',
       'utm_y',
