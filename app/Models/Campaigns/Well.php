@@ -12,6 +12,8 @@ class Well extends Model
     protected $fillable = [
       'project_id',
       'type',
+      'well_code',
+      'well_campaign',
       'utm_x',
       'utm_y',
       'utm_z',
@@ -20,7 +22,8 @@ class Well extends Model
       'length',
       'azimuth',
       'created_at',
-      'updated_at'
+      'updated_at',
+      'csv_import_id'
     ];
 
     public function project(){
@@ -31,7 +34,7 @@ class Well extends Model
     {
         return $this->morphMany(\App\Models\SampleList::class, 'listabel_campaign');
     }
-    
+
     public function surveys()
     {
       return $this->morphMany(\App\Models\Survey::class, 'suveryable');
@@ -40,5 +43,9 @@ class Well extends Model
     public function comments()
     {
         return $this->morphMany(\App\Models\Spare\Comment::class, 'commentable');
+    }
+
+    public function import(){
+      return $this->belongsTo(\App\Models\CsvImport::class);
     }
 }

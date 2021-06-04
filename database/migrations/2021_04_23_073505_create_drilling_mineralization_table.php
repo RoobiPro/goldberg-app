@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMineralizationTable extends Migration
+class CreateDrillingMineralizationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,16 @@ class CreateMineralizationTable extends Migration
      */
     public function up()
     {
-        Schema::create('mineralizations', function (Blueprint $table) {
+        Schema::create('drilling_mineralizations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sample_list_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->integer('intensity')->nullable();
-            $table->decimal('utm_x', 10, 2)->nullable();
-            $table->decimal('utm_y', 10, 2)->nullable();
-            $table->decimal('utm_z', 10, 2)->nullable();
+            $table->foreignId('drilling_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('sample_list_id')->nullable()->references('id')->on('sample_lists');
             $table->decimal('from', 10, 2)->nullable();
             $table->decimal('to', 10, 2)->nullable();
+            $table->integer('intensity')->nullable();
+            $table->longText('mineralization_code')->nullable();
             $table->longText('mineralization_description')->nullable();
+            $table->integer('csv_import_id')->nullable();
             $table->timestamps();
         });
     }

@@ -10,14 +10,15 @@ class Lithology extends Model
     use HasFactory;
 
     protected $fillable = [
+      'lithologyable_type',
+      'lithologyable_id',
       'sample_list_id',
-      'utm_x',
-      'utm_y',
-      'utm_z',
       'from',
       'to',
+      'rock_code',
       'rock_description',
-      'geological_unit_code',
+      'geological_unit',
+      'csv_import_id',
       'created_at',
       'updated_at',
     ];
@@ -29,9 +30,17 @@ class Lithology extends Model
     //     return $this->samplelist()->listabel_campaign_type;
     //     return $this->hasOneThrough(Owner::class, Car::class);
     // }
+    public function lithologyable()
+    {
+      return $this->morphTo();
+    }
 
     public function samplelist()
     {
       return $this->morphOne(\App\Models\SampleList::class, 'listabel_data');
+    }
+
+    public function import(){
+      return $this->belongsTo(\App\Models\CsvImport::class);
     }
 }

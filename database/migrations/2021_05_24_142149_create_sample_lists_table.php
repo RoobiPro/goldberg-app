@@ -19,6 +19,7 @@ class CreateSampleListsTable extends Migration
             $table->integer('listabel_campaign_id')->nullable();
             $table->string('listabel_data_type')->nullable();
             $table->integer('listabel_data_id')->nullable();
+            $table->integer('csv_import_id')->nullable();
             // $table->morphs('listabel_data')->nullable();
             $table->timestamps();
 

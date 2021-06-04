@@ -21,6 +21,7 @@ class CreateSurveysTable extends Migration
             $table->decimal('to', 10, 2)->nullable();
             $table->decimal('azimuth', 10, 2)->nullable();
             $table->decimal('dip', 10, 2)->nullable();
+            $table->integer('csv_import_id')->nullable();
             $table->timestamps();
         });
     }

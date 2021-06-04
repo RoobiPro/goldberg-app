@@ -18,6 +18,7 @@ class CreateSpatialsTable extends Migration
             $table->foreignId('project_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('attachment')->nullable();
             $table->string('file_type')->nullable();
+            $table->integer('csv_import_id')->nullable();
             $table->timestamps();
 
         });

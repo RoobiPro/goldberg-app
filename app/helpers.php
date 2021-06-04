@@ -1,6 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Schema;
-
+use App\Models\CsvImport;
 
 function getRoleName($rolenr) {
   if ($rolenr == 0) {
@@ -13,6 +13,7 @@ function getRoleName($rolenr) {
     return 'Role: ' + $rolenr;
   }
 };
+
 function formatDBField($field){
   if($field=='id'){
     return 'ID';
@@ -45,3 +46,21 @@ function getTableHeaders($tablename){
   }
   return $header_array;
 };
+
+function checkForImport($data){
+  if(CsvImport::where('table_type', $data[0])
+                    ->where('file_name', $data[1])
+                    ->where('bytes', $data[2])
+                    ->whereNull('deleted_at')
+                    ->first()){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+function convert_accent($string)
+{
+    return htmlentities($string, ENT_COMPAT, 'UTF-8');
+}

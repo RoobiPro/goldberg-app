@@ -11,10 +11,14 @@ class HandSample extends Model
 
     protected $fillable = [
       'project_id',
+      'hand_sample_campaign',
+      'hand_sample_code',
       'type',
       'utm_x',
       'utm_y',
       'utm_z',
+      'date',
+      'csv_import_id',
       'created_at',
       'updated_at'
     ];
@@ -32,5 +36,9 @@ class HandSample extends Model
     public function comments()
     {
         return $this->morphMany(\App\Models\Spare\Comment::class, 'commentable');
+    }
+
+    public function import(){
+      return $this->belongsTo(\App\Models\CsvImport::class);
     }
 }

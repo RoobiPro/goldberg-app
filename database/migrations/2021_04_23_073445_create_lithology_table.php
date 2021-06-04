@@ -15,14 +15,14 @@ class CreateLithologyTable extends Migration
     {
         Schema::create('lithologies', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sample_list_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->decimal('utm_x', 10, 2)->nullable();
-            $table->decimal('utm_y', 10, 2)->nullable();
-            $table->decimal('utm_z', 10, 2)->nullable();
+            $table->morphs('lithologyable');
+            $table->foreignId('sample_list_id')->nullable()->references('id')->on('sample_lists');
             $table->decimal('from', 10, 2)->nullable();
             $table->decimal('to', 10, 2)->nullable();
+            $table->longText('rock_code')->nullable();
             $table->longText('rock_description')->nullable();
-            $table->string('geological_unit_code')->nullable();
+            $table->string('geological_unit')->nullable();
+            $table->integer('csv_import_id')->nullable();
             $table->timestamps();
         });
     }

@@ -43,7 +43,7 @@ class Project extends Model
         return $this->hasMany(\Campaigns\Well::class);
     }
 
-    public function spatial()
+    public function spatials()
     {
         return $this->hasMany(\Campaigns\Spatial::class);
     }
@@ -53,12 +53,12 @@ class Project extends Model
         return $this->hasMany(\Campaigns\HandSample::class);
     }
 
-    public function samplelist()
+    public function samplelists()
     {
         return $this->hasMany(SampleList::class);
     }
 
-    public function survey()
+    public function surveys()
     {
         return $this->hasMany(\Data\Survey::class);
     }

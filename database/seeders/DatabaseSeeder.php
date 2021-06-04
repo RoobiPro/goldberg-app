@@ -21,8 +21,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
                       UsersSeeder::class,
                       ProjectSeeder::class,
-                      LithologySeeder::class,
-                      DrillingSeeder::class,
+                      // LithologySeeder::class,
+                      // DrillingSeeder::class,
                       // WellSeeder::class,
                       // ChemicalElementsSeeder::class,
                       // SurveryDataSeeder::class

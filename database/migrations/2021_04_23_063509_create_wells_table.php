@@ -17,6 +17,7 @@ class CreateWellsTable extends Migration
           $table->id();
           $table->foreignId('project_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
           $table->string('well_code')->nullable();
+          $table->string('well_campaign')->nullable();
           $table->string('type')->nullable();
           $table->decimal('utm_x', 10, 2)->nullable();
           $table->decimal('utm_y', 10, 2)->nullable();
@@ -25,6 +26,7 @@ class CreateWellsTable extends Migration
           $table->decimal('dip', 10, 2)->nullable();
           $table->decimal('length', 10, 2)->nullable();
           $table->decimal('azimuth', 10, 2)->nullable();
+          $table->integer('csv_import_id')->nullable();
           $table->timestamps();
         });
     }

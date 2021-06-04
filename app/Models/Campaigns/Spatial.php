@@ -14,7 +14,8 @@ class Spatial extends Model
       'attachment',
       'file_type',
       'created_at',
-      'updated_at'
+      'updated_at',
+      'csv_import_id'
     ];
 
     public function project(){
@@ -24,5 +25,9 @@ class Spatial extends Model
     public function comments()
     {
         return $this->morphMany(\App\Models\Spare\Comment::class, 'commentable');
+    }
+
+    public function import(){
+      return $this->belongsTo(\App\Models\CsvImport::class)
     }
 }

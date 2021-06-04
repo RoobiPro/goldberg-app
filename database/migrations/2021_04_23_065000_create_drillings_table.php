@@ -26,6 +26,7 @@ class CreateDrillingsTable extends Migration
             $table->decimal('dip', 10, 2)->nullable();
             $table->decimal('length', 10, 2)->nullable();
             $table->decimal('azimuth', 10, 2)->nullable();
+            $table->integer('csv_import_id')->nullable();
             $table->timestamps();
         });
     }

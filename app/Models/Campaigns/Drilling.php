@@ -22,7 +22,8 @@ class Drilling extends Model
       'length',
       'azimuth',
       'created_at',
-      'updated_at'
+      'updated_at',
+      'csv_import_id'
     ];
 
     public function project(){
@@ -42,5 +43,18 @@ class Drilling extends Model
     public function comments()
     {
         return $this->morphMany(\App\Models\Spare\Comment::class, 'commentable');
+    }
+
+    public function alterations(){
+      return $this->hasMany(\App\Models\Data\Alteration::class);
+    }
+
+    public function import(){
+      return $this->belongsTo(\App\Models\CsvImport::class);
+    }
+
+    public function lithology()
+    {
+      return $this->morphOne(\App\Models\Data\Lithology::class, 'lithologyable');
     }
 }

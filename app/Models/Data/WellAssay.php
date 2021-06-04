@@ -5,25 +5,32 @@ namespace App\Models\Data;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Mineralization extends Model
+class WellAssay extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+      'well_id',
+      'sample',
       'sample_list_id',
-      'intensity',
-      'utm_x',
-      'utm_y',
-      'utm_z',
+      'analysis_code',
+      'laboratory',
+      'certificate_number',
+      'certificate',
+      'date_sent',
+      'date_received',
       'from',
       'to',
-      'mineralization_description',
-      'created_at',
-      'updated_at',
+      'element_Fe',
+      'csv_import_id',
     ];
 
     public function samplelist()
     {
       return $this->morphOne(\App\Models\SampleList::class, 'listabel_data');
+    }
+
+    public function import(){
+      return $this->belongsTo(\App\Models\CsvImport::class);
     }
 }

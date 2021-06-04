@@ -20,7 +20,19 @@ use App\Http\Controllers\FileImportController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::post('/importcsv', [FileImportController::class, 'index']);
+Route::post('/deletecsv/{id}', 'FileImportController@delete');
+Route::post('/importcsv/handsample', [FileImportController::class, 'storeHandSample']);
+Route::post('/importcsv/drilling', [FileImportController::class, 'storeDrilling']);
+Route::post('/importcsv/well', [FileImportController::class, 'storeWell']);
+Route::post('/importcsv/drilling/alteration', [FileImportController::class, 'storeDrillingAlteration']);
+Route::post('/importcsv/drilling/assay', [FileImportController::class, 'storeDrillingAssay']);
+Route::post('/importcsv/drilling/lithology', [FileImportController::class, 'storeDrillingLithology']);
+Route::post('/importcsv/drilling/mineralization', [FileImportController::class, 'storeDrillingMiniralization']);
+Route::post('/importcsv/drilling/survey', [FileImportController::class, 'storeDrillingSurvey']);
+Route::post('/importcsv/well/assay', [FileImportController::class, 'storeWellAssay']);
+Route::post('/importcsv/well/lithology', [FileImportController::class, 'storeWellLithology']);
+Route::post('/importcsv/well/survey', [FileImportController::class, 'storeWellSurvey']);
+
 
 // Route::get('/login', function () {
 //     // return view('welcome');
