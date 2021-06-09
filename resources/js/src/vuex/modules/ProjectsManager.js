@@ -3,12 +3,14 @@ import Notifications from '@/vuex/modules/NotificationsManager';
 
 
 const state = {
+  spatials: {},
   projects: {},
   filteredusers: {},
   project: {},
 };
 
 const getters = {
+  spatials: state => state.spatials,
   projects: state => state.projects,
   project: state => state.project,
   filteredusers: state => state.filteredusers
@@ -16,6 +18,9 @@ const getters = {
 };
 
 const mutations = {
+  SET_SPATIALS: (state, spatials) => {
+    state.spatials = spatials;
+  },
   SET_PROJECTS: (state, projects) => {
     state.projects = projects;
   },
@@ -65,6 +70,14 @@ const actions = {
   selectedProject({commit, dispatch}, params) {
     commit('SET_PROJECT', params);
   },
+
+  getSpatials({commit, dispatch}, params) {
+    return APIService.projectspatials(params)
+      .then((spatials) => {
+        commit('SET_SPATIALS', spatials);
+      });
+  },
+
 
   getAll({commit, dispatch}, params) {
     return APIService.getAll(params)

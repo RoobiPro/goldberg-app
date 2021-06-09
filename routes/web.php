@@ -20,6 +20,9 @@ use App\Http\Controllers\FileImportController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::post('/uploadspatial/{id}', 'FileImportController@uploadSpatial');
+
+
 Route::post('/deletecsv/{id}', 'FileImportController@delete');
 Route::post('/importcsv/handsample', [FileImportController::class, 'storeHandSample']);
 Route::post('/importcsv/drilling', [FileImportController::class, 'storeDrilling']);
@@ -57,6 +60,8 @@ Route::get('/getClients', [UserController::class, 'getClients']);
 Route::get('/getAdmins', [UserController::class, 'getAdmins']);
 
 Route::get('/getUserProjects/{id}', [UserController::class, 'getUserProjects']);
+Route::get('/getProjectSpatials/{id}', [ProjectController::class, 'getProjectSpatials']);
+
 
 
 Route::post('/assignuser', [ProjectController::class, 'assignUser']);

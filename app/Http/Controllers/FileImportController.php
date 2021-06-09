@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Campaigns\Spatial;
 use App\Models\Campaigns\HandSample;
 use App\Models\Campaigns\Drilling;
 use App\Models\Campaigns\Well;
@@ -15,12 +16,79 @@ use App\Models\Data\Survey;
 use App\Models\Project;
 use App\Models\CsvImport;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+
 
 
 
 class FileImportController extends Controller
 {
     //
+    public function uploadSpatial(Request $request){
+      // return $request->route('id');
+      if(!$request->file('spatial')){
+        return response()->json([
+            'status'    => 'failure',
+            'message'   => 'No image file was uploaded!',
+            'avatar_url'=> NULL
+        ]);
+      }
+      $file_path = 'project-spatials/project/'.(string)$request->route('id');
+      // $full_path = 'folder/folder/' . $name;
+      Storage::put($file_path, $request->file('spatial')->getClientOriginalName());
+
+      $spatial = new Spatial;
+      $spatial->project_id = $request->route('id');
+      $spatial->attachment = 'app/project-spatials/project/'.(string)$request->route('id');
+      $spatial->file_type = $request->file('spatial')->getClientOriginalExtension();
+      $spatial->save();
+
+
+      return $file_path;
+
+          if(auth('sanctum')->user()->avatar != "default_avatar.png"){
+
+              Storage::disk('user_avatars')->delete(auth('sanctum')->user()->avatar);
+          }
+
+
+          // processing the uploaded image
+          // return response()->json($this->generateRandomString(), 200);
+          //
+          $avatar_name = $this->generateRandomString().'.'.$request->file('avatar')->getClientOriginalExtension();
+
+          $avatar_path = $request->file('spatial')->storeAs('',$avatar_name, 'user_avatars');
+
+          // Update user's avatar column on 'users' table
+          $profile = User::find(auth('sanctum')->user()->id);
+          $profile->avatar = $avatar_path;
+
+          // return response()->json($avatar_path, 200);
+
+          if($profile->save()){
+              return response()->json([
+                  'status'    =>  'success',
+                  'message'   =>  'Profile Photo Updated!',
+                  'avatar_url'=>  url('storage/user-avatar/'.$avatar_path),
+                  'avatar' => $profile->avatar
+              ]);
+          }else{
+              return response()->json([
+                  'status'    => 'failure',
+                  'message'   => 'failed to update profile photo!',
+                  'avatar_url'=> NULL
+              ]);
+          }
+
+      }
+
+    //     return response()->json([
+    //         'status'    => 'failure',
+    //         'message'   => 'No image file uploaded!',
+    //         'avatar_url'=> NULL
+    //     ]);
+    // }
+
     public function createImport($file, $type){
       $filenameWithExt = $file->getClientOriginalName();
       $extension = $file->getClientOriginalExtension();

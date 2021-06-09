@@ -45,7 +45,7 @@ class Project extends Model
 
     public function spatials()
     {
-        return $this->hasMany(\Campaigns\Spatial::class);
+        return $this->hasMany(Campaigns\Spatial::class);
     }
 
     public function handsamples()

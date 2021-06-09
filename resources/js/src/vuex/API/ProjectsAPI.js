@@ -1,6 +1,12 @@
 import { APIConfig } from './APIConfig';
 import axios from 'axios';
 
+function projectspatials(id) {
+  return axios.get(`/getProjectSpatials/`+id)
+    .then(response => {
+      return response.data;
+    });
+}
 
 function projectusers(id) {
   return axios.get(`/getProjectUsers/`+id)
@@ -159,6 +165,7 @@ function upload(user, image) {
 
 
 export default {
+  projectspatials,
   getAll,
   show,
   create,

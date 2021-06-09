@@ -9,6 +9,8 @@ use Illuminate\Facades\Auth;
 use App\Models\User;
 use App\Models\Campaign;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 
 class ProjectController extends Controller
@@ -24,6 +26,12 @@ class ProjectController extends Controller
     {
 
       return ProjectResource::collection(Project::all());
+    }
+
+    public function getProjectSpatials($id){
+      $project = Project::find($id);
+
+      return $project->spatials;
     }
 
     public function testproject(){
@@ -58,6 +66,13 @@ class ProjectController extends Controller
         // $project->coordinates_y = $request->coordinates_y;
         // $project->coordinates_z = $request->coordinates_z;
         $project->save();
+        // File::makeDirectory('app/public/project-spatials/psi');
+        $path = 'project-spatials/project/'.((string) $project->id);
+
+        if(!Storage::exists($path)) {
+            Storage::makeDirectory($path, 0775, true); //creates directory
+        }
+
         return response()->json([ "success" => true, "msg" => "Project successfully created!", "project" => $project ], 200);
         // return response()->json("Project successfully created!", 200);
     }

@@ -11,12 +11,10 @@
     "/js/upgrade.js": "/js/upgrade.js",
     "/js/myprojects.js": "/js/myprojects.js",
     "/js/project.js": "/js/project.js",
-    "/js/campaigns.js": "/js/campaigns.js",
-    "/js/campaign.js": "/js/campaign.js",
     "/js/drillings.js": "/js/drillings.js",
-    "/css/app.css": "/css/app.css",
     "/js/handsamples.js": "/js/handsamples.js",
     "/js/spatials.js": "/js/spatials.js",
     "/js/wells.js": "/js/wells.js",
-    "/js/samplelist.js": "/js/samplelist.js"
+    "/js/samplelist.js": "/js/samplelist.js",
+    "/css/app.css": "/css/app.css"
 }

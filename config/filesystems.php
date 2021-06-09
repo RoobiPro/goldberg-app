@@ -57,7 +57,14 @@ return [
           'root' => storage_path('app/public/user-avatar'),
           'url' => env('APP_URL').'/storage/user-avatar',
           'visibility' => 'public',
-      ],
+        ],
+
+        'project_spatials' => [
+          'driver' => 'local',
+          'root' => storage_path('app/project-spatials'),
+          'url' => env('APP_URL').'/storage/project-spatials',
+          'visibility' => 'public',
+        ],
 
     ],
 
