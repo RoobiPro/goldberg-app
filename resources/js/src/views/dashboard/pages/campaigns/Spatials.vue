@@ -86,15 +86,23 @@
         <template  v-slot:item.actions="{ item }">
 
           <a href="/images/myw3schoolsimage.jpg" download>
-            
+
           </a>
 
           <v-btn small color="primary" dark
-           @click="openProject(item)"
+           @click="displaySpatial(item.id)"
            >
-            Open
-            <v-icon size=26 :color="'white'" style="padding-left:10px">
-              mdi-book-open-variant
+
+            <v-icon size=26 :color="'white'">
+              mdi-eye
+            </v-icon>
+          </v-btn>
+
+          <v-btn small color="primary" dark
+           @click="downloadSpatial(item.id)"
+           >
+            <v-icon size=26 :color="'white'">
+              mdi-download
             </v-icon>
           </v-btn>
 
@@ -132,14 +140,7 @@ export default {
 
   },
   async created() {
-    await this.$store.dispatch("TableManager/get", 'spatials');
-    this.headers = this.$store.getters["TableManager/headers"];
-    var actions = {
-      text: 'Actions',
-      align: 'center',
-      value: 'actions'
-    }
-    this.headers.push(actions)
+    this.createHeader()
     await this.$store.dispatch('ProjectsManager/getSpatials', this.$route.params.id)
     this.spatials =  this.$store.getters["ProjectsManager/spatials"]
     // console.log(this.headers)
@@ -154,6 +155,22 @@ export default {
     // console.log(spatials)
   },
   methods: {
+    async createHeader(){
+      await this.$store.dispatch("TableManager/get", 'spatials');
+      this.headers = this.$store.getters["TableManager/headers"];
+      var actions = {
+        text: 'Actions',
+        align: 'center',
+        value: 'actions'
+      }
+      this.headers.push(actions)
+    },
+    displaySpatial(id){
+      window.open('/displayspatial/'+id, '_blank').focus();
+    },
+    downloadSpatial(id){
+      window.location.href = '/downloadspatial/'+id;
+    },
     updateProfile(){
       this.$store.dispatch('AuthManager/update', this.myuser)
     },
@@ -168,6 +185,13 @@ export default {
         })
         .then((response) => {
           console.log(response)
+          this.file = null
+          this.$store.dispatch("TableManager/get", 'spatials');
+          this.headers = this.$store.getters["TableManager/headers"];
+          this.createHeader()
+          this.$store.dispatch('ProjectsManager/getSpatials', this.$route.params.id)
+          this.spatials =  this.$store.getters["ProjectsManager/spatials"]
+          console.log(this.spatials)
           // this.$store.commit('AuthManager/SET_USERAVATAR', response.data.avatar)
           // this.avatarImageUrl = response.data.avatar_url
           // this.myuser.avatar = response.data.avatar

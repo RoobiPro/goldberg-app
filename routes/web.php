@@ -20,6 +20,11 @@ use App\Http\Controllers\FileImportController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/displayspatial/{id}', 'FileImportController@displaySpatial');
+
+Route::get('/downloadspatial/{id}', 'FileImportController@downloadSpatial');
+
 Route::post('/uploadspatial/{id}', 'FileImportController@uploadSpatial');
 
 

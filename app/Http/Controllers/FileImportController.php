@@ -24,6 +24,19 @@ use Illuminate\Support\Facades\Storage;
 class FileImportController extends Controller
 {
     //
+    public function displaySpatial($id){
+      $spatial = Spatial::find($id);
+      $file = $spatial->full_path.$spatial->attachment;
+      return Storage::response($file);
+    }
+
+    public function downloadSpatial($id){
+      $spatial = Spatial::find($id);
+      $file = $spatial->full_path.$spatial->attachment;
+      return Storage::download($file);
+    }
+
+
     public function uploadSpatial(Request $request){
       // return $request->route('id');
       if(!$request->file('spatial')){
@@ -33,13 +46,14 @@ class FileImportController extends Controller
             'avatar_url'=> NULL
         ]);
       }
-      $file_path = 'project-spatials/project/'.(string)$request->route('id');
+      $file_path = 'project-spatials/project/'.(string)$request->route('id').'/';
       // $full_path = 'folder/folder/' . $name;
-      Storage::put($file_path, $request->file('spatial')->getClientOriginalName());
+      Storage::putFileAs($file_path, $request->file('spatial'), $request->file('spatial')->getClientOriginalName());
 
       $spatial = new Spatial;
       $spatial->project_id = $request->route('id');
-      $spatial->attachment = 'app/project-spatials/project/'.(string)$request->route('id');
+      $spatial->attachment = $request->file('spatial')->getClientOriginalName();
+      $spatial->full_path = $file_path;
       $spatial->file_type = $request->file('spatial')->getClientOriginalExtension();
       $spatial->save();
 

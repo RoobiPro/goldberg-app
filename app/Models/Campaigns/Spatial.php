@@ -11,6 +11,7 @@ class Spatial extends Model
 
     protected $fillable = [
       'project_id',
+      'full_path',
       'attachment',
       'file_type',
       'created_at',
