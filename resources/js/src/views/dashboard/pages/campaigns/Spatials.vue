@@ -27,14 +27,13 @@
                   truncate-length="15"
                   label="Upload spatial"
                   :clearable="false"
-                  @change="updateAvatar">
                 ></v-file-input>
                 </v-col>
                 <div v-if="showUploadProgress">
                     Uploading: {{ uploadPercent }} %
                 </div>
               </v-row>
-<!--
+
               <v-row class="mb-4">
                 <v-col
                   cols="12"
@@ -43,12 +42,13 @@
                   <v-btn
                     color="primary"
                     class="mr-0"
-                    v-on:click="updateProfile()"
+                    :disabled="file === undefined || file.length == 0"
+                    v-on:click="updateAvatar()"
                   >
-                    Update Profile
+                    Upload
                   </v-btn>
                 </v-col>
-              </v-row> -->
+              </v-row>
 
             </v-container>
           </v-form>
@@ -106,9 +106,30 @@
             </v-icon>
           </v-btn>
 
+          <v-btn small color="red" dark
+           @click="showDeleteDialog(item.id)"
+           >
+            <v-icon size=26 :color="'white'">
+              mdi-trash-can
+            </v-icon>
+          </v-btn>
+
+
         </template>
       </v-data-table>
     </v-row>
+
+    <v-dialog v-model="deleteProjectDialog" max-width="400px">
+      <v-card>
+        <v-card-title class="headline">Are you sure?</v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="closeDialogs">Cancel</v-btn>
+          <v-btn color="blue darken-1" text @click="deleteProjectConfirm">OK</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
   </v-container>
 </template>
@@ -123,6 +144,8 @@ export default {
   props: ['avatarUrl'],
   data() {
     return {
+      delete_id: null,
+      deleteProjectDialog: false,
       search: '',
       headers:[],
       file: [],
@@ -155,6 +178,24 @@ export default {
     // console.log(spatials)
   },
   methods: {
+    showDeleteDialog(id){
+      this.delete_id = id
+      this.deleteProjectDialog = true;
+    },
+    closeDialogs(){
+      this.deleteProjectDialog = false;
+    },
+    async deleteProjectConfirm(){
+      console.log("deleting")
+      console.log(this.delete_id)
+      await axios.get('/deletespatial/'+this.delete_id)
+        .then((response) => {
+          console.log(response)
+          this.deleteProjectDialog = false;
+        })
+      await this.$store.dispatch('ProjectsManager/getSpatials', this.$route.params.id)
+      this.spatials =  this.$store.getters["ProjectsManager/spatials"]
+    },
     async createHeader(){
       await this.$store.dispatch("TableManager/get", 'spatials');
       this.headers = this.$store.getters["TableManager/headers"];
@@ -174,58 +215,38 @@ export default {
     updateProfile(){
       this.$store.dispatch('AuthManager/update', this.myuser)
     },
-    updateAvatar() {
+    async updateAvatar() {
       let formData = new FormData()
       formData.append('spatial', this.file)
       axios.post('/uploadspatial/'+this.$route.params.id, formData, {
+
           onUploadProgress: (progressEvent) => {
+
             this.showUploadProgress = true
             this.uploadPercent = progressEvent.lengthComputable ? Math.round((progressEvent.loaded * 100) / progressEvent.total) : 0;
           }
         })
         .then((response) => {
+          this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: response.data.type, text: response.data.message});
           console.log(response)
-          this.file = null
-          this.$store.dispatch("TableManager/get", 'spatials');
-          this.headers = this.$store.getters["TableManager/headers"];
-          this.createHeader()
-          this.$store.dispatch('ProjectsManager/getSpatials', this.$route.params.id)
-          this.spatials =  this.$store.getters["ProjectsManager/spatials"]
-          console.log(this.spatials)
-          // this.$store.commit('AuthManager/SET_USERAVATAR', response.data.avatar)
-          // this.avatarImageUrl = response.data.avatar_url
-          // this.myuser.avatar = response.data.avatar
-          // this.showUploadProgress = false
-          // this.processingUpload = false
-          // this.$emit('imageUrl', response.data.secure_url)
+          // this.file = []
+
         })
         .catch((error) => {
           this.showUploadProgress = false
           this.processingUpload = false
+          this.file = []
         })
-      if (this.$refs.photo) {
-        this.showUploadProgress = true
-        this.processingUpload = true
-        this.uploadPercent = 0
-        let formData = new FormData()
-        formData.append('avatar', this.$refs.photo)
-        axios.post('/upload_avatar', formData, {
-            onUploadProgress: (progressEvent) => {
-              this.uploadPercent = progressEvent.lengthComputable ? Math.round((progressEvent.loaded * 100) / progressEvent.total) : 0;
-            }
-          })
-          .then((response) => {
-            this.avatarImageUrl = response.data.avatar_url
-            this.myuser.avatar = response.data.avatar_url
-            this.showUploadProgress = false
-            this.processingUpload = false
-            this.$emit('imageUrl', response.data.secure_url)
-          })
-          .catch((error) => {
-            this.showUploadProgress = false
-            this.processingUpload = false
-          })
-      }
+        this.file = []
+        await this.$store.dispatch("TableManager/get", 'spatials');
+        this.headers = this.$store.getters["TableManager/headers"];
+        this.createHeader()
+        await this.$store.dispatch('ProjectsManager/getSpatials', this.$route.params.id)
+        this.spatials =  this.$store.getters["ProjectsManager/spatials"]
+        console.log(this.spatials)
+        this.showUploadProgress = false
+        // this.file = []
+
     }
   }
 }

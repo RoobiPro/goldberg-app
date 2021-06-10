@@ -19,7 +19,6 @@ const mutations = {
 const actions = {
   get ({commit, dispatch}, params) {
     return TableAPI.get(params).then((response) => {
-        console.log(response)
        commit('SET_HEADERS', response)
      })
    },

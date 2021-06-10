@@ -21,6 +21,10 @@ use App\Http\Controllers\FileImportController;
 |
 */
 
+
+
+Route::get('/deletespatial/{id}', 'FileImportController@deleteSpatial');
+
 Route::get('/displayspatial/{id}', 'FileImportController@displaySpatial');
 
 Route::get('/downloadspatial/{id}', 'FileImportController@downloadSpatial');

@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Schema;
 use App\Models\CsvImport;
+use App\Models\Campaigns\Spatial;
 
 function getRoleName($rolenr) {
   if ($rolenr == 0) {
@@ -54,6 +55,30 @@ function checkForImport($data){
                     ->whereNull('deleted_at')
                     ->first()){
     return true;
+  }
+  else{
+    return false;
+  }
+}
+
+function checkSpatialExists($data){
+  if(Spatial::where('attachment', $data[1])
+                    ->where('bytes', $data[2])
+                    ->where('full_path', $data[0])
+                    ->first()){
+      return true;
+  }
+  else{
+    return false;
+  }
+}
+
+function checkNameExists($data){
+  if(Spatial::where('attachment', $data[1])
+                    ->whereNotIn('bytes', [$data[2],0])
+                    ->where('full_path', $data[0])
+                    ->first()){
+      return true;
   }
   else{
     return false;

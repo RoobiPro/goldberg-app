@@ -19,6 +19,7 @@ class CreateSpatialsTable extends Migration
             $table->string('attachment')->nullable();
             $table->string('full_path')->nullable();
             $table->string('file_type')->nullable();
+            $table->integer('bytes')->nullable();
             $table->timestamps();
         });
     }

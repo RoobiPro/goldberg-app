@@ -24,6 +24,8 @@ use Illuminate\Support\Facades\Storage;
 class FileImportController extends Controller
 {
     //
+
+
     public function displaySpatial($id){
       $spatial = Spatial::find($id);
       $file = $spatial->full_path.$spatial->attachment;
@@ -36,17 +38,40 @@ class FileImportController extends Controller
       return Storage::download($file);
     }
 
+    public function deleteSpatial($id){
+      $spatial = Spatial::find($id);
+      Storage::delete($spatial->full_path.$spatial->attachment);
+      $spatial->delete();
+    }
 
     public function uploadSpatial(Request $request){
       // return $request->route('id');
       if(!$request->file('spatial')){
         return response()->json([
-            'status'    => 'failure',
-            'message'   => 'No image file was uploaded!',
-            'avatar_url'=> NULL
+            'type'    => 'red',
+            'message'   => 'No spatial was uploaded!',
         ]);
       }
       $file_path = 'project-spatials/project/'.(string)$request->route('id').'/';
+      $filedata=[];
+
+      array_push($filedata, $file_path, $request->file('spatial')->getClientOriginalName(), $request->file('spatial')->getSize());
+
+      if(checkSpatialExists($filedata)){
+        return response()->json([
+            'type'    => 'red',
+            'message'   => 'Spatial already in project!',
+        ]);
+      }
+
+      if(checkNameExists($filedata)){
+        return response()->json([
+            'type'    => 'red',
+            'message'   => 'A file with this name already exists, change the file name!',
+        ]);
+      }
+
+
       // $full_path = 'folder/folder/' . $name;
       Storage::putFileAs($file_path, $request->file('spatial'), $request->file('spatial')->getClientOriginalName());
 
@@ -54,11 +79,15 @@ class FileImportController extends Controller
       $spatial->project_id = $request->route('id');
       $spatial->attachment = $request->file('spatial')->getClientOriginalName();
       $spatial->full_path = $file_path;
+      $spatial->bytes = $request->file('spatial')->getSize();
       $spatial->file_type = $request->file('spatial')->getClientOriginalExtension();
       $spatial->save();
 
 
-      return $file_path;
+      return response()->json([
+          'type'    => 'green',
+          'message'   => 'Spatial successfully uploaded!',
+      ]);
 
           if(auth('sanctum')->user()->avatar != "default_avatar.png"){
 
