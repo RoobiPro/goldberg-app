@@ -24,6 +24,7 @@
                 >
                 <v-file-input
                   v-model="file"
+                  ref="fileInput"
                   truncate-length="15"
                   label="Upload spatial"
                   :clearable="false"
@@ -42,7 +43,7 @@
                   <v-btn
                     color="primary"
                     class="mr-0"
-                    :disabled="file === undefined || file.length == 0"
+                    :disabled="file === undefined"
                     v-on:click="updateAvatar()"
                   >
                     Upload
@@ -235,9 +236,12 @@ export default {
         .catch((error) => {
           this.showUploadProgress = false
           this.processingUpload = false
-          this.file = []
+          // this.file = []
         })
-        this.file = []
+        this.file = null
+        this.$nextTick(()=>{
+          console.log(this.$refs.fileInput.$refs.input.file)
+        })
         await this.$store.dispatch("TableManager/get", 'spatials');
         this.headers = this.$store.getters["TableManager/headers"];
         this.createHeader()
