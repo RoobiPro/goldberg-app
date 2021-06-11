@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Schema;
 use App\Models\CsvImport;
+use App\Models\Project;
 use App\Models\Campaigns\Spatial;
 
 function getRoleName($rolenr) {
@@ -88,4 +89,26 @@ function checkNameExists($data){
 function convert_accent($string)
 {
     return htmlentities($string, ENT_COMPAT, 'UTF-8');
+}
+
+function getProjectId($file){
+  $handle = fopen($file, "r");
+  $row=0;
+  while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+    if($row==0){
+        $row++;
+        continue;
+        // SKIP HEADER ROW
+      }
+      $name = $data[0];
+      break;
+  }
+
+  $project = Project::where('name', $name)->first();
+  if(!$project){
+    false;
+  }
+  else{
+    return $project->id;
+  }
 }

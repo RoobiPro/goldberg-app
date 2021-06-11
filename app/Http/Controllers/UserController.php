@@ -85,6 +85,13 @@ class UserController extends Controller
         $projects[$index]->longitude = $cords['lon'];
         $projects[$index]->project_start_date = Carbon::parse($projects[$index]->project_start_date)->format('d.m.Y');
         $projects[$index]->role = getRoleName($projects[$index]->pivot->role);
+        $projects[$index]->count_spatial = count($projects[$index]->spatials);
+        $projects[$index]->count_drilling = count($projects[$index]->drillings);
+        $projects[$index]->count_wells = count($projects[$index]->wells);
+        $projects[$index]->count_handsamples = count($projects[$index]->handsamples);
+        // $projects[$index]->count_samplelists = count($projects[$index]->samplelists);
+
+
         // dd($projects[$index]);
         $index++;
       }

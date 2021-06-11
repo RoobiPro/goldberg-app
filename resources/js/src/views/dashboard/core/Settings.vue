@@ -152,12 +152,12 @@
         '#E91E63',
         '#FF5252',
       ],
-      image: !localStorage.getItem("showBarImage") ? 'https://demos.creative-tim.com/material-dashboard/assets/img/sidebar-1.jpg' : (localStorage.getItem("showBarImage") == 'true' ? localStorage.getItem("barImage") : false),
+      image: !localStorage.getItem("showBarImage") ? '/images/sidebar-1.jpg' : (localStorage.getItem("showBarImage") == 'true' ? localStorage.getItem("barImage") : false),
       images: [
-        'https://demos.creative-tim.com/material-dashboard/assets/img/sidebar-1.jpg',
-        'https://demos.creative-tim.com/material-dashboard/assets/img/sidebar-2.jpg',
-        'https://demos.creative-tim.com/material-dashboard/assets/img/sidebar-3.jpg',
-        'https://demos.creative-tim.com/material-dashboard/assets/img/sidebar-4.jpg'
+        '/images/sidebar-1.jpg',
+        '/images/sidebar-2.jpg',
+        '/images/sidebar-3.jpg',
+        '/images/sidebar-4.jpg'
       ],
       menu: false,
       saveImage: '',

@@ -14,32 +14,35 @@
     <MapsComponent v-if="(typeof project.utm_x !== 'undefined')" :coordinates_x="project.latitude"  :coordinates_y="project.longitude"/>
 
     <v-card-title>{{this.project.name}}</v-card-title>
-    <v-card-text>
 
-      <div class="my-4 subtitle-1">
-        Project code: <i><u>{{project.project_code}}</u></i><br>
-        Type: {{project.type}} <br>
+    <v-card-text class="d-flex" style="justify-content: space-between; ">
+      <div class="">
+        <div class="my-4 subtitle-1">
+          Project code: <i><u>{{project.project_code}}</u></i><br>
+          Type: {{project.type}} <br>
+        </div>
+
+        <div class="my-4 subtitle-1">
+          My role: <i><u>{{project.role}}</u></i><br>
+          Start date: {{project.project_start_date}} <br>
+          UTM X: {{project.utm_x}} <br>
+          UTM Y: {{project.utm_y}} <br>
+          UTM Z: {{project.utm_z}} <br>
+        </div>
       </div>
-
-      <div class="my-4 subtitle-1">
-        My role: <i><u>{{project.role}}</u></i><br>
-        Start date: {{project.project_start_date}} <br>
-        UTM X: {{project.utm_x}} <br>
-        UTM Y: {{project.utm_y}} <br>
-        UTM Z: {{project.utm_z}} <br>
+      <div class="">
+        <v-btn class="ma-2" rounded color="primary" dark @click="goTo('spatials')">Import data</v-btn>
+        <v-btn class="ma-2" rounded color="primary" dark @click="goTo('spatials')">Import history</v-btn>
       </div>
-
     </v-card-text>
-
-    <v-divider class="mx-4"></v-divider>
 
     <v-card-title>View data</v-card-title>
 
     <v-card-text>
-      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('spatials')">Spatial Data</v-btn>
-      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('handsamples')">Hand Samples</v-btn>
-      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('drillings')">Drillings</v-btn>
-      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('wells')">Wells</v-btn>
+      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('spatials')">Spatial Data ({{project.count_spatial}})</v-btn>
+      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('handsamples')">Hand Samples ({{project.count_handsamples}})</v-btn>
+      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('drillings')">Drillings ({{project.count_drilling}})</v-btn>
+      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('wells')">Wells ({{project.count_wells}})</v-btn>
       <v-btn class="ma-2" rounded color="primary" dark @click="goTo('samplelist')">Sample List</v-btn>
 
     </v-card-text>

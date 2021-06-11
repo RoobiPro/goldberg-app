@@ -24,14 +24,6 @@ style="margin-top:10vh;">
         <v-toolbar-title>My projects</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-text-field v-model="search" label="Search" append-icon="mdi-magnify" class="mx-4" single-line hide-details></v-text-field>
-        <v-divider class="mx-4" inset vertical></v-divider>
-        <v-switch
-          v-model="singleExpand"
-          style="margin-bottom: 0px;"
-          label="Single expand"
-          class="ma-0 pa-0" >
-        </v-switch>
-
         <!-- <v-divider class="mx-4" inset vertical></v-divider> -->
 
 
@@ -64,7 +56,6 @@ export default {
     menu: false,
     menu2: false,
 
-    singleExpand: true,
 
     editProjectDialog: false,
     editUserRoleDialog: false,

@@ -35,12 +35,12 @@ class Project extends Model
 
     public function drillings()
     {
-        return $this->hasMany(\Campaigns\Drilling::class);
+        return $this->hasMany(Campaigns\Drilling::class);
     }
 
     public function wells()
     {
-        return $this->hasMany(\Campaigns\Well::class);
+        return $this->hasMany(Campaigns\Well::class);
     }
 
     public function spatials()
@@ -50,12 +50,12 @@ class Project extends Model
 
     public function handsamples()
     {
-        return $this->hasMany(\Campaigns\HandSample::class);
+        return $this->hasMany(Campaigns\HandSample::class);
     }
 
     public function samplelists()
     {
-        return $this->hasMany(SampleList::class);
+        return $this->hasMany(\App\Models\SampleList::class);
     }
 
     public function surveys()

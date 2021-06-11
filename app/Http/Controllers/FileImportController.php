@@ -89,53 +89,17 @@ class FileImportController extends Controller
           'message'   => 'Spatial successfully uploaded!',
       ]);
 
-          if(auth('sanctum')->user()->avatar != "default_avatar.png"){
-
-              Storage::disk('user_avatars')->delete(auth('sanctum')->user()->avatar);
-          }
-
-
-          // processing the uploaded image
-          // return response()->json($this->generateRandomString(), 200);
-          //
-          $avatar_name = $this->generateRandomString().'.'.$request->file('avatar')->getClientOriginalExtension();
-
-          $avatar_path = $request->file('spatial')->storeAs('',$avatar_name, 'user_avatars');
-
-          // Update user's avatar column on 'users' table
-          $profile = User::find(auth('sanctum')->user()->id);
-          $profile->avatar = $avatar_path;
-
-          // return response()->json($avatar_path, 200);
-
-          if($profile->save()){
-              return response()->json([
-                  'status'    =>  'success',
-                  'message'   =>  'Profile Photo Updated!',
-                  'avatar_url'=>  url('storage/user-avatar/'.$avatar_path),
-                  'avatar' => $profile->avatar
-              ]);
-          }else{
-              return response()->json([
-                  'status'    => 'failure',
-                  'message'   => 'failed to update profile photo!',
-                  'avatar_url'=> NULL
-              ]);
-          }
-
-      }
-
-    //     return response()->json([
-    //         'status'    => 'failure',
-    //         'message'   => 'No image file uploaded!',
-    //         'avatar_url'=> NULL
-    //     ]);
-    // }
+    }
 
     public function createImport($file, $type){
+      $projectexists = getProjectId($file);
+      if(!$projectexists){
+        return false;
+      }
       $filenameWithExt = $file->getClientOriginalName();
       $extension = $file->getClientOriginalExtension();
       $CsvImport = new CsvImport;
+      $CsvImport->project_id = $projectexists;
       $CsvImport->table_type = $type;
       $CsvImport->import_date = now();
       $CsvImport->file_name = $filenameWithExt;
@@ -154,6 +118,9 @@ class FileImportController extends Controller
         return "No csv file was passed";
       }
       $CsvImport = $this->createImport($req->file('csvfile'), 'survey');
+      if(!$CsvImport){
+        return "No Drilling with this name/id found!";
+      }
       $row=0;
       $handle = fopen($req->file('csvfile'), "r");
       $surveyArray = [];
@@ -722,6 +689,9 @@ class FileImportController extends Controller
             return "No csv file was passed";
           }
           $CsvImport = $this->createImport($req->file('csvfile'), 'well');
+          if(!$CsvImport){
+            return "No project with this name found!";
+          }
 
             // return $CsvImport;
           $row=0;
@@ -793,6 +763,9 @@ class FileImportController extends Controller
         return "No csv file was passed";
       }
       $CsvImport = $this->createImport($req->file('csvfile'), 'handsample');
+      if(!$CsvImport){
+        return "No project with this name found!";
+      }
 
         // return $CsvImport;
       $row=0;
@@ -865,6 +838,9 @@ class FileImportController extends Controller
         return "No csv file was passed";
       }
       $CsvImport = $this->createImport($req->file('csvfile'), 'drilling');
+      if(!$CsvImport){
+        return "No project with this name found!";
+      }
 
         // return $CsvImport;
       $row=0;

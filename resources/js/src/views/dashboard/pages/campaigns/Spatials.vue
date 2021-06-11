@@ -43,7 +43,7 @@
                   <v-btn
                     color="primary"
                     class="mr-0"
-                    :disabled="file === undefined"
+                    :disabled="file === undefined || file === null"
                     v-on:click="updateAvatar()"
                   >
                     Upload
@@ -164,9 +164,11 @@ export default {
 
   },
   async created() {
+    console.log(this.file)
     this.createHeader()
     await this.$store.dispatch('ProjectsManager/getSpatials', this.$route.params.id)
     this.spatials =  this.$store.getters["ProjectsManager/spatials"]
+    this.file = null
     // console.log(this.headers)
   },
   async mounted() {
