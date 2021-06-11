@@ -14,7 +14,7 @@ class CreateAssayElementTable extends Migration
     public function up()
     {
         Schema::create('assay_element', function (Blueprint $table) {
-          $table->foreignId('assay_data_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+          // $table->foreignId('assay_data_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
           $table->foreignId('element_id')->consrained();
           $table->decimal('ppm', 10, 2)->nullable();
         });

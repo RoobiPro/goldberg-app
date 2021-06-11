@@ -84,11 +84,6 @@ th {
   text-align: left;
 }
 
-::-webkit-scrollbar {
-  width: 0 !important;
-  display: none;
-}
-
 html, body {
   scroll-behavior: smooth;
   -ms-overflow-style: none;
