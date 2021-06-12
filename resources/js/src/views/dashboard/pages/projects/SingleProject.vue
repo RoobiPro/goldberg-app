@@ -32,7 +32,9 @@
       </div>
       <div class="">
         <v-btn class="ma-2" rounded color="primary" dark @click="goTo('spatials')">Import data</v-btn>
-        <v-btn class="ma-2" rounded color="primary" dark @click="goTo('spatials')">Import history</v-btn>
+        <CSVDialog />
+
+        <!-- <v-btn class="ma-2" rounded color="primary" dark @click="goTo('spatials')">Import history</v-btn> -->
       </div>
     </v-card-text>
 
@@ -53,10 +55,11 @@
 
 <script>
 import MapsComponent from './../../maps/GoogleMapsNew'
+import CSVDialog from './components/CSVDialog'
 
 export default {
   components:{
-    MapsComponent
+    MapsComponent, CSVDialog
   },
   data: () => ({
     ready:false,
