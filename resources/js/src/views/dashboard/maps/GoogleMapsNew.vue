@@ -56,3 +56,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  .vue2leaflet-map{
+    z-index: 100;
+  }
+</style>
