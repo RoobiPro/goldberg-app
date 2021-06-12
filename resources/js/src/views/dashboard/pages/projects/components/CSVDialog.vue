@@ -15,27 +15,23 @@
    <template v-slot:default="dialog">
      <v-card>
 
-       <div class="header d-flex justify-space-between align-center">
 
        <v-toolbar
          color="primary"
          dark
        >
        Import CSV Data
+
+       <div class="headeritem primary" >
+         <div class="custombtn" @click="dialog.value = false">
+           x
+         </div>
+       </div>
+
       </v-toolbar>
 
-       <!-- <v-card-actions
-       color="primary"
-       > -->
-         <v-btn
-           text
-           color="primary"
-           @click="dialog.value = false">
-           X
-         </v-btn>
-       <!-- </v-card-actions> -->
 
-     </div>
+
 
        <!-- <v-card-text>
          <div class="text-h2 pa-12">Fick Dich!</div>
@@ -191,5 +187,13 @@ export default {
   background-color: white;
   margin-left: 10%;
   margin-right: 10%;
+}
+.headeritem{
+  display:block;
+  height: 100%;
+  width: 10%;
+}
+.custombtn{
+
 }
 </style>
