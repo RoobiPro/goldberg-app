@@ -20,7 +20,8 @@ const routes = [
       component: () => import(/* webpackChunkName: "index" */'@/views/dashboard/Index'),
       props: true,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        // breadcrumbs:
       },
       children: [
         // Dashboard
