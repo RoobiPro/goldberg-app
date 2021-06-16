@@ -15,7 +15,7 @@ class CreateWellsTable extends Migration
     {
         Schema::create('wells', function (Blueprint $table) {
           $table->id();
-          $table->foreignId('project_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+          $table->foreignId('project_id')->constrained('projects')->onUpdate('cascade')->onDelete('cascade');
           $table->string('well_code')->nullable();
           $table->string('well_campaign')->nullable();
           $table->string('type')->nullable();

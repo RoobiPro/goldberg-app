@@ -15,7 +15,7 @@ class CreateCsvImportsTable extends Migration
     {
         Schema::create('csv_imports', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('project_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('project_id')->constrained('projects')->onUpdate('cascade')->onDelete('cascade');
             $table->string('table_type');
             $table->string('import_date');
             $table->string('file_name');

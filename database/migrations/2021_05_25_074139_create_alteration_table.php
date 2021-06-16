@@ -15,7 +15,7 @@ class CreateAlterationTable extends Migration
     {
         Schema::create('alterations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('drilling_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('drilling_id')->constrained('drillings')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('sample_list_id')->nullable()->references('id')->on('sample_lists');
             $table->integer('intensity')->nullable();
             $table->decimal('utm_x', 10, 2)->nullable();

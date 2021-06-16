@@ -153,7 +153,7 @@ export default {
         await this.$store.dispatch("ImportManager/get", this.$route.params.project_id);
         this.imports = this.$store.getters["ImportManager/imports"];
         this.showRevertDialog = false
-        // this.loading = false
+        this.loading = false
       },
       async fetch(){
         await this.$store.dispatch("ImportManager/get", this.$route.params.project_id);

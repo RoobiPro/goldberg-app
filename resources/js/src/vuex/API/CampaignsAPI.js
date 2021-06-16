@@ -9,13 +9,6 @@ function show(id) {
   return "Show Campaign"
  }
 
-function getProjectCampaigns(id){
-  return axios.get('/api/project/' + id + '/campaigns')
-    .then(response => {
-      return response.data;
-    });
-}
-
 function getProjectDrillings(id){
   return axios.get('/getCampaign/' + id)
     .then(response => {
@@ -74,7 +67,6 @@ export default {
   create,
   update,
   destroy,
-  getProjectCampaigns,
-  getCampaign,
+  getProjectDrillings,
   createDrilling
 };
