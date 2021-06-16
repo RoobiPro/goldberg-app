@@ -7,10 +7,12 @@
   >
    <template v-slot:activator="{ on, attrs }">
      <v-btn
+       class="ma-2"
        color="primary"
+       rounded
        v-bind="attrs"
        v-on="on"
-     >Import Data</v-btn>
+     >Import Well Data</v-btn>
    </template>
    <template v-slot:default="dialog">
      <v-card>
@@ -20,7 +22,7 @@
        <v-toolbar
          color="primary"
        >
-       Import CSV Data
+       Import Well Data
       </v-toolbar>
 
        <!-- <v-card-actions
@@ -45,25 +47,27 @@
 
 
          <v-radio-group
-         row
-         class="d-flex flex-row align-center"
-        style="width: 100%; height: 5vh; margin: 0;"
-         >
-         <v-radio
-         label="Drillings"
-         value="radio-1"
+           row
+           v-model="csv_type"
+           class="d-flex flex-row align-center"
+           style="width: 100%; height: 5vh; margin: 0;"
          >
          </v-radio>
-        <v-radio
-           label="Hand Samples"
-           value="radio-2"
-           >
+         <v-radio
+           label="Assay-Data"
+           value="assay"
+         >
          </v-radio>
          <v-radio
-            label="Wells"
-            value="radio-3"
-            >
-          </v-radio>
+           label="Lithology-Data"
+           value="lithology"
+         >
+         </v-radio>
+         <v-radio
+           label="Survey-Data"
+           value="survey"
+         >
+         </v-radio>
 
        </v-radio-group>
 
@@ -72,7 +76,6 @@
        <v-container class="py-0">
          <v-row class="mt-4">
            <v-col
-             class="text-right"
            >
            <v-file-input
              v-model="file"
@@ -82,21 +85,60 @@
              :clearable="false"
            ></v-file-input>
            </v-col>
-           <div v-if="showUploadProgress">
+           <!-- <div v-if="showUploadProgress">
                Uploading: {{ uploadPercent }} %
-           </div>
+           </div> -->
          </v-row>
+
+         <v-alert
+            v-if="show_error"
+            prominent
+            type="error"
+          >
+            <v-row align="center">
+              <v-col class="grow">
+                <div v-if="error_line">
+                  <u>Error-line:</u> {{error_line}} <br>
+                  <u>Error-data:</u> {{error_data}}
+                </div>
+                <div>
+                  <u>Error-message:</u> {{error_text}}
+                </div>
+              </v-col>
+            </v-row>
+
+            <span
+              @click="closeAlert()"
+              id="closealert"
+              aria-atomic="true"
+              aria-label="Badge"
+              aria-live="polite"
+              role="status"
+              class="v-badge__badge black">
+              <span>
+                x
+              </span>
+            </span>
+
+          </v-alert>
 
          <v-row class="mb-4">
            <v-col
              cols="12"
              class="text-center"
            >
+             <v-progress-circular
+             v-if="showUploadProgress"
+               :width="3"
+               color="green"
+               indeterminate
+             ></v-progress-circular>
              <v-btn
+               v-if="!showUploadProgress"
                color="primary"
                class="mr-0"
                :disabled="file === undefined || file === null"
-               v-on:click="updateAvatar()"
+               v-on:click="upload()"
              >
                Upload
              </v-btn>
@@ -107,12 +149,6 @@
 
      </div>
 
-     <!-- <hr id="vaddershr"> -->
-
-
-
-
-
      </v-card>
    </template>
   </v-dialog>
@@ -122,9 +158,14 @@
 <script>
 
 export default {
-    name: 'CSVDialog',
+    name: 'CSVDrillingDataDialog',
     data(){
       return {
+        error_line: null,
+        error_data: null,
+        show_error: false,
+        error_text: null,
+        csv_type:'drilling',
         file: [],
         uploadPercent: 0,
         showUploadProgress: false,
@@ -132,24 +173,44 @@ export default {
       }
     },
     created() {
+
       this.file = null
     },
     methods: {
-      async updateAvatar() {
+      closeAlert(){
+        this.show_error = false
+      },
+      async upload() {
+        console.log(this.csv_type)
         let formData = new FormData()
-        formData.append('spatial', this.file)
-        axios.post('/uploadspatial/'+this.$route.params.id, formData, {
-
+        formData.append('csvfile', this.file)
+        axios.post('/importcsv/well/'+this.csv_type, formData, {
             onUploadProgress: (progressEvent) => {
-
               this.showUploadProgress = true
               this.uploadPercent = progressEvent.lengthComputable ? Math.round((progressEvent.loaded * 100) / progressEvent.total) : 0;
             }
           })
           .then((response) => {
-            this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: response.data.type, text: response.data.message});
-            console.log(response)
+            // this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: response.data.type, text: response.data.message});
+            console.log(response.data.hasOwnProperty('error_line'))
+            if(!response.data.success){
+              if(response.data.error_line !== undefined){
+                this.error_line = response.data.error_line
+              }
+              if(response.data.error_data !== undefined){
+                this.error_data = response.data.error_data
+              }
+              console.log(this.error_data)
+              console.log(this.error_line)
+
+              this.show_error = true;
+              this.error_text = response.data.message
+            }
+            else{
+              this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: response.data.type, text: response.data.message});
+            }
             // this.file = []
+            this.showUploadProgress = false
 
           })
           .catch((error) => {
@@ -161,15 +222,8 @@ export default {
           this.$nextTick(()=>{
             console.log(this.$refs.fileInput.$refs.input.file)
           })
-          // await this.$store.dispatch("TableManager/get", 'spatials');
-          // this.headers = this.$store.getters["TableManager/headers"];
-          // this.createHeader()
-          // await this.$store.dispatch('ProjectsManager/getSpatials', this.$route.params.id)
-          // this.spatials =  this.$store.getters["ProjectsManager/spatials"]
-          // console.log(this.spatials)
+
           this.showUploadProgress = false
-
-
       }
     }
 }
@@ -222,5 +276,15 @@ export default {
 } */
 .v-sheet.v-toolbar:not(.v-sheet--outlined){
   box-shadow: none
+}
+#closealert{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+#closealert:hover{
+  /* background-color: white; */
+  opacity: 0.6;
+  cursor: pointer;
 }
 </style>

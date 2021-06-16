@@ -11,12 +11,14 @@
       ></v-progress-linear>
     </template>
 
+
+
     <MapsComponent v-if="(typeof project.utm_x !== 'undefined')" :coordinates_x="project.latitude"  :coordinates_y="project.longitude"/>
 
     <v-card-title>{{this.project.name}}</v-card-title>
 
-    <v-card-text class="d-flex" style="justify-content: space-between; ">
-      <div class="">
+    <v-card-text>
+
         <div class="my-4 subtitle-1">
           Project code: <i><u>{{project.project_code}}</u></i><br>
           Type: {{project.type}} <br>
@@ -30,23 +32,53 @@
           UTM Z: {{project.utm_z}} <br>
         </div>
       </div>
-      <div class="">
-        <v-btn class="ma-2" rounded color="primary" dark @click="goTo('spatials')">Import data</v-btn>
-        <CSVDialog />
 
-        <!-- <v-btn class="ma-2" rounded color="primary" dark @click="goTo('spatials')">Import history</v-btn> -->
-      </div>
     </v-card-text>
 
-    <v-card-title>View data</v-card-title>
+    <hr style="margin-bottom:0px">
+
+    <v-card-title>Import data</v-card-title>
 
     <v-card-text>
-      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('spatials')">Spatial Data ({{project.count_spatial}})</v-btn>
-      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('handsamples')">Hand Samples ({{project.count_handsamples}})</v-btn>
-      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('drillings')">Drillings ({{project.count_drilling}})</v-btn>
-      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('wells')">Wells ({{project.count_wells}})</v-btn>
-      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('samplelist')">Sample List</v-btn>
+      <CSVDrillingDataDialog />
+      <CSVWellDataDialog />
+      <CSVCampaignsDialog />
+      <CSVHistoryDialog />
+    </v-card-text>
 
+    <hr style="margin-bottom:0px">
+
+    <v-card-title>View data
+      <v-progress-circular
+        v-if="loading"
+        :width="3"
+        size="25"
+        color="green"
+        style= "position: absolute; right: 15px;"
+        indeterminate
+      >
+      </v-progress-circular>
+
+      <v-btn
+      v-if="!loading"
+      x-small
+      class="ma-2"
+      style= "position: absolute; right: 0px;"
+      rounded color="primary"
+      dark
+      @click="fetchData">
+      <v-icon size=16 :color="'white'">
+      mdi-autorenew
+      </v-icon>
+    </v-btn>
+    </v-card-title>
+
+    <v-card-text>
+      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('spatials')">Spatial Data <template v-if="projectdataready">{{projectdata.count_spatial}}</template></v-btn>
+      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('handsamples')">Hand Samples <template v-if="projectdataready">{{projectdata.count_handsamples}}</template></v-btn>
+      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('drillings')">Drillings <template v-if="projectdataready">{{projectdata.count_drilling}}</template></v-btn>
+      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('wells')">Wells <template v-if="projectdataready">{{projectdata.count_wells}}</template></v-btn>
+      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('samplelist')">Sample List</v-btn>
     </v-card-text>
 
   </v-card>
@@ -55,14 +87,20 @@
 
 <script>
 import MapsComponent from './../../maps/GoogleMapsNew'
-import CSVDialog from './components/CSVDialog'
+import CSVCampaignsDialog from './components/CSVCampaignsDialog'
+import CSVWellDataDialog from './components/CSVWellDataDialog'
+import CSVDrillingDataDialog from './components/CSVDrillingDataDialog'
+import CSVHistoryDialog from './components/CSVHistoryDialog'
 
 export default {
   components:{
-    MapsComponent, CSVDialog
+    MapsComponent, CSVCampaignsDialog, CSVWellDataDialog, CSVHistoryDialog, CSVDrillingDataDialog
   },
   data: () => ({
     ready:false,
+    loading:false,
+    projectdata:{},
+    projectdataready: false,
     project:[],
     projects:[]
   }),
@@ -71,6 +109,16 @@ export default {
   },
 
   methods: {
+    async fetchData(){
+      this.loading = true
+      await this.$store.dispatch('ProjectsManager/getProjectData', this.$route.params.project_id);
+      this.projectdata = await this.$store.getters["ProjectsManager/projectdata"];
+      this.projectdataready = true
+      console.log(this.projectdata)
+      this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: this.projectdata.type, text: this.projectdata.message});
+      this.loading = false
+    },
+
     goTo(destination){
       this.$router.push({ path: this.$route.params.project_id+'/'+destination })
     },

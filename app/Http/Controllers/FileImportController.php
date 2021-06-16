@@ -24,7 +24,15 @@ use Illuminate\Support\Facades\Storage;
 class FileImportController extends Controller
 {
     //
-
+    public function getImports($id){
+      $imports = CsvImport::where('project_id', $id)->get();
+      $index=0;
+      foreach ($imports as $import) {
+        $imports[$index]->import_date = Carbon::parse($import->import_date)->format('d.m.Y');
+        $index++;
+      }
+      return $imports;
+    }
 
     public function displaySpatial($id){
       $spatial = Spatial::find($id);
@@ -108,19 +116,52 @@ class FileImportController extends Controller
       return $CsvImport;
     }
 
+    public function createImportWellData($file, $type){
+      $drillingID = getDrillingID($file);
+      $drilling = Well::where('well_code', $drillingID)->first();
+      if (empty($drilling)) {return false;}
+      $filenameWithExt = $file->getClientOriginalName();
+      $extension = $file->getClientOriginalExtension();
+      $CsvImport = new CsvImport;
+      $CsvImport->project_id = $drilling->project_id;
+      $CsvImport->table_type = $type;
+      $CsvImport->import_date = now();
+      $CsvImport->file_name = $filenameWithExt;
+      $CsvImport->bytes = $file->getSize();
+      $CsvImport->save();
+      return $CsvImport;
+    }
+
+    public function createImportData($file, $type){
+      $drillingID = getDrillingID($file);
+      $drilling = Drilling::where('drilling_code', $drillingID)->first();
+      if (empty($drilling)) {return false;}
+      $filenameWithExt = $file->getClientOriginalName();
+      $extension = $file->getClientOriginalExtension();
+      $CsvImport = new CsvImport;
+      $CsvImport->project_id = $drilling->project_id;
+      $CsvImport->table_type = $type;
+      $CsvImport->import_date = now();
+      $CsvImport->file_name = $filenameWithExt;
+      $CsvImport->bytes = $file->getSize();
+      $CsvImport->save();
+      return $CsvImport;
+    }
+
     public function storeDrillingSurvey(Request $req){
       $filedata=[];
       array_push($filedata, 'survey', $req->file('csvfile')->getClientOriginalName(), $req->file('csvfile')->getSize());
       if(checkForImport($filedata)){
-        return "This file has been already imported";
+        return response()->json([ "success" => false, "type" => 'red', "message" => "This file has been already imported!"], 200);
       }
       if(!$req->hasFile('csvfile')){
-        return "No csv file was passed";
+        return response()->json([ "success" => false, "type" => 'red', "message" => "No csv file was passed"], 200);
       }
-      $CsvImport = $this->createImport($req->file('csvfile'), 'survey');
+      $CsvImport = $this->createImportData($req->file('csvfile'), 'survey');
       if(!$CsvImport){
-        return "No Drilling with this name/id found!";
+        return response()->json([ "success" => false, "type" => 'red', "message" => "No drilling with this ID found!"], 200);
       }
+
       $row=0;
       $handle = fopen($req->file('csvfile'), "r");
       $surveyArray = [];
@@ -142,7 +183,7 @@ class FileImportController extends Controller
           $CsvImport->error_description = "error-data-row-number: ". (string)($row+1);
           $CsvImport->save();
           $CsvImport->delete();
-          return response()->json([ "success" => false, "msg" => "Project with this name does not exist", "error-line" => $row+1 ,"error-data" => $data], 200);
+          return response()->json([ "success" => false, "type" => 'red', "message" => "Project with this name does not exist", "error_line" => $row+1 ,"error_data" => $data], 200);
         }
         try{
           $survey = Survey::create([
@@ -165,26 +206,30 @@ class FileImportController extends Controller
           $CsvImport->error_description = $ex->getMessage();
           $CsvImport->save();
           $CsvImport->delete();
-          return response()->json([ "success" => false, "msg" => $ex->getMessage(), "error-line" => $row+1 ,"error-data" => $data], 200);
+          return response()->json([ "success" => false, "type" => 'red', "message" => $ex->getMessage(), "error_line" => $row+1 ,"error_data" => $data], 200);
             // return $ex->getMessage();
         }
         $row++;
       }
       $CsvImport->success = true;
+      $CsvImport->data_lines = $row-1;
       $CsvImport->save();
-      return "Import successful";
+      return response()->json([ "success" => true, "type" => 'green', "message" => 'Import successful'], 200);
     }
 
     public function storeDrillingMiniralization(Request $req){
       $filedata=[];
       array_push($filedata, 'drilling_mineralization', $req->file('csvfile')->getClientOriginalName(), $req->file('csvfile')->getSize());
       if(checkForImport($filedata)){
-        return "This file has been already imported";
+        return response()->json([ "success" => false, "type" => 'red', "message" => "This file has been already imported!"], 200);
       }
       if(!$req->hasFile('csvfile')){
-        return "No csv file was passed";
+        return response()->json([ "success" => false, "type" => 'red', "message" => "No csv file was passed"], 200);
       }
-      $CsvImport = $this->createImport($req->file('csvfile'), 'drilling_mineralization');
+      $CsvImport = $this->createImportData($req->file('csvfile'), 'drilling_mineralization');
+      if(!$CsvImport){
+        return response()->json([ "success" => false, "type" => 'red', "message" => "No drilling with this ID found!"], 200);
+      }
       $row=0;
       $handle = fopen($req->file('csvfile'), "r");
       $lithArray = [];
@@ -206,7 +251,7 @@ class FileImportController extends Controller
           $CsvImport->error_description = "error-data-row-number: ". (string)($row+1);
           $CsvImport->save();
           $CsvImport->delete();
-          return response()->json([ "success" => false, "msg" => "Project with this name does not exist", "error-line" => $row+1 ,"error-data" => $data], 200);
+          return response()->json([ "success" => false, "type" => 'red', "message" => "Project with this name does not exist", "error_line" => $row+1 ,"error_data" => $data], 200);
         }
         try{
           $lith = DrillingMineralization::create([
@@ -229,26 +274,31 @@ class FileImportController extends Controller
           $CsvImport->error_description = $ex->getMessage();
           $CsvImport->save();
           $CsvImport->delete();
-          return response()->json([ "success" => false, "msg" => $ex->getMessage(), "error-line" => $row+1 ,"error-data" => $data], 200);
+          return response()->json([ "success" => false, "type" => 'red', "message" => $ex->getMessage(), "error_line" => $row+1 ,"error_data" => $data], 200);
             // return $ex->getMessage();
         }
         $row++;
       }
       $CsvImport->success = true;
+      $CsvImport->data_lines = $row-1;
       $CsvImport->save();
-      return "Import successful";
+      return response()->json([ "success" => true, "type" => 'green', "message" => 'Import successful'], 200);
     }
 
     public function storeDrillingLithology(Request $req){
       $filedata=[];
       array_push($filedata, 'lithology', $req->file('csvfile')->getClientOriginalName(), $req->file('csvfile')->getSize());
       if(checkForImport($filedata)){
-        return "This file has been already imported";
+        return response()->json([ "success" => false, "type" => 'red', "message" => "This file has been already imported!"], 200);
       }
       if(!$req->hasFile('csvfile')){
-        return "No csv file was passed";
+        return response()->json([ "success" => false, "type" => 'red', "message" => "No csv file was passed"], 200);
       }
-      $CsvImport = $this->createImport($req->file('csvfile'), 'lithology');
+      $CsvImport = $this->createImportData($req->file('csvfile'), 'lithology');
+      if(!$CsvImport){
+        return response()->json([ "success" => false, "type" => 'red', "message" => "No drilling with this ID found!"], 200);
+      }
+
       $row=0;
       $handle = fopen($req->file('csvfile'), "r");
       $lithArray = [];
@@ -270,7 +320,7 @@ class FileImportController extends Controller
           $CsvImport->error_description = "error-data-row-number: ". (string)($row+1);
           $CsvImport->save();
           $CsvImport->delete();
-          return response()->json([ "success" => false, "msg" => "Project with this name does not exist", "error-line" => $row+1 ,"error-data" => $data], 200);
+          return response()->json([ "success" => false, "type" => 'red', "message" => $ex->getMessage(), "error_line" => $row+1 ,"error_data" => $data], 200);
         }
         try{
           $lith = Lithology::create([
@@ -294,26 +344,31 @@ class FileImportController extends Controller
           $CsvImport->error_description = $ex->getMessage();
           $CsvImport->save();
           $CsvImport->delete();
-          return response()->json([ "success" => false, "msg" => $ex->getMessage(), "error-line" => $row+1 ,"error-data" => $data], 200);
+          return response()->json([ "success" => false, "type" => 'red', "message" => $ex->getMessage(), "error_line" => $row+1 ,"error_data" => $data], 200);
             // return $ex->getMessage();
         }
         $row++;
       }
       $CsvImport->success = true;
+      $CsvImport->data_lines = $row-1;
       $CsvImport->save();
-      return "Import successful";
+      return response()->json([ "success" => true, "type" => 'green', "message" => 'Import successful'], 200);
     }
 
     public function storeDrillingAssay(Request $req){
       $filedata=[];
       array_push($filedata, 'drilling_assay', $req->file('csvfile')->getClientOriginalName(), $req->file('csvfile')->getSize());
       if(checkForImport($filedata)){
-        return "This file has been already imported";
+        return response()->json([ "success" => false, "type" => 'red', "message" => "This file has been already imported!"], 200);
       }
       if(!$req->hasFile('csvfile')){
-        return "No csv file was passed";
+        return response()->json([ "success" => false, "type" => 'red', "message" => "No csv file was passed"], 200);
       }
-      $CsvImport = $this->createImport($req->file('csvfile'), 'drilling_assay');
+      $CsvImport = $this->createImportData($req->file('csvfile'), 'drilling_assay');
+      if(!$CsvImport){
+        return response()->json([ "success" => false, "type" => 'red', "message" => "No drilling with this ID found!"], 200);
+      }
+
       $row=0;
       $handle = fopen($req->file('csvfile'), "r");
       $assayArray = [];
@@ -335,7 +390,7 @@ class FileImportController extends Controller
           $CsvImport->error_description = "error-data-row-number: ". (string)($row+1);
           $CsvImport->save();
           $CsvImport->delete();
-          return response()->json([ "success" => false, "msg" => "Project with this name does not exist", "error-line" => $row+1 ,"error-data" => $data], 200);
+          return response()->json([ "success" => false, "type" => 'red', "message" => "Project with this name does not exist", "error_line" => $row+1 ,"error_data" => $data], 200);
         }
         try{
           $assay = DrillingAssay::create([
@@ -408,26 +463,33 @@ class FileImportController extends Controller
           $CsvImport->error_description = $ex->getMessage();
           $CsvImport->save();
           $CsvImport->delete();
-          return response()->json([ "success" => false, "msg" => $ex->getMessage(), "error-line" => $row+1 ,"error-data" => $data], 200);
+          return response()->json([ "success" => false, "type" => 'red', "message" => $ex->getMessage(), "error_line" => $row+1 ,"error_data" => $data], 200);
             // return $ex->getMessage();
         }
         $row++;
       }
       $CsvImport->success = true;
+      $CsvImport->data_lines = $row-1;
       $CsvImport->save();
-      return "Import successful";
+      return response()->json([ "success" => true, "type" => 'green', "message" => 'Import successful'], 200);
     }
 
     public function storeDrillingAlteration(Request $req){
+
       $filedata=[];
       array_push($filedata, 'drilling_alteration', $req->file('csvfile')->getClientOriginalName(), $req->file('csvfile')->getSize());
       if(checkForImport($filedata)){
-        return "This file has been already imported";
+        return response()->json([ "success" => false, "type" => 'red', "message" => "This file has been already imported!"], 200);
       }
       if(!$req->hasFile('csvfile')){
-        return "No csv file was passed";
+        return response()->json([ "success" => false, "type" => 'red', "message" => "No csv file was passed"], 200);
       }
-      $CsvImport = $this->createImport($req->file('csvfile'), 'drilling_alteration');
+      $CsvImport = $this->createImportData($req->file('csvfile'), 'drilling_alteration');
+      if(!$CsvImport){
+        return response()->json([ "success" => false, "type" => 'red', "message" => "No drilling with this ID found!"], 200);
+      }
+
+      // $CsvImport = $this->createImport($req->file('csvfile'), 'drilling_alteration');
       $row=0;
       $handle = fopen($req->file('csvfile'), "r");
       $altArray = [];
@@ -449,7 +511,7 @@ class FileImportController extends Controller
           $CsvImport->error_description = "error-data-row-number: ". (string)($row+1);
           $CsvImport->save();
           $CsvImport->delete();
-          return response()->json([ "success" => false, "msg" => "Project with this name does not exist", "error-line" => $row+1 ,"error-data" => $data], 200);
+          return response()->json([ "success" => false, "type" => 'red', "message" => $ex->getMessage(), "error_line" => $row+1 ,"error_data" => $data], 200);
         }
         try{
           $alt = Alteration::create([
@@ -471,26 +533,32 @@ class FileImportController extends Controller
           $CsvImport->error_description = $ex->getMessage();
           $CsvImport->save();
           $CsvImport->delete();
-          return response()->json([ "success" => false, "msg" => $ex->getMessage(), "error-line" => $row+1 ,"error-data" => $data], 200);
+          return response()->json([ "success" => false, "type" => 'red', "message" => $ex->getMessage(), "error_line" => $row+1 ,"error_data" => $data], 200);
+
             // return $ex->getMessage();
         }
         $row++;
       }
       $CsvImport->success = true;
+      $CsvImport->data_lines = $row-1;
       $CsvImport->save();
-      return "Import successful";
+      return response()->json([ "success" => true, "type" => 'green', "message" => 'Import successful'], 200);
     }
 
     public function storeWellAssay(Request $req){
+
       $filedata=[];
       array_push($filedata, 'well_assay', $req->file('csvfile')->getClientOriginalName(), $req->file('csvfile')->getSize());
       if(checkForImport($filedata)){
-        return "This file has been already imported";
+        return response()->json([ "success" => false, "type" => 'red', "message" => "This file has been already imported!"], 200);
       }
       if(!$req->hasFile('csvfile')){
-        return "No csv file was passed";
+        return response()->json([ "success" => false, "type" => 'red', "message" => "No csv file was passed"], 200);
       }
-      $CsvImport = $this->createImport($req->file('csvfile'), 'well_assay');
+      $CsvImport = $this->createImportWellData($req->file('csvfile'), 'well_assay');
+      if(!$CsvImport){
+        return response()->json([ "success" => false, "type" => 'red', "message" => "No well with this ID found!"], 200);
+      }
       $row=0;
       $handle = fopen($req->file('csvfile'), "r");
       $assayArray = [];
@@ -512,7 +580,7 @@ class FileImportController extends Controller
           $CsvImport->error_description = "error-data-row-number: ". (string)($row+1);
           $CsvImport->save();
           $CsvImport->delete();
-          return response()->json([ "success" => false, "msg" => "Project with this name does not exist", "error-line" => $row+1 ,"error-data" => $data], 200);
+          return response()->json([ "success" => false, "type" => 'red', "message" => $ex->getMessage(), "error_line" => $row+1 ,"error_data" => $data], 200);
         }
         try{
           $assay = WellAssay::create([
@@ -539,26 +607,31 @@ class FileImportController extends Controller
           $CsvImport->error_description = $ex->getMessage();
           $CsvImport->save();
           $CsvImport->delete();
-          return response()->json([ "success" => false, "msg" => $ex->getMessage(), "error-line" => $row+1 ,"error-data" => $data], 200);
+          return response()->json([ "success" => false, "type" => 'red', "message" => $ex->getMessage(), "error_line" => $row+1 ,"error_data" => $data], 200);
             // return $ex->getMessage();
         }
         $row++;
       }
       $CsvImport->success = true;
+      $CsvImport->data_lines = $row-1;
       $CsvImport->save();
-      return "Import successful";
+      return response()->json([ "success" => true, "type" => 'green', "message" => 'Import successful'], 200);
     }
 
     public function storeWellLithology(Request $req){
       $filedata=[];
       array_push($filedata, 'lithology', $req->file('csvfile')->getClientOriginalName(), $req->file('csvfile')->getSize());
       if(checkForImport($filedata)){
-        return "This file has been already imported";
+        return response()->json([ "success" => false, "type" => 'red', "message" => "This file has been already imported!"], 200);
       }
       if(!$req->hasFile('csvfile')){
-        return "No csv file was passed";
+        return response()->json([ "success" => false, "type" => 'red', "message" => "No csv file was passed"], 200);
       }
-      $CsvImport = $this->createImport($req->file('csvfile'), 'lithology');
+      $CsvImport = $this->createImportWellData($req->file('csvfile'), 'lithology');
+      if(!$CsvImport){
+        return response()->json([ "success" => false, "type" => 'red', "message" => "No well with this ID found!"], 200);
+      }
+
       $row=0;
       $handle = fopen($req->file('csvfile'), "r");
       $lithArray = [];
@@ -580,7 +653,7 @@ class FileImportController extends Controller
           $CsvImport->error_description = "error-data-row-number: ". (string)($row+1);
           $CsvImport->save();
           $CsvImport->delete();
-          return response()->json([ "success" => false, "msg" => "Project with this name does not exist", "error-line" => $row+1 ,"error-data" => $data], 200);
+          return response()->json([ "success" => false, "type" => 'red', "message" => $ex->getMessage(), "error_line" => $row+1 ,"error_data" => $data], 200);
         }
         try{
           $lith = Lithology::create([
@@ -604,26 +677,31 @@ class FileImportController extends Controller
           $CsvImport->error_description = $ex->getMessage();
           $CsvImport->save();
           $CsvImport->delete();
-          return response()->json([ "success" => false, "msg" => $ex->getMessage(), "error-line" => $row+1 ,"error-data" => $data], 200);
+          return response()->json([ "success" => false, "type" => 'red', "message" => $ex->getMessage(), "error_line" => $row+1 ,"error_data" => $data], 200);
             // return $ex->getMessage();
         }
         $row++;
       }
       $CsvImport->success = true;
+      $CsvImport->data_lines = $row-1;
       $CsvImport->save();
-      return "Import successful";
+      return response()->json([ "success" => true, "type" => 'green', "message" => 'Import successful'], 200);
     }
 
     public function storeWellSurvey(Request $req){
       $filedata=[];
       array_push($filedata, 'survey', $req->file('csvfile')->getClientOriginalName(), $req->file('csvfile')->getSize());
       if(checkForImport($filedata)){
-        return "This file has been already imported";
+        return response()->json([ "success" => false, "type" => 'red', "message" => "This file has been already imported!"], 200);
       }
       if(!$req->hasFile('csvfile')){
-        return "No csv file was passed";
+        return response()->json([ "success" => false, "type" => 'red', "message" => "No csv file was passed"], 200);
       }
-      $CsvImport = $this->createImport($req->file('csvfile'), 'survey');
+      $CsvImport = $this->createImportWellData($req->file('csvfile'), 'survey');
+      if(!$CsvImport){
+        return response()->json([ "success" => false, "type" => 'red', "message" => "No well with this ID found!"], 200);
+      }
+
       $row=0;
       $handle = fopen($req->file('csvfile'), "r");
       $surveyArray = [];
@@ -645,7 +723,7 @@ class FileImportController extends Controller
           $CsvImport->error_description = "error-data-row-number: ". (string)($row+1);
           $CsvImport->save();
           $CsvImport->delete();
-          return response()->json([ "success" => false, "msg" => "Project with this name does not exist", "error-line" => $row+1 ,"error-data" => $data], 200);
+          return response()->json([ "success" => false, "type" => 'red', "message" => $ex->getMessage(), "error_line" => $row+1 ,"error_data" => $data], 200);
         }
         try{
           $survey = Survey::create([
@@ -668,14 +746,15 @@ class FileImportController extends Controller
           $CsvImport->error_description = $ex->getMessage();
           $CsvImport->save();
           $CsvImport->delete();
-          return response()->json([ "success" => false, "msg" => $ex->getMessage(), "error-line" => $row+1 ,"error-data" => $data], 200);
+          return response()->json([ "success" => false, "type" => 'red', "message" => $ex->getMessage(), "error_line" => $row+1 ,"error_data" => $data], 200);
             // return $ex->getMessage();
         }
         $row++;
       }
       $CsvImport->success = true;
+      $CsvImport->data_lines = $row-1;
       $CsvImport->save();
-      return "Import successful";
+      return response()->json([ "success" => true, "type" => 'green', "message" => 'Import successful'], 200);
     }
 
     public function storeWell(Request $req){
@@ -683,17 +762,17 @@ class FileImportController extends Controller
           $filedata=[];
           array_push($filedata, 'well', $req->file('csvfile')->getClientOriginalName(), $req->file('csvfile')->getSize());
           if(checkForImport($filedata)){
-            return "This file has been already imported";
+            return response()->json([ "success" => false, "type" => 'red', "message" => "This file has been already imported!"], 200);
           }
           if(!$req->hasFile('csvfile')){
-            return "No csv file was passed";
+            return response()->json([ "success" => false, "type" => 'red', "message" => "No csv file was passed"], 200);
           }
           $CsvImport = $this->createImport($req->file('csvfile'), 'well');
           if(!$CsvImport){
-            return "No project with this name found!";
+            return response()->json([ "success" => false, "type" => 'red', "message" => "No project with this name found!"], 200);
           }
 
-            // return $CsvImport;
+          // return $CsvImport;
           $row=0;
           $handle = fopen($req->file('csvfile'), "r");
           $wellArray = [];
@@ -748,25 +827,24 @@ class FileImportController extends Controller
             $row++;
           }
           $CsvImport->success = true;
+          $CsvImport->data_lines = $row-1;
           $CsvImport->save();
-          return "Import successful";
+          return response()->json([ "success" => true, "type" => 'green', "message" => 'Import successful'], 200);
     }
 
     public function storeHandSample(Request $req){
-
       $filedata=[];
       array_push($filedata, 'handsample', $req->file('csvfile')->getClientOriginalName(), $req->file('csvfile')->getSize());
       if(checkForImport($filedata)){
-        return "This file has been already imported";
+        return response()->json([ "success" => false, "type" => 'red', "message" => "This file has been already imported!"], 200);
       }
       if(!$req->hasFile('csvfile')){
-        return "No csv file was passed";
+        return response()->json([ "success" => false, "type" => 'red', "message" => "No csv file was passed"], 200);
       }
       $CsvImport = $this->createImport($req->file('csvfile'), 'handsample');
       if(!$CsvImport){
-        return "No project with this name found!";
+        return response()->json([ "success" => false, "type" => 'red', "message" => "No project with this name found!"], 200);
       }
-
         // return $CsvImport;
       $row=0;
       $handle = fopen($req->file('csvfile'), "r");
@@ -818,8 +896,9 @@ class FileImportController extends Controller
         $row++;
       }
       $CsvImport->success = true;
+      $CsvImport->data_lines = $row-1;
       $CsvImport->save();
-      return "Import successful";
+      return response()->json([ "success" => true, "type" => 'green', "message" => 'Import successful'], 200);
     }
 
     public function storeDrilling(Request $req){
@@ -832,14 +911,14 @@ class FileImportController extends Controller
       $filedata=[];
       array_push($filedata, 'drilling', $req->file('csvfile')->getClientOriginalName(), $req->file('csvfile')->getSize());
       if(checkForImport($filedata)){
-        return "This file has been already imported";
+        return response()->json([ "success" => false, "type" => 'red', "message" => "This file has been already imported!"], 200);
       }
       if(!$req->hasFile('csvfile')){
-        return "No csv file was passed";
+        return response()->json([ "success" => false, "type" => 'red', "message" => "No csv file was passed"], 200);
       }
       $CsvImport = $this->createImport($req->file('csvfile'), 'drilling');
       if(!$CsvImport){
-        return "No project with this name found!";
+        return response()->json([ "success" => false, "type" => 'red', "message" => "No project with this name found!"], 200);
       }
 
         // return $CsvImport;
@@ -864,7 +943,8 @@ class FileImportController extends Controller
           $CsvImport->error_description = "error-data-row-number: ". (string)($row+1);
           $CsvImport->save();
           $CsvImport->delete();
-          return response()->json([ "success" => false, "msg" => "Project with this name does not exist", "error-line" => $row+1 ,"error-data" => $data], 200);
+
+          return response()->json([ "success" => false, "type" => 'red', "message" => "Project with this name does not exist", "error_line" => $row+1 ,"error_data" => $data], 200);
         }
         try{
           $drilling = Drilling::create([
@@ -891,21 +971,25 @@ class FileImportController extends Controller
           $CsvImport->error_description = $ex->getMessage();
           $CsvImport->save();
           $CsvImport->delete();
-          return response()->json([ "success" => false, "msg" => $ex->getMessage(), "error-line" => $row+1 ,"error-data" => $data], 200);
+          return response()->json([ "success" => false, "type" => 'red', "message" => $ex->getMessage(), "error_line" => $row+1 ,"error_data" => $data], 200);
             // return $ex->getMessage();
         }
         $row++;
       }
       $CsvImport->success = true;
+      $CsvImport->data_lines = $row-1;
       $CsvImport->save();
-      return "Import successful";
+      return response()->json([ "success" => true, "type" => 'green', "message" => 'Import successful'], 200);
+
+      // return "Import successful";
     }
 
     public function delete($id){
 
       $CsvImport = CsvImport::find($id);
       if ( is_null($CsvImport) ) {
-        return "No import with this ID found!";
+        return response()->json([ "success" => false, "type" =>  "red" ,"text" => "No import with this ID"], 200);
+
       }
       $type = $CsvImport->table_type;
       $toDelete = $CsvImport->$type;
@@ -913,6 +997,7 @@ class FileImportController extends Controller
           $delete->delete();
       }
       $CsvImport->delete();
-      return "Import Data deleted!";
+      return response()->json([ "success" => true, "type" =>  "green" ,"text" => "Import Data deleted!"], 200);
+
     }
 }

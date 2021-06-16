@@ -24,13 +24,31 @@ class ProjectController extends Controller
      */
     public function index()
     {
-
       return ProjectResource::collection(Project::all());
+    }
+
+    public function getProjectData($id){
+      $project = Project::find($id);
+      $count_spatial = count($project->spatials);
+      $count_drilling = count($project->drillings);
+      $count_wells = count($project->wells);
+      $count_handsamples = count($project->handsamples);
+      // $count_samplelists = count($project->samplelists);
+      return response()->json([
+        "success" => true,
+        "type" => 'green',
+        "message" => 'Data fetched!',
+        "count_spatial" =>  '('.(string)$count_spatial.')',
+        'count_drilling' =>  '('.(string)$count_drilling.')',
+        'count_wells' =>  '('.(string)$count_wells.')',
+        'count_handsamples' => '('.(string)$count_handsamples.')'
+        // 'count_samplelists' =>  '('.(string)$count_samplelists.')'
+      ], 200);
+
     }
 
     public function getProjectSpatials($id){
       $project = Project::find($id);
-
       return $project->spatials;
     }
 
@@ -104,47 +122,16 @@ class ProjectController extends Controller
       return response()->json($project, 200);
     }
 
-    public function showCampaigns($id){
-
+    public function showDrillings($id){
       $project = Project::find($id);
-      $campaigns = $project->campaigns;
-
-      // echo $campaigns[0]->id;
-      // $campaign_list = [];
-
+      $drillings = $project->drillings;
       $index = 0;
-
-      foreach ($campaigns as $campaign) {
-        // $drillings = $campaign->drillings;
-        $campaigns[$index]->start_date = Carbon::parse($campaigns[$index]->start_date)->format('d.m.Y');
-        $campaigns[$index]->end_date = Carbon::parse($campaigns[$index]->end_date)->format('d.m.Y');
-        $drillingscount = count($campaign->drillings);
-        $wellscount = count($campaign->wells);
-        $samplescount = count($campaign->samples);
-        $spatialscount = count($campaign->spatials);
-        // echo $drillingscount.' ';
-
-        $campaigns[$index]->drillings_count = $drillingscount;
-        $campaigns[$index]->wells_count = $wellscount;
-        $campaigns[$index]->samples_count = $samplescount;
-        $campaigns[$index]->spatials_count = $spatialscount;
-
+      foreach ($drillings as $drilling) {
+        $drillings[$index]->start_date = Carbon::parse($drilling->start_date)->format('d.m.Y');
+        $drillings[$index]->end_date = Carbon::parse($drilling->end_date)->format('d.m.Y');
         $index ++;
-
-        // $drillings = $campaignobj->drillings;
-        // echo $drillings;
-        // echo $campaignobj;
-
-        // code...
       }
-
-      // return $campaigns;
-
-      // $campaign_list = [];
-
-
-
-      return response()->json($campaigns, 200);;
+      return response()->json($drillings, 200);;
     }
 
 

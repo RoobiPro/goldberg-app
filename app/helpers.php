@@ -91,6 +91,21 @@ function convert_accent($string)
     return htmlentities($string, ENT_COMPAT, 'UTF-8');
 }
 
+function getDrillingID($file){
+  $handle = fopen($file, "r");
+  $row=0;
+  while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+    if($row==0){
+        $row++;
+        continue;
+        // SKIP HEADER ROW
+      }
+      $name = $data[0];
+      break;
+  }
+  return $name;
+}
+
 function getProjectId($file){
   $handle = fopen($file, "r");
   $row=0;

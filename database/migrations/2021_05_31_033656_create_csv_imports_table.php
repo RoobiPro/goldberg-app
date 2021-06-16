@@ -19,6 +19,7 @@ class CreateCsvImportsTable extends Migration
             $table->string('table_type');
             $table->string('import_date');
             $table->string('file_name');
+            $table->integer('data_lines')->nullable();
             $table->integer('bytes');
             $table->boolean('success')->nullable();
             $table->longText('error_description')->nullable();

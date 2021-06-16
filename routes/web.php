@@ -20,8 +20,9 @@ use App\Http\Controllers\FileImportController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/getprojectdata/{id}', 'ProjectController@getProjectData');
 
-
+Route::get('/getimports/{id}', 'FileImportController@getImports');
 
 Route::get('/deletespatial/{id}', 'FileImportController@deleteSpatial');
 

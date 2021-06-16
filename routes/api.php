@@ -32,6 +32,8 @@ Route::get('/refresh', [AuthController::class, 'refresh']);
 
 Route::get('tableheader/{tablename}',  'TableController@index');
 
+Route::get('project/{id}/drillings', 'ProjectController@showDrillings');
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('upload_avatar', [UserController::class, 'upload_user_photo']);
@@ -40,7 +42,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('projects', ProjectController::class);
     Route::apiResource('drillings', DrillingController::class);
     Route::apiResource('campaign', CampaignController::class);
-    Route::get('project/{id}/campaigns', 'ProjectController@showCampaigns');
+
 
 
     // Route::get('/refresh',function () {

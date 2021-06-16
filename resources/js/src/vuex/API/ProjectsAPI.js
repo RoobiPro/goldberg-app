@@ -1,6 +1,20 @@
 import { APIConfig } from './APIConfig';
 import axios from 'axios';
 
+function getprojectdrillings(id){
+  return axios.get('/api/project/'+id+'/drillings')
+    .then(response => {
+      return response.data;
+    });
+}
+
+function getprojectdata(id) {
+  return axios.get(`/getprojectdata/`+id)
+    .then(response => {
+      return response.data;
+    });
+}
+
 function projectspatials(id) {
   return axios.get(`/getProjectSpatials/`+id)
     .then(response => {
@@ -165,6 +179,8 @@ function upload(user, image) {
 
 
 export default {
+  getprojectdrillings,
+  getprojectdata,
   projectspatials,
   getAll,
   show,

@@ -7,14 +7,17 @@ const state = {
   projects: {},
   filteredusers: {},
   project: {},
+  projectdata:{},
+  projectdrillings:{}
 };
 
 const getters = {
   spatials: state => state.spatials,
   projects: state => state.projects,
   project: state => state.project,
-  filteredusers: state => state.filteredusers
-
+  filteredusers: state => state.filteredusers,
+  projectdata: state => state.projectdata,
+  projectdrillings: state => state.projectdrillings
 };
 
 const mutations = {
@@ -30,11 +33,34 @@ const mutations = {
   SET_PROJECT: (state, project) => {
     state.project = project;
   },
+  SET_PROJECTDATA: (state, projectdata) => {
+    state.projectdata = projectdata;
+  },
+  SET_PROJECTDRILLINGS: (state, projectdrillings) => {
+    state.projectdrillings = projectdrillings;
+  },
 
 };
 
 
 const actions = {
+  getProjectDrillings({commit, dispatch}, params) {
+    return APIService.getprojectdrillings(params)
+      .then((projectdrillings) => {
+        console.log(projectdrillings)
+        commit('SET_PROJECTDRILLINGS', projectdrillings);
+        // this.dispatch('NotificationsManager/setNotificationStatus', message);
+      });
+  },
+
+  getProjectData({commit, dispatch}, params) {
+    return APIService.getprojectdata(params)
+      .then((projectdata) => {
+        commit('SET_PROJECTDATA', projectdata);
+        // this.dispatch('NotificationsManager/setNotificationStatus', message);
+      });
+  },
+
   unassignUser({commit, dispatch}, project){
     return APIService.unassignUser(project)
       .then( (message) => {

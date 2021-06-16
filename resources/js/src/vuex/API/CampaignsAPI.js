@@ -16,7 +16,7 @@ function getProjectCampaigns(id){
     });
 }
 
-function getCampaign(id){
+function getProjectDrillings(id){
   return axios.get('/getCampaign/' + id)
     .then(response => {
       return response.data;

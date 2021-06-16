@@ -14,6 +14,7 @@ class CsvImport extends Model
       'table_type',
       'import_date',
       'file_name',
+      'data_lines',
       'bytes',
       'success',
       'error_description'
@@ -51,7 +52,7 @@ class CsvImport extends Model
 
     public function drilling_mineralization()
     {
-        return $this->hasMany(\App\Models\Data\Mineralization::class);
+        return $this->hasMany(\App\Models\Data\DrillingMineralization::class);
     }
 
     public function drilling_alteration()
