@@ -59,7 +59,7 @@ Route::post('/importcsv/well/survey', [FileImportController::class, 'storeWellSu
 Route::get('/sampletest', [SampleListController::class, 'index']);
 // Route::post('upload_avatar', [UserController::class, 'upload_user_photo']);
 // Route::post('/login', 'AuthController@login');
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout']);
 Route::post('/register', [AuthController::class, 'register']);
 // Route::apiResource('projects', ProjectController::class);
