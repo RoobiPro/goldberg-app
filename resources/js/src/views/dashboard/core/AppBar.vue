@@ -33,6 +33,7 @@
       class="hidden-sm-and-down font-weight-light"
       v-text="$route.name"
     />
+
     <v-spacer />
 
     <div class="mx-3" />
@@ -142,6 +143,24 @@
         'Another Notification',
         'Another one',
       ],
+      items: [
+         {
+           text: 'Dashboard',
+           disabled: false,
+           // href: 'breadcrumbs_dashboard',
+         },
+         {
+           text: 'Link 1',
+           disabled: false,
+           // href: 'breadcrumbs_link_1',
+         },
+         {
+           text: 'Link 2',
+           disabled: true,
+           // href: 'breadcrumbs_link_2',
+         },
+       ],
+
     }),
     computed: {
       ...mapState("LayoutManager", ['drawer']),

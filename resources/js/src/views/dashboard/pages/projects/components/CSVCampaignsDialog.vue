@@ -270,6 +270,18 @@ export default {
   opacity: 0.6;
   cursor: pointer;
 }
+
+@media (max-width: 950px) {
+  .headerItem{
+    /* display:block; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10%;
+    height: 56px;
+  }
+}
+
 /* .customButton > span {
   width: 100%;
 } */

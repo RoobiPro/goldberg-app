@@ -39,11 +39,38 @@
 
     <v-card-title>Import data</v-card-title>
 
-    <v-card-text>
-      <CSVDrillingDataDialog />
-      <CSVWellDataDialog />
-      <CSVCampaignsDialog />
-      <CSVHistoryDialog />
+    <v-card-text class="d-flex flex-column">
+
+      <div class="data-item">
+        <span>1. Import Campaign Data (Assay, Mineralization,...)</span>
+        <div class="d-flex flex-row justify-start mb-5 ">
+          <CSVCampaignsDialog />
+        </div>
+      </div>
+
+      <div class="data-item">
+        <span>2. Import Campaigns (Drillings and Wells)</span>
+        <div class="d-md-flex flex-row justify-start mb-5 ">
+          <CSVDrillingDataDialog />
+          <CSVWellDataDialog />
+        </div>
+      </div>
+
+      <div class="data-item">
+        <span>3. Import Sample Table</span>
+        <div class="d-flex flex-row justify-start mb-5">
+          Button HERE
+        </div>
+      </div>
+
+      <div class="data-item">
+        <span>Manage Imports</span>
+        <div class="d-flex flex-row justify-start ">
+          <CSVHistoryDialog />
+        </div>
+      </div>
+
+
     </v-card-text>
 
     <hr style="margin-bottom:0px">
