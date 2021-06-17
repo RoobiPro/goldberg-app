@@ -21,6 +21,7 @@ const routes = [
       props: true,
       meta: {
         requiresAuth: true,
+        breadcrumb: 'Dashboard',
         // breadcrumbs:
       },
       children: [
@@ -31,7 +32,13 @@ const routes = [
           component: () => import(/* webpackChunkName: "dashboard" */'@/views/dashboard/Dashboard'),
           props: true,
           meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            breadcrumb: [
+              {
+                text: 'Dashboard',
+                to: { name: 'Dashboard' }
+              },
+            ],
           },
         },
         // Pages
@@ -41,7 +48,17 @@ const routes = [
           component: () => import(/* webpackChunkName: "usermanagement" */'@/views/dashboard/pages/Users'),
           props: true,
           meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            breadcrumb: [
+              {
+                text: 'Dashboard',
+                to: { name: 'Dashboard' }
+              },
+              {
+                text: 'User Management',
+                to: { name: 'User Management' }
+              }
+            ],
           },
         },
         {
@@ -50,7 +67,17 @@ const routes = [
           component: () => import(/* webpackChunkName: "projectmanagement" */'@/views/dashboard/pages/Projects'),
           props: true,
           meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            breadcrumb: [
+              {
+                text: 'Dashboard',
+                to: { name: 'Dashboard' }
+              },
+              {
+                text: 'Project Management',
+                to: { name: 'Project Management' }
+              }
+            ],
           },
         },
         {
@@ -59,82 +86,60 @@ const routes = [
           component: () => import(/* webpackChunkName: "userprofile" */'@/views/dashboard/pages/UserProfile'),
           props: true,
           meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            breadcrumb: [
+              {
+                text: 'Dashboard',
+                to: { name: 'Dashboard' }
+              },
+              {
+                text: 'Profile',
+                to: { name: 'User Profile' }
+              }
+            ],
           },
         },
-        // {
-        //   name: 'Notifications',
-        //   path: 'components/notifications',
-        //   component: () => import(/* webpackChunkName: "notifications" */'@/views/dashboard/component/Notifications'),
-        //   props: true,
-        //   meta: {
-        //     requiresAuth: true
-        //   },
-        // },
-        // {
-        //   name: 'Icons',
-        //   path: 'components/icons',
-        //   component: () => import(/* webpackChunkName: "icons" */'@/views/dashboard/component/Icons'),
-        //   props: true,
-        //   meta: {
-        //     requiresAuth: true
-        //   },
-        // },
-        // {
-        //   name: 'Typography',
-        //   path: 'components/typography',
-        //   component: () => import(/* webpackChunkName: "typography" */'@/views/dashboard/component/Typography'),
-        //   props: true,
-        //   meta: {
-        //     requiresAuth: true
-        //   },
-        // },
-        // Tables
-        {
-          name: 'Regular Tables',
-          path: 'tables/regular-tables',
-          component: () => import(/* webpackChunkName: "regulartables" */'@/views/dashboard/tables/RegularTables'),
-          props: true,
-          meta: {
-            requiresAuth: true
-          },
-        },
-        // Maps
-        {
-          name: 'Google Maps',
-          path: 'maps/google-maps',
-          component: () => import(/* webpackChunkName: "googlemaps" */'@/views/dashboard/maps/GoogleMapsNew'),
-          props: true,
-          meta: {
-            requiresAuth: true
-          },
-        },
-        // Upgrade
-        {
-          name: 'Upgrade',
-          path: 'upgrade',
-          component: () => import(/* webpackChunkName: "upgrade" */'@/views/dashboard/Upgrade'),
-          props: true,
-          meta: {
-            requiresAuth: true
-          },
-        },
+
         {
           name: 'My Projects',
           path: 'myprojects',
           component: () => import(/* webpackChunkName: "myprojects" */'@/views/dashboard/pages/projects/ProjectsOverview'),
           props: true,
           meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            breadcrumb: [
+              {
+                text: 'Dashboard',
+                to: { name: 'Dashboard' }
+              },
+              {
+                text: 'My Projects',
+                to: { name: 'My Projects' }
+              }
+            ],
           },
         },
         {
           name: 'Project',
-          path: 'project/:project_id/',
+          path: 'project/:project_id',
           component: () => import(/* webpackChunkName: "project" */'@/views/dashboard/pages/projects/SingleProject'),
           props: true,
           meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            breadcrumb: [
+              {
+                text: 'Dashboard',
+                to: { name: 'Dashboard' }
+              },
+              {
+                text: 'My Projects',
+                to: { name: 'My Projects' }
+              },
+              {
+                text: 'Project',
+                to: { name: 'Project' }
+              }
+            ],
           },
         },
         {
@@ -143,8 +148,32 @@ const routes = [
           component: () => import(/* webpackChunkName: "drillings" */'@/views/dashboard/pages/campaigns/Drillings'),
           props: true,
           meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            breadcrumb: [
+              {
+                text: 'Dashboard',
+                to: { name: 'Dashboard' }
+              },
+              {
+                text: 'My Projects',
+                to: { name: 'My Projects' }
+              },
+              {
+                text: 'Project',
+                exact: true,
+                disabled: false,
+              },
+              {
+                text: 'Drillings',
+                to: { name: 'Drillings' }
+              }
+            ],
           },
+          beforeEnter: (to, from, next) => {
+            to.meta.breadcrumb[2].name = "Project"
+            to.meta.breadcrumb[2].to = '/project/'+to.params.id
+            next();
+          }
         },
         {
           name: 'Hand Samples',
@@ -152,8 +181,32 @@ const routes = [
           component: () => import(/* webpackChunkName: "handsamples" */'@/views/dashboard/pages/campaigns/HandSamples'),
           props: true,
           meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            breadcrumb: [
+              {
+                text: 'Dashboard',
+                to: { name: 'Dashboard' }
+              },
+              {
+                text: 'My Projects',
+                to: { name: 'My Projects' }
+              },
+              {
+                text: 'Project',
+                exact: true,
+                disabled: false,
+              },
+              {
+                text: 'Hand Samples',
+                to: { name: 'Hand Samples' }
+              }
+            ],
           },
+          beforeEnter: (to, from, next) => {
+            to.meta.breadcrumb[2].name = "Project"
+            to.meta.breadcrumb[2].to = '/project/'+to.params.id
+            next();
+          }
         },
         {
           name: 'Spatials',
@@ -161,8 +214,32 @@ const routes = [
           component: () => import(/* webpackChunkName: "spatials" */'@/views/dashboard/pages/campaigns/Spatials'),
           props: true,
           meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            breadcrumb:  [
+              {
+                text: 'Dashboard',
+                to: { name: 'Dashboard' }
+              },
+              {
+                text: 'My Projects',
+                to: { name: 'My Projects' }
+              },
+              {
+                text: 'Project',
+                exact: true,
+                disabled: false,
+              },
+              {
+                text: 'Spatials',
+                to: { name: 'Spatials' }
+              }
+            ],
           },
+          beforeEnter: (to, from, next) => {
+            to.meta.breadcrumb[2].name = "Project"
+            to.meta.breadcrumb[2].to = '/project/'+to.params.id
+            next();
+          }
         },
         {
           name: 'Wells',
@@ -170,8 +247,32 @@ const routes = [
           component: () => import(/* webpackChunkName: "wells" */'@/views/dashboard/pages/campaigns/Wells'),
           props: true,
           meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            breadcrumb: [
+              {
+                text: 'Dashboard',
+                to: { name: 'Dashboard' }
+              },
+              {
+                text: 'My Projects',
+                to: { name: 'My Projects' }
+              },
+              {
+                text: 'Project',
+                exact: true,
+                disabled: false,
+              },
+              {
+                text: 'Wells',
+                to: { name: 'Wells' }
+              }
+            ],
           },
+          beforeEnter: (to, from, next) => {
+            to.meta.breadcrumb[2].name = "Project"
+            to.meta.breadcrumb[2].to = '/project/'+to.params.id
+            next();
+          }
         },
         {
           name: 'Sample List',
@@ -179,18 +280,33 @@ const routes = [
           component: () => import(/* webpackChunkName: "samplelist" */'@/views/dashboard/pages/projects/SampleList'),
           props: true,
           meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            breadcrumb: [
+              {
+                text: 'Dashboard',
+                to: { name: 'Dashboard' }
+              },
+              {
+                text: 'My Projects',
+                to: { name: 'My Projects' }
+              },
+              {
+                text: 'Project',
+                exact: true,
+                disabled: false,
+              },
+              {
+                text: 'Sample List',
+                to: { name: 'Sample List' }
+              }
+            ],
           },
+          beforeEnter: (to, from, next) => {
+            to.meta.breadcrumb[2].name = "Project"
+            to.meta.breadcrumb[2].to = '/project/'+to.params.id
+            next();
+          }
         },
-        // {
-        //   name: 'Drillings',
-        //   path: 'project/:project_id/campaign/:campaign_id/drillings',
-        //   component: () => import(/* webpackChunkName: "drillings" */'@/views/dashboard/pages/campaigns/Drillings'),
-        //   props: true,
-        //   meta: {
-        //     requiresAuth: true
-        //   },
-        // },
       ],
     },
     { path: '*', redirect: { name: 'Dashboard' }}

@@ -2,17 +2,13 @@
 
   <v-main>
 
-
     <v-breadcrumbs
       class="customBreadcrumbs"
       :items="items"
       divider="/">
     </v-breadcrumbs>
 
-
     <router-view></router-view>
-
-
 
     <v-snackbar
       :timeout="3500"
@@ -34,28 +30,20 @@
 <script>
   export default {
     name: 'DashboardCoreView',
-    data: () => ({
 
-     items: [
-       {
-         text: 'Dashboard',
-         disabled: false,
-         href: 'breadcrumbs_dashboard',
-       },
-       {
-         text: 'Link 1',
-         disabled: false,
-         href: 'breadcrumbs_link_1',
-       },
-       {
-         text: 'Link 2',
-         disabled: true,
-         href: 'breadcrumbs_link_2',
-       },
-     ],
-   }),
+   //  data: () => ({
+   //   items: this.setBreadcrumbs()
+   // }),
+   // created() {
+   //   this.items = this.$route.meta.breadcrumb
+   //   console.log(this.$route.meta.breadcrumb)
+   // },
 
-    computed:{
+   computed:{
+      items: function(){
+        console.log(this.$route.meta.breadcrumb)
+        return this.$route.meta.breadcrumb
+      },
       checkNotificationStatus(){
         return this.$store.getters['NotificationsManager/getNotificationStatus']
       }
@@ -63,7 +51,7 @@
     components: {
       DashboardCoreFooter: () => import('./Footer'),
     },
-  }
+}
 </script>
 
 <style>

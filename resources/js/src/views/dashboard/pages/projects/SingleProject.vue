@@ -35,21 +35,21 @@
 
     </v-card-text>
 
-    <hr style="margin-bottom:0px">
+    <hr v-if="this.project.pivot.role>=2"style="margin-bottom:0px">
 
-    <v-card-title>Import data</v-card-title>
+    <v-card-title v-if="this.project.pivot.role>=2">Import data</v-card-title>
 
-    <v-card-text class="d-flex flex-column">
+    <v-card-text v-if="this.project.pivot.role>=2"class="d-flex flex-column">
 
       <div class="data-item">
-        <span>1. Import Campaign Data (Assay, Mineralization,...)</span>
+        <span>1. Import Campaigns (Drillings and Wells)</span>
         <div class="d-flex flex-row justify-start mb-5 ">
           <CSVCampaignsDialog />
         </div>
       </div>
 
       <div class="data-item">
-        <span>2. Import Campaigns (Drillings and Wells)</span>
+        <span>2. Import Campaign Data (Assay, Mineralization,...)</span>
         <div class="d-md-flex flex-row justify-start mb-5 ">
           <CSVDrillingDataDialog />
           <CSVWellDataDialog />
@@ -129,7 +129,7 @@ export default {
     projectdata:{},
     projectdataready: false,
     project:[],
-    projects:[]
+    projects:[],
   }),
   mounted() {
     this.checkAuth()
@@ -150,7 +150,9 @@ export default {
       this.$router.push({ path: this.$route.params.project_id+'/'+destination })
     },
     async checkAuth(){
+
       this.me = await this.$store.getters["AuthManager/user"];
+      console.log(this.me)
       await this.$store.dispatch('UsersManager/userprojects', this.me.id);
       this.projects = await this.$store.getters["UsersManager/projects"];
       this.project = this.projects.filter(obj => {

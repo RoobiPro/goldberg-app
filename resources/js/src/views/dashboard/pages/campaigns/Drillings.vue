@@ -10,7 +10,6 @@
       :items="drillings"
       :search="search"
       item-key="id"
-      show-expand
     >
       <template v-slot:top>
         <v-toolbar flat>
@@ -24,23 +23,7 @@
           <v-text-field v-model="search" label="Search" append-icon="mdi-magnify" class="mx-4" single-line hide-details></v-text-field>
         </v-toolbar>
       </template>
-      <template  v-slot:item.actions="{ item }">
-          <!-- <v-icon v-if="!project.pivot.role==0" size=26 :color="'blue'"
-          @click="editItem(item)">
-            mdi-file-edit
-          </v-icon>
-          <v-icon v-if="project.pivot.role==2" size=26 :color="'red'"
-          @click="removeItem(item)">
-            mdi-file-remove
-          </v-icon> -->
-      </template>
 
-      <template style="" v-slot:expanded-item="{ headers, item }">
-        <td :colspan="headers.length" style="padding-left: 0px; padding-right: 0px;">
-          hello I'm Wayan!
-        </td>
-
-      </template>
 
     </v-data-table>
   </v-container>
@@ -64,12 +47,7 @@ export default {
       this.headers = this.$store.getters["TableManager/headers"];
       this.headers.splice(0, 1);
       this.headers.splice(4, 4);
-      var actions = {
-        text: 'Actions',
-        align: 'center',
-        value: 'actions'
-      }
-      this.headers.push(actions)
+
       console.log(this.$route.params)
       await this.$store.dispatch("ProjectsManager/getProjectDrillings", this.$route.params.id);
       this.drillings = this.$store.getters["ProjectsManager/projectdrillings"];

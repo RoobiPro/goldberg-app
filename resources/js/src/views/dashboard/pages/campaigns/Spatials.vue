@@ -221,7 +221,7 @@ export default {
     async updateAvatar() {
       let formData = new FormData()
       formData.append('spatial', this.file)
-      axios.post('/uploadspatial/'+this.$route.params.id, formData, {
+      axios.post('/api/uploadspatial/'+this.$route.params.id, formData, {
 
           onUploadProgress: (progressEvent) => {
 

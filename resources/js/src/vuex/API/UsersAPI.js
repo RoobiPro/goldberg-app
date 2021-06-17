@@ -5,7 +5,7 @@ import axios from 'axios';
 
 function listClients(params) {
 
-  return axios.get(`/getClients`)
+  return axios.get(`/api/getClients`)
     .then(response => {
       return response.data.data
 
@@ -13,7 +13,7 @@ function listClients(params) {
 }
 
 function getUserProjects(id){
-  return axios.get('/getUserProjects/'+id)
+  return axios.get('/api/getUserProjects/'+id)
     .then(response => {
       return response.data;
     });
@@ -23,7 +23,7 @@ function updatePassword (userid, password){ return axios.patch(`/api/users/`+use
 
 function listUsers(params) {
 
-  return axios.get(`/getUsers`)
+  return axios.get(`/api/getUsers`)
     .then(response => {
       return {
         list: response.data.data,
@@ -41,7 +41,7 @@ function getAll(params) {
 
 function get(id) {
 
-  return axios.get(`/users/${id}`, )
+  return axios.get(`/api/users/${id}`, )
     .then(response => {
       // let user = jsona.deserialize(response.data);
       let user = response.data;
@@ -51,7 +51,7 @@ function get(id) {
 }
 
 function add(user) {
-  return axios.post(`/register`, user)
+  return axios.post(`/api/register`, user)
     .then(response => {
       if (response.status == 200) {
         return {
@@ -90,15 +90,15 @@ function destroy(id) {
     });
 }
 
-function upload(user, image) {
-  const bodyFormData = new FormData();
-  bodyFormData.append('attachment', image);
-
-  return axios.post(`/uploads/users/${user.id}/profile-image`, bodyFormData)
-    .then(response => {
-      return response.data.url;
-    });
-}
+// function upload(user, image) {
+//   const bodyFormData = new FormData();
+//   bodyFormData.append('attachment', image);
+//
+//   return axios.post(`/uploads/users/${user.id}/profile-image`, bodyFormData)
+//     .then(response => {
+//       return response.data.url;
+//     });
+// }
 
 export default {
   getUserProjects,
@@ -108,6 +108,5 @@ export default {
   get,
   add,
   update,
-  destroy,
-  upload
+  destroy
 };

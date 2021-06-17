@@ -1,6 +1,20 @@
 import { APIConfig } from './APIConfig';
 import axios from 'axios';
 
+function getprojectwells(id){
+  return axios.get('/api/project/'+id+'/wells')
+    .then(response => {
+      return response.data;
+    });
+}
+
+function getprojecthandsamples(id){
+  return axios.get('/api/project/'+id+'/handsamples')
+    .then(response => {
+      return response.data;
+    });
+}
+
 function getprojectdrillings(id){
   return axios.get('/api/project/'+id+'/drillings')
     .then(response => {
@@ -9,28 +23,28 @@ function getprojectdrillings(id){
 }
 
 function getprojectdata(id) {
-  return axios.get(`/getprojectdata/`+id)
+  return axios.get(`/api/getprojectdata/`+id)
     .then(response => {
       return response.data;
     });
 }
 
 function projectspatials(id) {
-  return axios.get(`/getProjectSpatials/`+id)
+  return axios.get(`/api/getProjectSpatials/`+id)
     .then(response => {
       return response.data;
     });
 }
 
 function projectusers(id) {
-  return axios.get(`/getProjectUsers/`+id)
+  return axios.get(`/api/getProjectUsers/`+id)
     .then(response => {
       return response.data;
     });
 }
 
 function assignUser(user) {
-  return axios.post(`/assignuser`, user)
+  return axios.post(`/api/assignuser`, user)
     .then(response => {
       if (response.status == 200) {
         return {
@@ -47,7 +61,7 @@ function assignUser(user) {
 }
 
 function unassignUser(project){
-  return axios.post(`/unassignUser`, project)
+  return axios.post(`/api/unassignUser`, project)
     .then( response => {
       if (response.status == 200) {
         return {
@@ -64,7 +78,7 @@ function unassignUser(project){
 }
 
 function reassignUser(project){
-  return axios.post(`/reassignUser`, project)
+  return axios.post(`/api/reassignUser`, project)
     .then( response => {
       if (response.status == 200) {
         return {
@@ -81,7 +95,7 @@ function reassignUser(project){
 }
 
 function assignClient(client) {
-  return axios.post(`/assignclient`, client)
+  return axios.post(`/api/assignclient`, client)
     .then(response => {
       if (response.status == 200) {
         return {
@@ -167,18 +181,20 @@ function destroy(project) {
     });
 }
 
-function upload(user, image) {
-  const bodyFormData = new FormData();
-  bodyFormData.append('attachment', image);
-
-  return axios.post(`${url}/uploads/users/${user.id}/profile-image`, bodyFormData)
-    .then(response => {
-      return response.data.url;
-    });
-}
+// function upload(user, image) {
+//   const bodyFormData = new FormData();
+//   bodyFormData.append('attachment', image);
+//
+//   return axios.post(`${url}/uploads/users/${user.id}/profile-image`, bodyFormData)
+//     .then(response => {
+//       return response.data.url;
+//     });
+// }
 
 
 export default {
+  getprojectwells,
+  getprojecthandsamples,
   getprojectdrillings,
   getprojectdata,
   projectspatials,
@@ -187,7 +203,6 @@ export default {
   create,
   update,
   destroy,
-  upload,
   projectusers,
   assignUser,
   assignClient,

@@ -193,7 +193,7 @@ export default {
         console.log(this.csv_type)
         let formData = new FormData()
         formData.append('csvfile', this.file)
-        axios.post('/importcsv/drilling/'+this.csv_type, formData, {
+        axios.post('/api/importcsv/drilling/'+this.csv_type, formData, {
             onUploadProgress: (progressEvent) => {
               this.showUploadProgress = true
               this.uploadPercent = progressEvent.lengthComputable ? Math.round((progressEvent.loaded * 100) / progressEvent.total) : 0;

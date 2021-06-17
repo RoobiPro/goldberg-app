@@ -71,18 +71,23 @@
        </v-radio-group>
 
        <hr id="vaddershr">
-
+       <v-form>
        <v-container class="py-0">
          <v-row class="mt-4">
+
            <v-col
            >
-           <v-file-input
-             v-model="file"
-             ref="fileInput"
-             truncate-length="10"
-             label="Upload spatial"
-             :clearable="false"
-           ></v-file-input>
+
+             <v-file-input
+               v-model="file"
+               ref="fileInput"
+               truncate-length="10"
+               label="Upload spatial"
+               accept=".csv"
+               :clearable="false"
+             ></v-file-input>
+
+
            </v-col>
            <!-- <div v-if="showUploadProgress">
                Uploading: {{ uploadPercent }} %
@@ -141,11 +146,13 @@
              >
                Upload
              </v-btn>
+
            </v-col>
+
          </v-row>
 
        </v-container>
-
+       </v-form>
      </div>
 
      </v-card>
@@ -183,7 +190,7 @@ export default {
         console.log(this.csv_type)
         let formData = new FormData()
         formData.append('csvfile', this.file)
-        axios.post('/importcsv/'+this.csv_type, formData, {
+        axios.post('/api/importcsv/'+this.csv_type, formData, {
             onUploadProgress: (progressEvent) => {
               this.showUploadProgress = true
               this.uploadPercent = progressEvent.lengthComputable ? Math.round((progressEvent.loaded * 100) / progressEvent.total) : 0;

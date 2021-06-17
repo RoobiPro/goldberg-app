@@ -41,7 +41,6 @@
                 accept=".jpg, .png"
                 prepend-icon="mdi-camera"
                 :clearable="false"
-                @change="updateAvatar">
               ></v-file-input>
               </v-col>
               <div v-if="showUploadProgress">
@@ -126,6 +125,7 @@ export default {
   },
   methods: {
     updateProfile(){
+      this.updateAvatar()
       this.$store.dispatch('AuthManager/update', this.myuser)
     },
     updateAvatar() {

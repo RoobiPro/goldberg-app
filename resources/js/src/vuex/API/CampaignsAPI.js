@@ -10,7 +10,7 @@ function show(id) {
  }
 
 function getProjectDrillings(id){
-  return axios.get('/getCampaign/' + id)
+  return axios.get('/api/getCampaign/' + id)
     .then(response => {
       return response.data;
     });

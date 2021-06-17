@@ -8,7 +8,7 @@
     height="75"
   >
 
-  <button @click="setDrawer(!drawer)" class="hamburger hamburger--arrow theme" v-bind:class="{ 'is-active':drawer }" type="button">
+  <button @click="setDrawer(!drawer)" class="hamburger hamburger--squeeze theme mt-1" v-bind:class="{ 'is-active':drawer }" type="button">
     <span class="hamburger-box">
       <span class="hamburger-inner" v-bind:class="{'hamburger-inner-dark': this.$vuetify.theme.dark}"></span>
     </span>

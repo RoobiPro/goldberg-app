@@ -47,6 +47,16 @@ class ProjectController extends Controller
 
     }
 
+    public function getProjectWells($id){
+      $project = Project::find($id);
+      return $project->wells;
+    }
+
+    public function getProjectHandsamples($id){
+      $project = Project::find($id);
+      return $project->handsamples;
+    }
+
     public function getProjectSpatials($id){
       $project = Project::find($id);
       return $project->spatials;
