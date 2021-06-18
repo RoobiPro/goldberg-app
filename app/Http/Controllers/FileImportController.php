@@ -7,6 +7,8 @@ use App\Models\Campaigns\Spatial;
 use App\Models\Campaigns\HandSample;
 use App\Models\Campaigns\Drilling;
 use App\Models\Campaigns\Well;
+use App\Models\SampleLists\DrillingSampleList;
+use App\Models\SampleLists\WellSampleList;
 use App\Models\Data\Alteration;
 use App\Models\Data\DrillingAssay;
 use App\Models\Data\WellAssay;
@@ -395,7 +397,7 @@ class FileImportController extends Controller
         try{
           $assay = DrillingAssay::create([
             'drilling_id' => $drilling->id,
-            'sample' => $data[1],
+            'sample_code' => $data[1],
             'from' => $data[2],
             'to' => $data[3],
             'certificate' => str_replace('<', '-', $data[4]),
@@ -982,6 +984,172 @@ class FileImportController extends Controller
       return response()->json([ "success" => true, "type" => 'green', "message" => 'Import successful'], 200);
 
       // return "Import successful";
+    }
+
+    public function storeDrillingSamplelist(Request $req){
+      $filedata=[];
+      array_push($filedata, 'drilling_sample_list', $req->file('csvfile')->getClientOriginalName(), $req->file('csvfile')->getSize());
+
+      if(checkForImport($filedata)){
+        return response()->json([ "success" => false, "type" => 'red', "message" => "This file has been already imported!"], 200);
+      }
+
+      $SampleCode = getDrillingID($req->file('csvfile'));
+      $DrillingAssay = DrillingAssay::where('sample_code', $SampleCode)->first();
+      if(!$DrillingAssay){
+        return response()->json([ "success" => false, "type" => 'red', "message" => "No Drilling with this code found!"], 200);
+      }
+      $filenameWithExt = $req->file('csvfile')->getClientOriginalName();
+      $extension = $req->file('csvfile')->getClientOriginalExtension();
+      $CsvImport = new CsvImport;
+      $CsvImport->project_id = $DrillingAssay->drilling->project_id;
+      $CsvImport->table_type = 'drilling_sample_list';
+      $CsvImport->import_date = now();
+      $CsvImport->file_name = $filenameWithExt;
+      $CsvImport->bytes = $req->file('csvfile')->getSize();
+      $CsvImport->save();
+
+      if(!$req->hasFile('csvfile')){
+        return response()->json([ "success" => false, "type" => 'red', "message" => "No csv file was passed"], 200);
+      }
+
+      $row=0;
+      $handle = fopen($req->file('csvfile'), "r");
+      $SampleListArray = [];
+      while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+        if($row==0){
+            $row++;
+            continue;
+            // SKIP HEADER ROW
+          }
+          $DrillingAssay = DrillingAssay::where('sample_code', $data[0])->get();
+        if (!$DrillingAssay->isEmpty()){
+            $DrillingAssay = $DrillingAssay->first();
+        }
+        else{
+          foreach ($SampleListArray as $SampleListArray) {
+            $SampleListArray->delete();
+          }
+          $CsvImport->success = false;
+          $CsvImport->error_description = "error-data-row-number: ". (string)($row+1);
+          $CsvImport->save();
+          $CsvImport->delete();
+
+          return response()->json([ "success" => false, "type" => 'red', "message" => "Project with this name does not exist", "error_line" => $row+1 ,"error_data" => $data], 200);
+        }
+        try{
+          $SampleList = DrillingSampleList::create([
+              'drilling_id' => $DrillingAssay->drilling_id,
+              'sample_code' => $data[0],
+              'from' =>  $data[1],
+              'to' => $data[2],
+              'sample_type' => $data[3],
+              'weight' => $data[4],
+              'csv_import_id' => $CsvImport->id,
+            ]);
+            array_push($SampleListArray, $SampleList);
+        }
+        catch(\Illuminate\Database\QueryException $ex){
+          foreach ($SampleListArray as $SampleList) {
+            $SampleList->delete();
+          }
+          $CsvImport->success = false;
+          $CsvImport->error_description = $ex->getMessage();
+          $CsvImport->save();
+          $CsvImport->delete();
+          return response()->json([ "success" => false, "type" => 'red', "message" => $ex->getMessage(), "error_line" => $row+1 ,"error_data" => $data], 200);
+            // return $ex->getMessage();
+        }
+        $row++;
+      }
+      $CsvImport->success = true;
+      $CsvImport->data_lines = $row-1;
+      $CsvImport->save();
+      return response()->json([ "success" => true, "type" => 'green', "message" => 'Import successful'], 200);
+
+    }
+
+    public function storeWellSamplelist(Request $req){
+      $filedata=[];
+      array_push($filedata, 'well_sample_list', $req->file('csvfile')->getClientOriginalName(), $req->file('csvfile')->getSize());
+
+      if(checkForImport($filedata)){
+        return response()->json([ "success" => false, "type" => 'red', "message" => "This file has been already imported!"], 200);
+      }
+
+      $WellCode = getDrillingID($req->file('csvfile'));
+      $Well = Well::where('well_code', $WellCode)->first();
+      if(!$Well){
+        return response()->json([ "success" => false, "type" => 'red', "message" => "No Well with this code found!"], 200);
+      }
+      $filenameWithExt = $req->file('csvfile')->getClientOriginalName();
+      $extension = $req->file('csvfile')->getClientOriginalExtension();
+      $CsvImport = new CsvImport;
+      $CsvImport->project_id = $Well->project_id;
+      $CsvImport->table_type = 'well_sample_list';
+      $CsvImport->import_date = now();
+      $CsvImport->file_name = $filenameWithExt;
+      $CsvImport->bytes = $req->file('csvfile')->getSize();
+      $CsvImport->save();
+
+      if(!$req->hasFile('csvfile')){
+        return response()->json([ "success" => false, "type" => 'red', "message" => "No csv file was passed"], 200);
+      }
+
+      $row=0;
+      $handle = fopen($req->file('csvfile'), "r");
+      $SampleListArray = [];
+      while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+        if($row==0){
+            $row++;
+            continue;
+            // SKIP HEADER ROW
+          }
+          $Well = Well::where('well_code', $data[0])->get();
+        if (!$Well->isEmpty()){
+            $Well = $Well->first();
+        }
+        else{
+          foreach ($SampleListArray as $SampleListArray) {
+            $SampleListArray->delete();
+          }
+          $CsvImport->success = false;
+          $CsvImport->error_description = "error-data-row-number: ". (string)($row+1);
+          $CsvImport->save();
+          $CsvImport->delete();
+
+          return response()->json([ "success" => false, "type" => 'red', "message" => "Project with this name does not exist", "error_line" => $row+1 ,"error_data" => $data], 200);
+        }
+        try{
+          $SampleList = WellSampleList::create([
+              'well_id' => $Well->id,
+              'sample_code' => $data[1],
+              'from' =>  $data[2],
+              'to' => $data[3],
+              'sample_type' => $data[4],
+              'weight' => $data[5],
+              'csv_import_id' => $CsvImport->id,
+            ]);
+            array_push($SampleListArray, $SampleList);
+        }
+        catch(\Illuminate\Database\QueryException $ex){
+          foreach ($SampleListArray as $SampleList) {
+            $SampleList->delete();
+          }
+          $CsvImport->success = false;
+          $CsvImport->error_description = $ex->getMessage();
+          $CsvImport->save();
+          $CsvImport->delete();
+          return response()->json([ "success" => false, "type" => 'red', "message" => $ex->getMessage(), "error_line" => $row+1 ,"error_data" => $data], 200);
+            // return $ex->getMessage();
+        }
+        $row++;
+      }
+      $CsvImport->success = true;
+      $CsvImport->data_lines = $row-1;
+      $CsvImport->save();
+      return response()->json([ "success" => true, "type" => 'green', "message" => 'Import successful'], 200);
+
     }
 
     public function delete($id){

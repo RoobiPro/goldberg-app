@@ -28,13 +28,11 @@ class HandSample extends Model
       return $this->belongsTo(\App\Models\Project::class);
     }
 
-    public function samplelist()
-    {
-        return $this->morphMany(\App\Models\SampleList::class, 'listabel_campaign');
+    public function samplelists(){
+        return $this->hasMany(\App\Models\SampleLists\HandSampleSampleList::class);
     }
 
-    public function comments()
-    {
+    public function comments(){
         return $this->morphMany(\App\Models\Spare\Comment::class, 'commentable');
     }
 

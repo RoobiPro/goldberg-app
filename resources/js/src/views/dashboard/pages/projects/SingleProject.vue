@@ -10,20 +10,13 @@
         indeterminate
       ></v-progress-linear>
     </template>
-
-
-
     <MapsComponent v-if="(typeof project.utm_x !== 'undefined')" :coordinates_x="project.latitude"  :coordinates_y="project.longitude"/>
-
     <v-card-title>{{this.project.name}}</v-card-title>
-
     <v-card-text>
-
         <div class="my-4 subtitle-1">
           Project code: <i><u>{{project.project_code}}</u></i><br>
           Type: {{project.type}} <br>
         </div>
-
         <div class="my-4 subtitle-1">
           My role: <i><u>{{project.role}}</u></i><br>
           Start date: {{project.project_start_date}} <br>
@@ -32,22 +25,16 @@
           UTM Z: {{project.utm_z}} <br>
         </div>
       </div>
-
     </v-card-text>
-
     <hr v-if="this.project.pivot.role>=2"style="margin-bottom:0px">
-
     <v-card-title v-if="this.project.pivot.role>=2">Import data</v-card-title>
-
     <v-card-text v-if="this.project.pivot.role>=2"class="d-flex flex-column">
-
       <div class="data-item">
         <span>1. Import Campaigns (Drillings and Wells)</span>
         <div class="d-flex flex-row justify-start mb-5 ">
           <CSVCampaignsDialog />
         </div>
       </div>
-
       <div class="data-item">
         <span>2. Import Campaign Data (Assay, Mineralization,...)</span>
         <div class="d-md-flex flex-row justify-start mb-5 ">
@@ -55,26 +42,20 @@
           <CSVWellDataDialog />
         </div>
       </div>
-
       <div class="data-item">
         <span>3. Import Sample Table</span>
         <div class="d-flex flex-row justify-start mb-5">
-          Button HERE
+          <CSVSampleListDialog />
         </div>
       </div>
-
       <div class="data-item">
         <span>Manage Imports</span>
         <div class="d-flex flex-row justify-start ">
           <CSVHistoryDialog />
         </div>
       </div>
-
-
     </v-card-text>
-
     <hr style="margin-bottom:0px">
-
     <v-card-title>View data
       <v-progress-circular
         v-if="loading"
@@ -85,7 +66,6 @@
         indeterminate
       >
       </v-progress-circular>
-
       <v-btn
       v-if="!loading"
       x-small
@@ -99,29 +79,25 @@
       </v-icon>
     </v-btn>
     </v-card-title>
-
     <v-card-text>
       <v-btn class="ma-2" rounded color="primary" dark @click="goTo('spatials')">Spatial Data <template v-if="projectdataready">{{projectdata.count_spatial}}</template></v-btn>
       <v-btn class="ma-2" rounded color="primary" dark @click="goTo('handsamples')">Hand Samples <template v-if="projectdataready">{{projectdata.count_handsamples}}</template></v-btn>
       <v-btn class="ma-2" rounded color="primary" dark @click="goTo('drillings')">Drillings <template v-if="projectdataready">{{projectdata.count_drilling}}</template></v-btn>
       <v-btn class="ma-2" rounded color="primary" dark @click="goTo('wells')">Wells <template v-if="projectdataready">{{projectdata.count_wells}}</template></v-btn>
-      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('samplelist')">Sample List</v-btn>
+      <v-btn class="ma-2" rounded color="primary" dark @click="goTo('samplelist')">Sample List <template v-if="projectdataready"> - D: {{projectdata.count_drilling_sample_lists}} W: {{projectdata.count_well_sample_lists}}</template></v-btn>
     </v-card-text>
-
   </v-card>
 </template>
-
-
 <script>
 import MapsComponent from './../../maps/GoogleMapsNew'
 import CSVCampaignsDialog from './components/CSVCampaignsDialog'
 import CSVWellDataDialog from './components/CSVWellDataDialog'
 import CSVDrillingDataDialog from './components/CSVDrillingDataDialog'
 import CSVHistoryDialog from './components/CSVHistoryDialog'
-
+import CSVSampleListDialog from './components/CSVSampleListDialog'
 export default {
   components:{
-    MapsComponent, CSVCampaignsDialog, CSVWellDataDialog, CSVHistoryDialog, CSVDrillingDataDialog
+    MapsComponent, CSVCampaignsDialog, CSVWellDataDialog, CSVHistoryDialog, CSVDrillingDataDialog, CSVSampleListDialog
   },
   data: () => ({
     ready:false,
@@ -134,7 +110,6 @@ export default {
   mounted() {
     this.checkAuth()
   },
-
   methods: {
     async fetchData(){
       this.loading = true
@@ -145,12 +120,10 @@ export default {
       this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: this.projectdata.type, text: this.projectdata.message});
       this.loading = false
     },
-
     goTo(destination){
       this.$router.push({ path: this.$route.params.project_id+'/'+destination })
     },
     async checkAuth(){
-
       this.me = await this.$store.getters["AuthManager/user"];
       console.log(this.me)
       await this.$store.dispatch('UsersManager/userprojects', this.me.id);

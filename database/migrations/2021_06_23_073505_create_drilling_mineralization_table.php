@@ -16,7 +16,7 @@ class CreateDrillingMineralizationTable extends Migration
         Schema::create('drilling_mineralizations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('drilling_id')->constrained('drillings')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('sample_list_id')->nullable()->references('id')->on('sample_lists');
+            // $table->foreignId('sample_list_id')->nullable()->references('id')->on('sample_lists');
             $table->decimal('from', 10, 2)->nullable();
             $table->decimal('to', 10, 2)->nullable();
             $table->integer('intensity')->nullable();

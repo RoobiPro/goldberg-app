@@ -12,7 +12,7 @@ class DrillingAssay extends Model
     protected $fillable = [
       'drilling_id',
       'sample_list_id',
-      'sample',
+      'sample_code',
       'from',
       'to',
       'certificate',
@@ -73,9 +73,8 @@ class DrillingAssay extends Model
     ];
 
 
-    public function samplelist()
-    {
-      return $this->morphOne(\App\Models\SampleList::class, 'listabel_data');
+    public function drilling(){
+      return $this->belongsTo(\App\Models\Campaigns\Drilling::class);
     }
 
     public function import(){

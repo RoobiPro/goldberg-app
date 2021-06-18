@@ -30,18 +30,15 @@ class Drilling extends Model
       return $this->belongsTo(\App\Models\Project::class);
     }
 
-    public function samplelist()
-    {
-        return $this->morphMany(\App\Models\SampleList::class, 'listabel_campaign');
+    public function samplelists(){
+      return $this->hasMany(\App\Models\SampleLists\DrillingSampleList::class);
     }
 
-    public function surveys()
-    {
+    public function surveys(){
       return $this->morphMany(\App\Models\Survey::class, 'suveryable');
     }
 
-    public function comments()
-    {
+    public function comments(){
         return $this->morphMany(\App\Models\Spare\Comment::class, 'commentable');
     }
 
@@ -53,8 +50,7 @@ class Drilling extends Model
       return $this->belongsTo(\App\Models\CsvImport::class);
     }
 
-    public function lithology()
-    {
+    public function lithology(){
       return $this->morphOne(\App\Models\Data\Lithology::class, 'lithologyable');
     }
 }

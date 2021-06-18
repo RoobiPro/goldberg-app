@@ -86,8 +86,7 @@ function checkNameExists($data){
   }
 }
 
-function convert_accent($string)
-{
+function convert_accent($string){
     return htmlentities($string, ENT_COMPAT, 'UTF-8');
 }
 

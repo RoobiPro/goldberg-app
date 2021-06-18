@@ -75,5 +75,17 @@ class CsvImport extends Model
         return $this->hasMany(\App\Models\Data\Lithology::class);
     }
 
+    public function drilling_sample_list(){
+      return $this->hasMany(\App\Models\SampleLists\DrillingSampleList::class);
+    }
+
+    public function well_sample_list(){
+      return $this->hasMany(\App\Models\SampleLists\WellSampleList::class);
+    }
+
+    public function hand_sample_sample_list(){
+      return $this->hasMany(\App\Models\SampleLists\HandSampleSampleList::class);
+    }
+
 
 }

@@ -74,6 +74,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/importcsv/well/assay', [FileImportController::class, 'storeWellAssay']);
     Route::post('/importcsv/well/lithology', [FileImportController::class, 'storeWellLithology']);
     Route::post('/importcsv/well/survey', [FileImportController::class, 'storeWellSurvey']);
+    Route::post('/importcsv/drilling/samplelist', [FileImportController::class, 'storeDrillingSamplelist']);
+    Route::post('/importcsv/handsample/samplelist', [FileImportController::class, 'storeHandsampleSamplelist']);
+    Route::post('/importcsv/well/samplelist', [FileImportController::class, 'storeWellSamplelist']);
     Route::get('project/{id}/wells', [ProjectController::class, 'getProjectWells']);
     Route::post('upload_avatar', [UserController::class, 'upload_user_photo']);
     Route::apiResource('users', UserController::class);

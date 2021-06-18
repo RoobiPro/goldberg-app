@@ -16,7 +16,7 @@ class CreateWellAssayTable extends Migration
         Schema::create('well_assays', function (Blueprint $table) {
           $table->id();
           $table->foreignId('well_id')->constrained('wells')->onUpdate('cascade')->onDelete('cascade');
-          $table->foreignId('sample_list_id')->nullable()->references('id')->on('sample_lists');
+          // $table->foreignId('sample_list_id')->nullable()->references('id')->on('sample_lists');
           $table->string('sample')->nullable();
           $table->string('analysis_code')->nullable();
           $table->string('laboratory')->nullable();

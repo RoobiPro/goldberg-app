@@ -59,6 +59,6 @@ export default {
 
 <style>
   .vue2leaflet-map{
-    z-index: 100;
+    z-index: 1;
   }
 </style>

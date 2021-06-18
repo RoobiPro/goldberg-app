@@ -16,8 +16,7 @@ class CreateDrillingAssayTable extends Migration
         Schema::create('drilling_assays', function (Blueprint $table) {
           $table->id();
           $table->foreignId('drilling_id')->constrained('drillings')->onUpdate('cascade')->onDelete('cascade');
-          $table->foreignId('sample_list_id')->nullable()->references('id')->on('sample_lists');
-          $table->string('sample')->nullable();
+          $table->string('sample_code')->nullable();
           $table->decimal('from', 10, 2)->nullable();
           $table->decimal('to', 10, 2)->nullable();
           $table->string('certificate')->nullable();

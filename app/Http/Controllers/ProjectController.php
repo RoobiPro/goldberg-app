@@ -33,6 +33,25 @@ class ProjectController extends Controller
       $count_drilling = count($project->drillings);
       $count_wells = count($project->wells);
       $count_handsamples = count($project->handsamples);
+
+
+      $drillings = $project->drillings;
+      $wells = $project->wells;
+
+      $drillingHandsampleCount = 0;
+      $WellHandsampleCount = 0;
+
+      foreach($drillings as $drilling){
+        $drillingHandsampleCount += count($drilling->samplelists);
+      }
+      foreach($wells as $well){
+        $WellHandsampleCount += count($well->samplelists);
+      }
+
+      $count_drilling_sample_lists = $drillingHandsampleCount;
+      $count_well_sample_lists = $WellHandsampleCount;
+
+
       // $count_samplelists = count($project->samplelists);
       return response()->json([
         "success" => true,
@@ -41,7 +60,9 @@ class ProjectController extends Controller
         "count_spatial" =>  '('.(string)$count_spatial.')',
         'count_drilling' =>  '('.(string)$count_drilling.')',
         'count_wells' =>  '('.(string)$count_wells.')',
-        'count_handsamples' => '('.(string)$count_handsamples.')'
+        'count_handsamples' => '('.(string)$count_handsamples.')',
+        'count_drilling_sample_lists' => '('.(string)$count_drilling_sample_lists.')',
+        'count_well_sample_lists' => '('.(string)$count_well_sample_lists.')'
         // 'count_samplelists' =>  '('.(string)$count_samplelists.')'
       ], 200);
 
