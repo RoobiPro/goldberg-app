@@ -38,6 +38,14 @@ const mutations = {
 
 const actions = {
 
+  clientprojects({commit, dispatch}, params) {
+    return APIService.getClientProjects(params)
+      .then((project) => {
+        commit('SET_USERPROJECTS', project);
+        // this.dispatch('NotificationsManager/setNotificationStatus', message);
+      });
+  },
+
   userprojects({commit, dispatch}, params) {
     return APIService.getUserProjects(params)
       .then((project) => {

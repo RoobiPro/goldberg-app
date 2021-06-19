@@ -12,6 +12,13 @@ function listClients(params) {
     });
 }
 
+function getClientProjects(id){
+  return axios.get('/api/getClientProjects/'+id)
+    .then(response => {
+      return response.data;
+    });
+}
+
 function getUserProjects(id){
   return axios.get('/api/getUserProjects/'+id)
     .then(response => {
@@ -101,6 +108,7 @@ function destroy(id) {
 // }
 
 export default {
+  getClientProjects,
   getUserProjects,
   listUsers,
   listClients,

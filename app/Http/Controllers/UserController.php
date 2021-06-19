@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Models\Project;
 use Illuminate\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -67,6 +68,11 @@ class UserController extends Controller
     {
         return $req->user();
 
+    }
+
+    public function getClientProjects($id){
+      $projects = Project::where('client_id', $id)->get();
+      return response()->json($projects, 200);
     }
 
     public function getUserProjects($id){

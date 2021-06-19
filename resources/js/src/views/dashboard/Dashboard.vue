@@ -44,7 +44,7 @@
       <v-card v-for="project in projects" :key="project.id">
         <v-card-title class="d-flex justify-space-between">
           <span>{{project.name}}</span>
-          <div class="text-right">
+          <div v-if="user.role == 0" class="text-right">
             <v-btn small color="primary" dark
             @click="openProject(project.id)"
             >
@@ -58,7 +58,7 @@
         <div class="d-flex justify-space-around mt-3">
           <span class="d-flex justify-start" >Project Start Date:  {{project.project_start_date}}</span>
           <span class="d-flex justify-start" >Projecttype:  {{project.type}}</span>
-          <span class="d-flex justify-start">My Role:  {{project.role}}</span>
+          <span v-if="user.role == 0" class="d-flex justify-start">My Role:  {{project.role}}</span>
         </div>
 
         <v-row class="ma-2">
@@ -137,17 +137,33 @@
     },
     async created(){
       this.user = this.$store.getters["AuthManager/user"];
-      console.log(this.user)
-      await this.$store.dispatch("UsersManager/userprojects", this.user.id);
-      this.projects = this.$store.getters["UsersManager/projects"];
-      console.log(this.projects)
-      var index=0
-      for (var project in this.projects) {
-        await this.$store.dispatch('ProjectsManager/getProjectData', this.projects[index].id);
-        var projectdata = this.$store.getters["ProjectsManager/projectdata"];
-        this.projects[index].projectdata = projectdata
-        index = index+1
+      if(this.user.role == 0){
+        console.log(this.user)
+        await this.$store.dispatch("UsersManager/userprojects", this.user.id);
+        this.projects = this.$store.getters["UsersManager/projects"];
+        console.log(this.projects)
+        var index=0
+        for (var project in this.projects) {
+          await this.$store.dispatch('ProjectsManager/getProjectData', this.projects[index].id);
+          var projectdata = this.$store.getters["ProjectsManager/projectdata"];
+          this.projects[index].projectdata = projectdata
+          index = index+1
+        }
       }
+      else if(this.user.role == 1){
+        console.log(this.user)
+        await this.$store.dispatch("UsersManager/clientprojects", this.user.id);
+        this.projects = this.$store.getters["UsersManager/projects"];
+        console.log(this.projects)
+        var index=0
+        for (var project in this.projects) {
+          await this.$store.dispatch('ProjectsManager/getProjectData', this.projects[index].id);
+          var projectdata = this.$store.getters["ProjectsManager/projectdata"];
+          this.projects[index].projectdata = projectdata
+          index = index+1
+        }
+      }
+
       this.ready = true
       console.log(this.projects)
     },

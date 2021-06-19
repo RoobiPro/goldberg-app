@@ -134,11 +134,6 @@ export default {
         icon: 'mdi-account',
         title: 'My Profile',
         to: '/pages/user',
-      },
-      {
-        icon: 'mdi-hammer-wrench',
-        title: 'My Projects',
-        to: '/myprojects',
       }
     ],
     items: [{

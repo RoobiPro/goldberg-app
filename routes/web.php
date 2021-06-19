@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileImportController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,7 @@ use App\Http\Controllers\ProjectController;
 // Route::get('/project/{id}/drillings', [ProjectController::class, 'showDrillings']);
 // Route::get('/project/{id}/wells', [ProjectController::class, 'getProjectWells']);
 
+// Route::get('/getClientProjects/{id}', [UserController::class, 'getClientProjects']);
 
 Route::get('/{any}', function () {
     return view('vuedashboard');

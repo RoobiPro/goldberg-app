@@ -44,6 +44,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/getUsers', [UserController::class, 'getUsers']);
     Route::get('/getClients', [UserController::class, 'getClients']);
     Route::get('/getAdmins', [UserController::class, 'getAdmins']);
+    Route::get('/getClientProjects/{id}', [UserController::class, 'getClientProjects']);
     Route::get('/getUserProjects/{id}', [UserController::class, 'getUserProjects']);
     Route::get('/getProjectSpatials/{id}', [ProjectController::class, 'getProjectSpatials']);
     Route::post('/assignuser', [ProjectController::class, 'assignUser']);
