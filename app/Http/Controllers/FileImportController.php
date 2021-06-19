@@ -397,6 +397,7 @@ class FileImportController extends Controller
         try{
           $assay = DrillingAssay::create([
             'drilling_id' => $drilling->id,
+            'project_id' => $drilling->project_id,
             'sample_code' => $data[1],
             'from' => $data[2],
             'to' => $data[3],
@@ -1040,6 +1041,7 @@ class FileImportController extends Controller
         try{
           $SampleList = DrillingSampleList::create([
               'drilling_id' => $DrillingAssay->drilling_id,
+              'project_id' => $DrillingAssay->project_id,
               'sample_code' => $data[0],
               'from' =>  $data[1],
               'to' => $data[2],
@@ -1123,6 +1125,7 @@ class FileImportController extends Controller
         try{
           $SampleList = WellSampleList::create([
               'well_id' => $Well->id,
+              'project_id' => $Well->project_id,
               'sample_code' => $data[1],
               'from' =>  $data[2],
               'to' => $data[3],

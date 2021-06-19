@@ -11,6 +11,7 @@ class DrillingAssay extends Model
 
     protected $fillable = [
       'drilling_id',
+      'project_id',
       'sample_list_id',
       'sample_code',
       'from',
@@ -72,6 +73,9 @@ class DrillingAssay extends Model
       'csv_import_id'
     ];
 
+    public function project(){
+      return $this->belongsTo(\App\Models\Project::class);
+    }
 
     public function drilling(){
       return $this->belongsTo(\App\Models\Campaigns\Drilling::class);

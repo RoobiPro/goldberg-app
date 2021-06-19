@@ -15,7 +15,7 @@
     <v-data-table
       v-if="ready"
       :headers="headers"
-      :items="handsamples"
+      :items="samplelist"
       :search="search"
       item-key="id"
     >
@@ -23,10 +23,10 @@
         <v-toolbar flat>
           <div class="hidden-md-and-down v-application primary mr-4 text-start v-card--material__heading mb-n6 v-sheet theme--dark pa-7"
             style="max-height: 90px; width: auto;">
-            <i aria-hidden="true" class="v-icon notranslate mdi mdi-hand-okay theme--dark" style="font-size: 32px;">
+            <i aria-hidden="true" class="v-icon notranslate mdi mdi-screw-lag theme--dark" style="font-size: 32px;">
             </i>
           </div>
-          <v-toolbar-title>Hand Samples</v-toolbar-title>
+          <v-toolbar-title>Drilling Sample List</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-text-field v-model="search" label="Search" append-icon="mdi-magnify" class="mx-4" single-line hide-details></v-text-field>
         </v-toolbar>
@@ -43,20 +43,20 @@ export default {
       return {
         ready:false,
         headers:[],
-        handsamples:[],
+        samplelist:[],
         search:null,
       }
     },
     async created() {
 
-      await this.$store.dispatch("TableManager/get", 'hand_samples');
+      await this.$store.dispatch("TableManager/get", 'drilling_sample_lists');
       this.headers = this.$store.getters["TableManager/headers"];
       this.headers.splice(0, 1);
       this.headers.splice(6, 4);
 
       console.log(this.$route.params)
-      await this.$store.dispatch("ProjectsManager/getProjectHandsamples", this.$route.params.id);
-      this.handsamples = this.$store.getters["ProjectsManager/projecthandsamples"];
+      await this.$store.dispatch("ProjectsManager/getProjectDrillingSampleList", this.$route.params.id);
+      this.samplelist = this.$store.getters["ProjectsManager/projectdrillingsamplelist"];
       this.ready=true
 
     },

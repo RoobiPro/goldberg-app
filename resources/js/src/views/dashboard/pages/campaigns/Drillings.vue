@@ -1,15 +1,23 @@
 <template>
   <v-container
-  v-if="ready"
   class="d-flex justify-center"
   tag="section"
   style="margin-top:10vh;">
+
+  <v-progress-circular
+    v-if="!ready"
+    :width="3"
+    color="green"
+    indeterminate
+  ></v-progress-circular>
+
 
     <v-data-table
       :headers="headers"
       :items="drillings"
       :search="search"
       item-key="id"
+      v-if="ready"
     >
       <template v-slot:top>
         <v-toolbar flat>

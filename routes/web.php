@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileImportController;
-
+use App\Http\Controllers\ProjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +15,10 @@ use App\Http\Controllers\FileImportController;
 |
 */
 
+// Route::get('/project/{id}/handsamples', [ProjectController::class ,'getProjectHandsamples']);
+// Route::get('/project/{id}/drillingsamplelist', [ProjectController::class ,'getProjectDrillingSampleList']);
+// Route::get('/project/{id}/drillings', [ProjectController::class, 'showDrillings']);
+// Route::get('/project/{id}/wells', [ProjectController::class, 'getProjectWells']);
 
 
 Route::get('/{any}', function () {

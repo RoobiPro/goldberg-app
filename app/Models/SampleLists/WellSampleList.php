@@ -11,6 +11,7 @@ class WellSampleList extends Model
 
     protected $fillable = [
       'well_id',
+      'project_id',
       'sample_code',
       'from',
       'to',
@@ -20,6 +21,9 @@ class WellSampleList extends Model
       'updated_at',
     ];
 
+    public function project(){
+      return $this->belongsTo(\App\Models\Project::class);
+    }
 
     public function well(){
       return $this->belongsTo(\App\Models\Campaigns\Well::class);

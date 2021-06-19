@@ -275,9 +275,9 @@ const routes = [
           }
         },
         {
-          name: 'Sample List',
-          path: 'project/:id/samplelist',
-          component: () => import(/* webpackChunkName: "samplelist" */'@/views/dashboard/pages/projects/SampleList'),
+          name: 'Drilling Sample List',
+          path: 'project/:id/drillingsamplelist',
+          component: () => import(/* webpackChunkName: "samplelist" */'@/views/dashboard/pages/samplelists/DrillingSamplelist'),
           props: true,
           meta: {
             requiresAuth: true,
@@ -297,7 +297,40 @@ const routes = [
               },
               {
                 text: 'Sample List',
-                to: { name: 'Sample List' }
+                to: { name: 'Drilling Sample List' }
+              }
+            ],
+          },
+          beforeEnter: (to, from, next) => {
+            to.meta.breadcrumb[2].name = "Project"
+            to.meta.breadcrumb[2].to = '/project/'+to.params.id
+            next();
+          }
+        },
+        {
+          name: 'Well Sample List',
+          path: 'project/:id/wellsamplelist',
+          component: () => import(/* webpackChunkName: "samplelist" */'@/views/dashboard/pages/samplelists/WellSamplelist'),
+          props: true,
+          meta: {
+            requiresAuth: true,
+            breadcrumb: [
+              {
+                text: 'Dashboard',
+                to: { name: 'Dashboard' }
+              },
+              {
+                text: 'My Projects',
+                to: { name: 'My Projects' }
+              },
+              {
+                text: 'Project',
+                exact: true,
+                disabled: false,
+              },
+              {
+                text: 'Sample List',
+                to: { name: 'Well Sample List' }
               }
             ],
           },

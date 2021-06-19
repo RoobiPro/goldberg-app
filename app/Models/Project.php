@@ -62,6 +62,21 @@ class Project extends Model
     {
         return $this->hasMany(\Data\Survey::class);
     }
+
+    public function drilling_sample_list()
+    {
+        return $this->hasMany(SampleLists\DrillingSampleList::class);
+    }
+
+    public function well_sample_list()
+    {
+        return $this->hasMany(SampleLists\WellSampleList::class);
+    }
+
+    public function drilling_assays()
+    {
+        return $this->hasMany(Data\DrillingAssay::class);
+    }
     // public function users()
     // {
     //   return $this->belongsToMany('App\Models\Role', 'project_user_role', 'project_id');

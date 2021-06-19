@@ -11,6 +11,7 @@ class DrillingSampleList extends Model
 
     protected $fillable = [
       'drilling_id',
+      'project_id',
       'sample_code',
       'from',
       'to',
@@ -20,6 +21,10 @@ class DrillingSampleList extends Model
       'created_at',
       'updated_at'
     ];
+
+    public function project(){
+      return $this->belongsTo(\App\Models\Project::class);
+    }
 
     public function drilling(){
       return $this->belongsTo(\App\Models\Campaigns\Drilling::class);

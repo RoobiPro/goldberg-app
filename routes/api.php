@@ -53,9 +53,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/reassignUser', [ProjectController::class, 'reassignUser']);
     Route::get('/getProject/{id}', [ProjectController::class, 'show']);
     Route::get('tableheader/{tablename}',  [TableController::class, 'index']);
-    Route::get('project/{id}/drillings', [ProjectController::class, 'showDrillings']);
-    Route::get('project/{id}/wells', [ProjectController::class, 'getProjectWells']);
-    Route::get('project/{id}/handsamples', [ProjectController::class ,'getProjectHandsamples']);
+    Route::get('/getdrillings/{id}', [ProjectController::class, 'showDrillings']);
+    Route::get('/getwells/{id}', [ProjectController::class, 'getProjectWells']);
+    Route::get('/gethandsamples/{id}/', [ProjectController::class ,'getProjectHandsamples']);
+    Route::get('/getdrillingsamplelist/{id}', [ProjectController::class ,'getProjectDrillingSampleList']);
+    Route::get('/getwellsamplelist/{id}', [ProjectController::class ,'getProjectWellSampleList']);
+
     Route::get('/getprojectdata/{id}', [ProjectController::class,'getProjectData']);
     Route::get('/getimports/{id}', [FileImportController::class, 'getImports']);
     Route::get('/deletespatial/{id}', [FileImportController::class,'deleteSpatial']);

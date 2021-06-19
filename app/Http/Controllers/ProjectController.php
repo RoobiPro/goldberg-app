@@ -33,23 +33,8 @@ class ProjectController extends Controller
       $count_drilling = count($project->drillings);
       $count_wells = count($project->wells);
       $count_handsamples = count($project->handsamples);
-
-
-      $drillings = $project->drillings;
-      $wells = $project->wells;
-
-      $drillingHandsampleCount = 0;
-      $WellHandsampleCount = 0;
-
-      foreach($drillings as $drilling){
-        $drillingHandsampleCount += count($drilling->samplelists);
-      }
-      foreach($wells as $well){
-        $WellHandsampleCount += count($well->samplelists);
-      }
-
-      $count_drilling_sample_lists = $drillingHandsampleCount;
-      $count_well_sample_lists = $WellHandsampleCount;
+      $count_drilling_sample_lists = count($project->drilling_sample_list);
+      $count_well_sample_lists = count($project->well_sample_list);
 
 
       // $count_samplelists = count($project->samplelists);
@@ -68,26 +53,29 @@ class ProjectController extends Controller
 
     }
 
+    public function getProjectWellSampleList($id){
+      $project = Project::find($id);
+      return response()->json($project->well_sample_list, 200);
+    }
+
+    public function getProjectDrillingSampleList($id){
+      $project = Project::find($id);
+      return response()->json($project->drilling_sample_list, 200);
+    }
+
     public function getProjectWells($id){
       $project = Project::find($id);
-      return $project->wells;
+      return response()->json($project->wells, 200);
     }
 
     public function getProjectHandsamples($id){
       $project = Project::find($id);
-      return $project->handsamples;
+      return response()->json($project->handsamples, 200);
     }
 
     public function getProjectSpatials($id){
       $project = Project::find($id);
-      return $project->spatials;
-    }
-
-    public function testproject(){
-      // $user = User::find(1);
-      // return $user->projects;
-      $project = Project::find(1);
-      return $project->usersSorted;
+      return response()->json($project->spatials, 200);
     }
 
     /**

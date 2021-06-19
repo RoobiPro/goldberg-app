@@ -16,6 +16,7 @@ class CreateWellSampleListsTable extends Migration
         Schema::create('well_sample_lists', function (Blueprint $table) {
             $table->id();
             $table->foreignId('well_id')->constrained('wells')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('project_id')->constrained('projects')->onUpdate('cascade')->onDelete('cascade');
             $table->string('sample_code')->nullable();
             $table->decimal('from', 10, 2)->nullable();
             $table->decimal('to', 10, 2)->nullable();

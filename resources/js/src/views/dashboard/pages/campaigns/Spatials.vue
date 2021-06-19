@@ -13,7 +13,7 @@
         >
           <div class="d-flex grow flex-wrap">
             <div class="text-start v-card--material__heading mb-n6 v-sheet elevation-6 primary pa-7">
-              <i aria-hidden="true" class="v-icon notranslate mdi mdi-attachment white--text" style="font-size: 32px;"></i>
+              <i aria-hidden="true" class="v-icon notranslate mdi mdi-file white--text" style="font-size: 32px;"></i>
             </div>
           </div>
           <v-form>
@@ -72,8 +72,8 @@
           <v-toolbar flat>
             <div class="hidden-md-and-down v-application primary mr-4 text-start v-card--material__heading mb-n6 v-sheet theme--dark elevation-6 pa-7"
               style="max-height: 90px; width: auto;">
-              <i aria-hidden="true" class="v-icon notranslate mdi mdi-hammer-wrench theme--dark" style="font-size: 32px;">
-              </i>
+              <!-- <i aria-hidden="true" class="v-icon notranslate mdi mdi-hammer-wrench theme--dark" style="font-size: 32px;">
+              </i> -->
             </div>
             <v-toolbar-title>My projects</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>

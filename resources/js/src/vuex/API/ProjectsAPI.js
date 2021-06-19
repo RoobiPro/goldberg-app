@@ -1,9 +1,26 @@
 import { APIConfig } from './APIConfig';
 import axios from 'axios';
 
+function wellsamples(id){
+  return axios.get('/api/getwellsamplelist/'+id)
+    .then(response => {
+      console.log(response)
+      return response.data;
+    });
+}
+
+function drillingsamples(id){
+  return axios.get('/api/getdrillingsamplelist/'+id)
+    .then(response => {
+      console.log(response)
+      return response.data;
+    });
+}
+
 function getprojectwells(id){
   return axios.get('/api/project/'+id+'/wells')
     .then(response => {
+      console.log(response)
       return response.data;
     });
 }
@@ -193,6 +210,8 @@ function destroy(project) {
 
 
 export default {
+  wellsamples,
+  drillingsamples,
   getprojectwells,
   getprojecthandsamples,
   getprojectdrillings,

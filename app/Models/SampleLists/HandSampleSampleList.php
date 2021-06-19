@@ -12,6 +12,8 @@ class DrillingAssay extends Model
     protected $fillable = [
       'hand_sample_id',
       'hand_sample_code',
+      'project_id',
+
       'utm_x',
       'utm_y',
       'utm_z',
@@ -21,6 +23,9 @@ class DrillingAssay extends Model
       'updated_at'
     ];
 
+    public function project(){
+      return $this->belongsTo(\App\Models\Project::class);
+    }
 
     public function handsample(){
       return $this->belongsTo(\App\Models\Drilling::class);

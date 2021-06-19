@@ -16,6 +16,7 @@ class CreateHandSampleSampleListsTable extends Migration
         Schema::create('hand_sample_sample_lists', function (Blueprint $table) {
             $table->id();
             $table->foreignId('hand_sample_id')->constrained('hand_samples')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('project_id')->constrained('projects')->onUpdate('cascade')->onDelete('cascade');
             $table->string('hand_sample_code')->nullable();
             $table->decimal('utm_x', 10, 2)->nullable();
             $table->decimal('utm_y', 10, 2)->nullable();

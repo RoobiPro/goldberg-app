@@ -1,24 +1,32 @@
 <template>
   <v-container
-  v-if="ready"
+
   class="d-flex justify-center"
   tag="section"
   style="margin-top:10vh;">
+
+  <v-progress-circular
+    v-if="!ready"
+    :width="3"
+    color="green"
+    indeterminate
+  ></v-progress-circular>
 
     <v-data-table
       :headers="headers"
       :items="wells"
       :search="search"
       item-key="id"
+      v-if="ready"
     >
       <template v-slot:top>
         <v-toolbar flat>
           <div class="hidden-md-and-down v-application primary mr-4 text-start v-card--material__heading mb-n6 v-sheet theme--dark pa-7"
             style="max-height: 90px; width: auto;">
-            <i aria-hidden="true" class="v-icon notranslate mdi mdi-screw-lag theme--dark" style="font-size: 32px;">
+            <i aria-hidden="true" class="v-icon notranslate mdi mdi-water-well theme--dark" style="font-size: 32px;">
             </i>
           </div>
-          <v-toolbar-title>Well</v-toolbar-title>
+          <v-toolbar-title>Wells</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-text-field v-model="search" label="Search" append-icon="mdi-magnify" class="mx-4" single-line hide-details></v-text-field>
         </v-toolbar>
@@ -37,6 +45,8 @@ export default {
         headers:[],
         wells:[],
         search:null,
+        singleExpand:false,
+        expanded:false,
       }
     },
     async created() {
@@ -44,7 +54,7 @@ export default {
       await this.$store.dispatch("TableManager/get", 'wells');
       this.headers = this.$store.getters["TableManager/headers"];
       this.headers.splice(0, 1);
-      this.headers.splice(6, 4);
+      this.headers.splice(4, 4);
 
       console.log(this.$route.params)
       await this.$store.dispatch("ProjectsManager/getProjectWells", this.$route.params.id);
