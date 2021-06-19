@@ -84,7 +84,7 @@
             <div class="d-md-flex flex-row justify-start mb-5 mt-2">
               <v-btn class="mr-2 mb-2" rounded color="primary" dark @click="goTo('drillingsamplelist')">Drilling <template v-if="projectdataready">({{projectdata.count_drilling_sample_lists}})</template></v-btn>
               <v-btn class="mr-2 mb-2" rounded color="primary" dark @click="goTo('wellsamplelist')">Well <template v-if="projectdataready">({{projectdata.count_well_sample_lists}})</template></v-btn>
-              <v-btn class="mr-2 mb-2" rounded color="primary" dark @click="goTo('samplelist')">Hand Sample <template v-if="projectdataready">({{projectdata.count_well_sample_lists}})</template></v-btn>
+              <v-btn class="mr-2 mb-2" rounded color="primary" dark @click="goTo('handsamplesamplelist')">Hand Sample <template v-if="projectdataready">({{projectdata.count_hand_sample_sample_list}})</template></v-btn>
             </div>
           </div>
 

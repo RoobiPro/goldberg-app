@@ -26,7 +26,7 @@
             <i aria-hidden="true" class="v-icon notranslate mdi mdi-clipboard-list theme--dark" style="font-size: 32px;">
             </i>
           </div>
-          <v-toolbar-title>Drilling Sample List</v-toolbar-title>
+          <v-toolbar-title>Hand Sample Sample List</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-text-field v-model="search" label="Search" append-icon="mdi-magnify" class="mx-4" single-line hide-details></v-text-field>
         </v-toolbar>
@@ -49,14 +49,14 @@ export default {
     },
     async created() {
 
-      await this.$store.dispatch("TableManager/get", 'drilling_sample_lists');
+      await this.$store.dispatch("TableManager/get", 'well_sample_lists');
       this.headers = this.$store.getters["TableManager/headers"];
       this.headers.splice(0, 1);
       this.headers.splice(6, 4);
 
       console.log(this.$route.params)
-      await this.$store.dispatch("ProjectsManager/getProjectDrillingSampleList", this.$route.params.id);
-      this.samplelist = this.$store.getters["ProjectsManager/projectdrillingsamplelist"];
+      await this.$store.dispatch("ProjectsManager/getProjectHandSampleSampleList", this.$route.params.id);
+      this.samplelist = this.$store.getters["ProjectsManager/projecthandsamplesamplelist"];
       this.ready=true
 
     },

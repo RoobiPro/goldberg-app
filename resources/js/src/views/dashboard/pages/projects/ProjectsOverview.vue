@@ -1,12 +1,21 @@
 <template>
 <v-container
-v-if="ready"
+
 id="regular-tables"
 class="d-flex justify-center"
 tag="section"
 style="margin-top:10vh;">
 
+<v-progress-circular
+  v-if="!ready"
+  :width="3"
+  color="green"
+  indeterminate
+></v-progress-circular>
+
+
   <v-data-table
+    v-if="ready"
     :headers="headers"
     :items="projects"
     :search="search"

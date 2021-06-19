@@ -296,6 +296,35 @@ const routes = [
             next();
           }
         },
+        {
+          name: 'Hand Sample Sample List',
+          path: 'project/:id/handsamplesamplelist',
+          component: () => import(/* webpackChunkName: "samplelist" */'@/views/dashboard/pages/samplelists/HandSampleSamplelist'),
+          props: true,
+          meta: {
+            requiresAuth: true,
+            breadcrumb: [
+              {
+                text: 'My Projects',
+                to: { name: 'My Projects' }
+              },
+              {
+                text: 'Project',
+                exact: true,
+                disabled: false,
+              },
+              {
+                text: 'Sample List',
+                to: { name: 'Hand Sample Sample List' }
+              }
+            ],
+          },
+          beforeEnter: (to, from, next) => {
+            to.meta.breadcrumb[2].name = "Project"
+            to.meta.breadcrumb[2].to = '/project/'+to.params.id
+            next();
+          }
+        },
       ],
     },
     { path: '*', redirect: { name: 'Dashboard' }}

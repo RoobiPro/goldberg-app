@@ -5,7 +5,7 @@ namespace App\Models\SampleLists;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DrillingAssay extends Model
+class HandSampleSampleList extends Model
 {
     use HasFactory;
 

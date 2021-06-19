@@ -23,7 +23,7 @@
         <v-toolbar flat>
           <div class="hidden-md-and-down v-application primary mr-4 text-start v-card--material__heading mb-n6 v-sheet theme--dark pa-7"
             style="max-height: 90px; width: auto;">
-            <i aria-hidden="true" class="v-icon notranslate mdi mdi-water-well theme--dark" style="font-size: 32px;">
+            <i aria-hidden="true" class="v-icon notranslate mdi mdi-clipboard-list theme--dark" style="font-size: 32px;">
             </i>
           </div>
           <v-toolbar-title>Well Sample List</v-toolbar-title>

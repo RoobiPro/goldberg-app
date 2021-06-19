@@ -11,7 +11,8 @@ const state = {
   projectdrillings:{},
   projecthandsamples:{},
   projectwells:{},
-  projectdrillingsamplelist:{}
+  projectdrillingsamplelist:{},
+  projecthandsamplesamplelist:{}
 };
 
 const getters = {
@@ -24,7 +25,8 @@ const getters = {
   projecthandsamples: state => state.projecthandsamples,
   projectwells: state => state.projectwells,
   projectdrillingsamplelist: state => state.projectdrillingsamplelist,
-  projectwellsamplelist: state => state.projectwellsamplelist
+  projectwellsamplelist: state => state.projectwellsamplelist,
+  projecthandsamplesamplelist: state => state.projecthandsamplesamplelist
 };
 
 const mutations = {
@@ -58,11 +60,22 @@ const mutations = {
   SET_PROJECTWELLSAMPLELIST: (state, projectwellsamplelist) => {
     state.projectwellsamplelist = projectwellsamplelist;
   },
+  SET_PROJECTHANDSAMPLESAMPLELIST: (state, projecthandsamplesamplelist) => {
+    state.projecthandsamplesamplelist = projecthandsamplesamplelist;
+  },
 
 };
 
 
 const actions = {
+  getProjectHandSampleSampleList({commit, dispatch}, params) {
+    return APIService.handsamplesamples(params)
+      .then((projectwellsamplelist) => {
+        commit('SET_PROJECTHANDSAMPLESAMPLELIST', projectwellsamplelist);
+        // this.dispatch('NotificationsManager/setNotificationStatus', message);
+      });
+  },
+
   getProjectWellSampleList({commit, dispatch}, params) {
     return APIService.drillingsamples(params)
       .then((projectwellsamplelist) => {

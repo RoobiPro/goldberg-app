@@ -35,6 +35,7 @@ class ProjectController extends Controller
       $count_handsamples = count($project->handsamples);
       $count_drilling_sample_lists = count($project->drilling_sample_list);
       $count_well_sample_lists = count($project->well_sample_list);
+      $count_hand_sample_sample_list = count($project->hand_sample_sample_list);
 
 
       // $count_samplelists = count($project->samplelists);
@@ -47,10 +48,16 @@ class ProjectController extends Controller
         'count_wells' =>  (string)$count_wells,
         'count_handsamples' => (string)$count_handsamples,
         'count_drilling_sample_lists' => (string)$count_drilling_sample_lists,
-        'count_well_sample_lists' => (string)$count_well_sample_lists
+        'count_well_sample_lists' => (string)$count_well_sample_lists,
+        'count_hand_sample_sample_list' => (string)$count_hand_sample_sample_list
         // 'count_samplelists' =>  (string)$count_samplelists
       ], 200);
 
+    }
+
+    public function getProjectHandSampleSampleList($id){
+      $project = Project::find($id);
+      return response()->json($project->hand_sample_sample_list, 200);
     }
 
     public function getProjectWellSampleList($id){

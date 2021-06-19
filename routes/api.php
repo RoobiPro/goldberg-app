@@ -58,7 +58,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/gethandsamples/{id}/', [ProjectController::class ,'getProjectHandsamples']);
     Route::get('/getdrillingsamplelist/{id}', [ProjectController::class ,'getProjectDrillingSampleList']);
     Route::get('/getwellsamplelist/{id}', [ProjectController::class ,'getProjectWellSampleList']);
-
+    Route::get('/gethandsamplesamplelist/{id}', [ProjectController::class ,'getProjectHandSampleSampleList']);
     Route::get('/getprojectdata/{id}', [ProjectController::class,'getProjectData']);
     Route::get('/getimports/{id}', [FileImportController::class, 'getImports']);
     Route::get('/deletespatial/{id}', [FileImportController::class,'deleteSpatial']);

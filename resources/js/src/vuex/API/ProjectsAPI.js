@@ -1,6 +1,14 @@
 import { APIConfig } from './APIConfig';
 import axios from 'axios';
 
+function handsamplesamples(id){
+  return axios.get('/api/gethandsamplesamplelist/'+id)
+    .then(response => {
+      console.log(response)
+      return response.data;
+    });
+}
+
 function wellsamples(id){
   return axios.get('/api/getwellsamplelist/'+id)
     .then(response => {
@@ -210,6 +218,7 @@ function destroy(project) {
 
 
 export default {
+  handsamplesamples,
   wellsamples,
   drillingsamples,
   getprojectwells,

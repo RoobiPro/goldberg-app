@@ -73,6 +73,11 @@ class Project extends Model
         return $this->hasMany(SampleLists\WellSampleList::class);
     }
 
+    public function hand_sample_sample_list()
+    {
+        return $this->hasMany(SampleLists\HandSampleSampleList::class);
+    }
+
     public function drilling_assays()
     {
         return $this->hasMany(Data\DrillingAssay::class);
