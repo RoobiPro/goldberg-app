@@ -21,7 +21,7 @@
               mdi-human-greeting
             </v-icon>
           </v-avatar>
-          Welcome<template v-if="user.last_logout!=null"> back</template>, {{user.name}}!
+          Welcome<template v-if="user.last_logout!=null"> back</template>, {{user.name.split(" ")[0]}}!
         </v-banner>
       </v-card>
     <!-- </v-row> -->
@@ -63,8 +63,8 @@
             <base-material-stats-card
               color="success"
               icon="mdi-water-well"
-              title="Revenue"
-              value="$ 34,245"
+              title="Wells"
+              :value="project.projectdata.count_wells"
               sub-icon="mdi-calendar"
               sub-text="Last 24 Hours"
             />
@@ -79,9 +79,9 @@
               color="primary"
               icon="mdi-hand-okay"
               title="Hand Samples"
-              value="75.521"
+              :value="project.projectdata.count_handsamples"
               sub-icon="mdi-tag"
-              sub-text="Tracked from Google Analytics"
+              sub-text="Google Analytics"
             />
           </v-col>
 
