@@ -26,18 +26,24 @@
       </v-card>
     <!-- </v-row> -->
     <v-card v-for="project in projects" :key="project.id">
-      <v-card-title>{{project.name}}</v-card-title>
-      <div class="text-right">
-        <v-btn small color="primary" dark
-         @click="openProject(item)"
-         >
+      <v-card-title class="d-flex justify-space-between">
+        <span>{{project.name}}</span>
+        <div class="text-right">
+          <v-btn small color="primary" dark
+          @click="openProject(item)"
+          >
           Open
           <v-icon size=26 :color="'white'" style="padding-left:10px">
             mdi-book-open-variant
           </v-icon>
         </v-btn>
       </div>
-      <v-card-text>My role: {{project.role}}</v-card-text>
+      </v-card-title>
+      <div class="d-flex justify-space-around mt-3">
+        <span class="d-flex justify-start" >Project Start Date:  {{project.project_start_date}}</span>
+        <span class="d-flex justify-start" >Projecttype:  {{project.type}}</span>
+        <span class="d-flex justify-start">My Role:  {{project.role}}</span>
+      </div>
 
       <v-row class="ma-2">
           <v-col
