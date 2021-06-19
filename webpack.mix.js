@@ -17,9 +17,6 @@ const mix = require('laravel-mix');
 mix.js('resources/js/src/app.js', 'public/js')
     .vue()
     .webpackConfig({
-        output: {
-            path: "/public/js"
-        },
        resolve: {
          extensions: ['.js', '.vue', '.json', '.scss', '.sass'],
          alias: {
