@@ -10,7 +10,7 @@
         indeterminate
       ></v-progress-linear>
     </template>
-    <!-- <MapsComponent v-if="(typeof project.utm_x !== 'undefined')" :coordinates_x="project.latitude"  :coordinates_y="project.longitude"/> -->
+    <MapsComponent v-if="(typeof project.utm_x !== 'undefined')" :coordinates_x="project.latitude"  :coordinates_y="project.longitude"/>
 
     <v-expansion-panels accordion multiple :value="expanded">
       <v-expansion-panel :key="1">
@@ -33,13 +33,13 @@
 
       <v-expansion-panel :key="2">
         <v-expansion-panel-header>
-          <v-card-title>View data</v-card-title>
+          <v-card-title>View Data</v-card-title>
           </v-expansion-panel-header>
         <v-expansion-panel-content>
 
           <div class="data-item">
 
-            <div class="d-flex flex-row justify-end">
+            <div class="d-md-flex flex-row justify-end">
               <v-progress-circular
                 v-if="loading"
                 :width="3"
@@ -68,48 +68,23 @@
           <div class="data-item">
             <span>Spatial:</span>
             <div class="d-md-flex flex-row justify-start mb-5 mt-2">
-              <v-btn class="mr-2" rounded color="primary" dark @click="goTo('spatials')">Data <template v-if="projectdataready">{{projectdata.count_spatial}}</template></v-btn>
+              <v-btn class="mr-2 mb-2" rounded color="primary" dark @click="goTo('spatials')">Data <template v-if="projectdataready">({{projectdata.count_spatial}})</template></v-btn>
             </div>
           </div>
           <div class="data-item">
             <span>Campaigns:</span>
-            <div class="d-flex flex-row justify-start mb-5 mt-2">
-              <v-btn class="mr-2" rounded color="primary" dark @click="goTo('drillings')">Drillings <template v-if="projectdataready">{{projectdata.count_drilling}}</template></v-btn>
-              <v-btn class="mr-2" rounded color="primary" dark @click="goTo('wells')">Wells <template v-if="projectdataready">{{projectdata.count_wells}}</template></v-btn>
-              <v-btn class="mr-2" rounded color="primary" dark @click="goTo('handsamples')">Hand Samples <template v-if="projectdataready">{{projectdata.count_handsamples}}</template></v-btn>
+            <div class="d-md-flex flex-row justify-start mb-5 mt-2">
+              <v-btn class="mr-2 mb-2" rounded color="primary" dark @click="goTo('drillings')">Drillings <template v-if="projectdataready">({{projectdata.count_drilling}})</template></v-btn>
+              <v-btn class="mr-2 mb-2" rounded color="primary" dark @click="goTo('wells')">Wells <template v-if="projectdataready">({{projectdata.count_wells}})</template></v-btn>
+              <v-btn class="mr-2 mb-2" rounded color="primary" dark @click="goTo('handsamples')">Hand Samples <template v-if="projectdataready">({{projectdata.count_handsamples}})</template></v-btn>
             </div>
           </div>
-          <!-- <div class="data-item">
-            <span>Drilling Data</span>
-            <div class="d-md-flex flex-row justify-start mb-5">
-              <v-btn class="mr-2" rounded color="primary" dark @click="goTo('samplelist')">Alteration <template v-if="projectdataready">{{projectdata.count_well_sample_lists}}</template></v-btn>
-              <v-btn class="mr-2" rounded color="primary" dark @click="goTo('samplelist')">Assay <template v-if="projectdataready">{{projectdata.count_well_sample_lists}}</template></v-btn>
-              <v-btn class="mr-2" rounded color="primary" dark @click="goTo('samplelist')">Lithology <template v-if="projectdataready">{{projectdata.count_well_sample_lists}}</template></v-btn>
-              <v-btn class="mr-2" rounded color="primary" dark @click="goTo('samplelist')">Mineralization <template v-if="projectdataready">{{projectdata.count_well_sample_lists}}</template></v-btn>
-              <v-btn class="mr-2" rounded color="primary" dark @click="goTo('samplelist')">Survey <template v-if="projectdataready">{{projectdata.count_well_sample_lists}}</template></v-btn>
-
-            </div>
-          </div>
-          <div class="data-item">
-            <span>Well Data</span>
-            <div class="d-md-flex flex-row justify-start mb-5">
-              <v-btn class="mr-2" rounded color="primary" dark @click="goTo('samplelist')">Assay <template v-if="projectdataready">{{projectdata.count_well_sample_lists}}</template></v-btn>
-              <v-btn class="mr-2" rounded color="primary" dark @click="goTo('samplelist')">Lithology <template v-if="projectdataready">{{projectdata.count_well_sample_lists}}</template></v-btn>
-              <v-btn class="mr-2" rounded color="primary" dark @click="goTo('samplelist')">Survey <template v-if="projectdataready">{{projectdata.count_well_sample_lists}}</template></v-btn>
-            </div>
-          </div>
-          <div class="data-item">
-            <span>Hand Sample Data</span>
-            <div class="d-flex flex-row justify-start mb-5">
-              <v-btn class="mr-2" rounded color="primary" dark @click="goTo('samplelist')">Sample List <template v-if="projectdataready"> - D: {{projectdata.count_drilling_sample_lists}} W: {{projectdata.count_well_sample_lists}}</template></v-btn>
-            </div>
-          </div> -->
           <div class="data-item">
             <span>Sample Lists:</span>
-            <div class="d-flex flex-row justify-start mb-5 mt-2">
-              <v-btn class="mr-2" rounded color="primary" dark @click="goTo('drillingsamplelist')">Drilling <template v-if="projectdataready">{{projectdata.count_drilling_sample_lists}}</template></v-btn>
-              <v-btn class="mr-2" rounded color="primary" dark @click="goTo('wellsamplelist')">Well <template v-if="projectdataready">{{projectdata.count_well_sample_lists}}</template></v-btn>
-              <v-btn class="mr-2" rounded color="primary" dark @click="goTo('samplelist')">Hand Sample <template v-if="projectdataready">{{projectdata.count_well_sample_lists}}</template></v-btn>
+            <div class="d-md-flex flex-row justify-start mb-5 mt-2">
+              <v-btn class="mr-2 mb-2" rounded color="primary" dark @click="goTo('drillingsamplelist')">Drilling <template v-if="projectdataready">({{projectdata.count_drilling_sample_lists}})</template></v-btn>
+              <v-btn class="mr-2 mb-2" rounded color="primary" dark @click="goTo('wellsamplelist')">Well <template v-if="projectdataready">({{projectdata.count_well_sample_lists}})</template></v-btn>
+              <v-btn class="mr-2 mb-2" rounded color="primary" dark @click="goTo('samplelist')">Hand Sample <template v-if="projectdataready">({{projectdata.count_well_sample_lists}})</template></v-btn>
             </div>
           </div>
 

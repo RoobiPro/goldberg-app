@@ -45,7 +45,7 @@
     >
       <v-icon>mdi-view-dashboard</v-icon>
     </v-btn>
-    <v-menu
+    <!-- <v-menu
       bottom
       left
       offset-y
@@ -85,7 +85,7 @@
           </app-bar-item>
         </div>
       </v-list>
-    </v-menu>
+    </v-menu> -->
     <v-btn
       class="ml-2"
       min-width="0"

@@ -13,6 +13,8 @@ class AuthController extends Controller
   public function login(Request $request)
   {
      if (Auth::attempt($request->only(['email', 'password']))) {
+        Auth::user()->last_login = now();
+        Auth::user()->save();
         return response()->json([ "success" => true, "user" => Auth::user() ], 200);
          // return response(["success" => Auth::user()], 200);
      } else {
@@ -24,6 +26,8 @@ class AuthController extends Controller
   public function logout(Request $request)
   {
     // return 'vaddder';
+    Auth::user()->last_logout = now();
+    Auth::user()->save();
     Auth::guard('web')->logout();
     // return $request;
     $request->session()->invalidate();

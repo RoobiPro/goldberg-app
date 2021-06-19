@@ -18,7 +18,7 @@ function drillingsamples(id){
 }
 
 function getprojectwells(id){
-  return axios.get('/api/project/'+id+'/wells')
+  return axios.get('/api/getwells/'+id)
     .then(response => {
       console.log(response)
       return response.data;
@@ -26,14 +26,14 @@ function getprojectwells(id){
 }
 
 function getprojecthandsamples(id){
-  return axios.get('/api/project/'+id+'/handsamples')
+  return axios.get('/api/gethandsamples/'+id)
     .then(response => {
       return response.data;
     });
 }
 
 function getprojectdrillings(id){
-  return axios.get('/api/project/'+id+'/drillings')
+  return axios.get('/api/getdrillings/'+id)
     .then(response => {
       return response.data;
     });

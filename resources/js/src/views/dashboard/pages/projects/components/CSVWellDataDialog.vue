@@ -7,7 +7,7 @@
   >
    <template v-slot:activator="{ on, attrs }">
      <v-btn
-       class="mr-2"
+       class="mr-2 mb-2"
        color="primary"
        rounded
        v-bind="attrs"

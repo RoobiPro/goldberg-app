@@ -42,13 +42,13 @@ class ProjectController extends Controller
         "success" => true,
         "type" => 'green',
         "message" => 'Data fetched!',
-        "count_spatial" =>  '('.(string)$count_spatial.')',
-        'count_drilling' =>  '('.(string)$count_drilling.')',
-        'count_wells' =>  '('.(string)$count_wells.')',
-        'count_handsamples' => '('.(string)$count_handsamples.')',
-        'count_drilling_sample_lists' => '('.(string)$count_drilling_sample_lists.')',
-        'count_well_sample_lists' => '('.(string)$count_well_sample_lists.')'
-        // 'count_samplelists' =>  '('.(string)$count_samplelists.')'
+        "count_spatial" =>  (string)$count_spatial,
+        'count_drilling' =>  (string)$count_drilling,
+        'count_wells' =>  (string)$count_wells,
+        'count_handsamples' => (string)$count_handsamples,
+        'count_drilling_sample_lists' => (string)$count_drilling_sample_lists,
+        'count_well_sample_lists' => (string)$count_well_sample_lists
+        // 'count_samplelists' =>  (string)$count_samplelists
       ], 200);
 
     }

@@ -51,10 +51,6 @@ const routes = [
             requiresAuth: true,
             breadcrumb: [
               {
-                text: 'Dashboard',
-                to: { name: 'Dashboard' }
-              },
-              {
                 text: 'User Management',
                 to: { name: 'User Management' }
               }
@@ -70,10 +66,6 @@ const routes = [
             requiresAuth: true,
             breadcrumb: [
               {
-                text: 'Dashboard',
-                to: { name: 'Dashboard' }
-              },
-              {
                 text: 'Project Management',
                 to: { name: 'Project Management' }
               }
@@ -88,10 +80,6 @@ const routes = [
           meta: {
             requiresAuth: true,
             breadcrumb: [
-              {
-                text: 'Dashboard',
-                to: { name: 'Dashboard' }
-              },
               {
                 text: 'Profile',
                 to: { name: 'User Profile' }
@@ -109,10 +97,6 @@ const routes = [
             requiresAuth: true,
             breadcrumb: [
               {
-                text: 'Dashboard',
-                to: { name: 'Dashboard' }
-              },
-              {
                 text: 'My Projects',
                 to: { name: 'My Projects' }
               }
@@ -127,10 +111,6 @@ const routes = [
           meta: {
             requiresAuth: true,
             breadcrumb: [
-              {
-                text: 'Dashboard',
-                to: { name: 'Dashboard' }
-              },
               {
                 text: 'My Projects',
                 to: { name: 'My Projects' }
@@ -150,10 +130,6 @@ const routes = [
           meta: {
             requiresAuth: true,
             breadcrumb: [
-              {
-                text: 'Dashboard',
-                to: { name: 'Dashboard' }
-              },
               {
                 text: 'My Projects',
                 to: { name: 'My Projects' }
@@ -184,10 +160,6 @@ const routes = [
             requiresAuth: true,
             breadcrumb: [
               {
-                text: 'Dashboard',
-                to: { name: 'Dashboard' }
-              },
-              {
                 text: 'My Projects',
                 to: { name: 'My Projects' }
               },
@@ -216,10 +188,6 @@ const routes = [
           meta: {
             requiresAuth: true,
             breadcrumb:  [
-              {
-                text: 'Dashboard',
-                to: { name: 'Dashboard' }
-              },
               {
                 text: 'My Projects',
                 to: { name: 'My Projects' }
@@ -250,10 +218,6 @@ const routes = [
             requiresAuth: true,
             breadcrumb: [
               {
-                text: 'Dashboard',
-                to: { name: 'Dashboard' }
-              },
-              {
                 text: 'My Projects',
                 to: { name: 'My Projects' }
               },
@@ -283,10 +247,6 @@ const routes = [
             requiresAuth: true,
             breadcrumb: [
               {
-                text: 'Dashboard',
-                to: { name: 'Dashboard' }
-              },
-              {
                 text: 'My Projects',
                 to: { name: 'My Projects' }
               },
@@ -315,10 +275,6 @@ const routes = [
           meta: {
             requiresAuth: true,
             breadcrumb: [
-              {
-                text: 'Dashboard',
-                to: { name: 'Dashboard' }
-              },
               {
                 text: 'My Projects',
                 to: { name: 'My Projects' }
