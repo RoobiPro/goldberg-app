@@ -50,8 +50,6 @@
               icon="mdi-screw-lag"
               title="Drillings"
               :value="project.projectdata.count_drilling"
-              sub-icon="mdi-clock"
-              sub-text="Just Updated"
             />
           </v-col>
 
@@ -65,8 +63,6 @@
               icon="mdi-water-well"
               title="Wells"
               :value="project.projectdata.count_wells"
-              sub-icon="mdi-calendar"
-              sub-text="Last 24 Hours"
             />
           </v-col>
 
@@ -80,8 +76,6 @@
               icon="mdi-hand-okay"
               title="Hand Samples"
               :value="project.projectdata.count_handsamples"
-              sub-icon="mdi-tag"
-              sub-text="Google Analytics"
             />
           </v-col>
 
@@ -93,11 +87,8 @@
             <base-material-stats-card
               color="orange"
               icon="mdi-clipboard-list"
-              title="Bookings"
-              value="184"
-              sub-icon="mdi-alert"
-              sub-icon-color="red"
-              sub-text="Get More Space..."
+              title="Sample Lists"
+              :value="(Number(project.projectdata.count_drilling_sample_lists) + Number(project.projectdata.count_well_sample_lists)).toString()"
             />
           </v-col>
       </v-row>
