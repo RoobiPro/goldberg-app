@@ -146,8 +146,8 @@ const routes = [
             ],
           },
           beforeEnter: (to, from, next) => {
-            to.meta.breadcrumb[2].name = "Project"
-            to.meta.breadcrumb[2].to = '/project/'+to.params.id
+            to.meta.breadcrumb[1].name = "Project"
+            to.meta.breadcrumb[1].to = '/project/'+to.params.id
             next();
           }
         },
@@ -175,8 +175,8 @@ const routes = [
             ],
           },
           beforeEnter: (to, from, next) => {
-            to.meta.breadcrumb[2].name = "Project"
-            to.meta.breadcrumb[2].to = '/project/'+to.params.id
+            to.meta.breadcrumb[1].name = "Project"
+            to.meta.breadcrumb[1].to = '/project/'+to.params.id
             next();
           }
         },
@@ -204,8 +204,8 @@ const routes = [
             ],
           },
           beforeEnter: (to, from, next) => {
-            to.meta.breadcrumb[2].name = "Project"
-            to.meta.breadcrumb[2].to = '/project/'+to.params.id
+            to.meta.breadcrumb[1].name = "Project"
+            to.meta.breadcrumb[1].to = '/project/'+to.params.id
             next();
           }
         },
@@ -233,8 +233,8 @@ const routes = [
             ],
           },
           beforeEnter: (to, from, next) => {
-            to.meta.breadcrumb[2].name = "Project"
-            to.meta.breadcrumb[2].to = '/project/'+to.params.id
+            to.meta.breadcrumb[1].name = "Project"
+            to.meta.breadcrumb[1].to = '/project/'+to.params.id
             next();
           }
         },
@@ -262,8 +262,8 @@ const routes = [
             ],
           },
           beforeEnter: (to, from, next) => {
-            to.meta.breadcrumb[2].name = "Project"
-            to.meta.breadcrumb[2].to = '/project/'+to.params.id
+            to.meta.breadcrumb[1].name = "Project"
+            to.meta.breadcrumb[1].to = '/project/'+to.params.id
             next();
           }
         },
@@ -291,8 +291,8 @@ const routes = [
             ],
           },
           beforeEnter: (to, from, next) => {
-            to.meta.breadcrumb[2].name = "Project"
-            to.meta.breadcrumb[2].to = '/project/'+to.params.id
+            to.meta.breadcrumb[1].name = "Project"
+            to.meta.breadcrumb[1].to = '/project/'+to.params.id
             next();
           }
         },
@@ -320,8 +320,8 @@ const routes = [
             ],
           },
           beforeEnter: (to, from, next) => {
-            to.meta.breadcrumb[2].name = "Project"
-            to.meta.breadcrumb[2].to = '/project/'+to.params.id
+            to.meta.breadcrumb[1].name = "Project"
+            to.meta.breadcrumb[1].to = '/project/'+to.params.id
             next();
           }
         },
