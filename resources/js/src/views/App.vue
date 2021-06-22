@@ -11,11 +11,12 @@
 <script>
   export default {
     name: 'App'
+
   }
 </script>
 
 <style>
-/* 
+/*
 .fade-enter-active, .fade-leave-active {
   transition: opacity 1s;
 }

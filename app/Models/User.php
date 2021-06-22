@@ -53,4 +53,9 @@ class User extends Authenticatable
         ->withPivot(['role']);
     }
 
+    public function sessions()
+    {
+        return $this->hasMany(Session::class);
+    }
+
 }

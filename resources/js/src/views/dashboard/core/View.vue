@@ -50,7 +50,7 @@
     },
     components: {
       DashboardCoreFooter: () => import('./Footer'),
-    },
+    }
 }
 </script>
 

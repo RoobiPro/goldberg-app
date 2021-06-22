@@ -39,4 +39,11 @@ const app = new Vue({
     vuetify,
     // i18n,
     render: h => h(App),
+    created: function () {
+      window.addEventListener('beforeunload', function (event) {
+        console.log("calling goodbye-function")
+        axios.post('/api/goodbye')
+        }, false)
+    },
+
   }).$mount('#app')

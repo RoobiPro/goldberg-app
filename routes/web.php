@@ -23,6 +23,7 @@ use App\Http\Controllers\UserController;
 
 // Route::get('/getClientProjects/{id}', [UserController::class, 'getClientProjects']);
 
+
 Route::get('/{any}', function () {
     return view('vuedashboard');
 })->where('any', '.*');
