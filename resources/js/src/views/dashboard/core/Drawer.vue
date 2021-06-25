@@ -107,6 +107,11 @@ export default {
         icon: 'mdi-briefcase',
         title: 'Project Management',
         to: '/management/project',
+      },
+      {
+        icon: 'mdi-cctv',
+        title: 'User Sessions',
+        to: '/management/sessions',
       }
     ],
     items_user: [{

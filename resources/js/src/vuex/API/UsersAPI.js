@@ -2,9 +2,33 @@ import { APIConfig } from './APIConfig';
 
 import axios from 'axios';
 
+function deleteAllSessions() {
+  return axios.get('/api/deleteallsessions/')
+    .then(response => {
+      // console.log(response)
+      return response.data
+    });
+}
+
+function deleteUserSessions(id) {
+  return axios.get('/api/deleteusersessions/'+id)
+    .then(response => {
+      console.log(response)
+      return response.data
+    });
+}
+
+
+function getUserSessions(id) {
+  return axios.get('/api/getUserSessions/'+id)
+    .then(response => {
+      // console.log(response)
+      return response.data
+    });
+}
+
 
 function listClients(params) {
-
   return axios.get(`/api/getClients`)
     .then(response => {
       return response.data.data
@@ -108,6 +132,9 @@ function destroy(id) {
 // }
 
 export default {
+  deleteAllSessions,
+  deleteUserSessions,
+  getUserSessions,
   getClientProjects,
   getUserProjects,
   listUsers,

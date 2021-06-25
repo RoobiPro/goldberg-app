@@ -2,6 +2,7 @@ import Notifications from '@/vuex/modules/NotificationsManager';
 import APIService from '@/vuex/API/UsersAPI';
 
 const state = {
+  sessions: {},
   users: {},
   user: {},
   projects:{},
@@ -33,10 +34,34 @@ const mutations = {
   },
   SET_USERPROJECTS: (state, projects) => {
     state.projects = projects
-  }
+  },
+  SET_USERSESSIONS: (state, sessions) => {
+      state.sessions = sessions
+    }
 };
 
+
+
 const actions = {
+  deleteusersessions({commit, dispatch}, params) {
+    return APIService.deleteUserSessions(params)
+      .then((response) => {
+        this.dispatch('NotificationsManager/setNotificationStatus', {type: response.type, text: response.message});
+      });
+  },
+  deleteallsessions({commit, dispatch}) {
+    return APIService.deleteAllSessions()
+    .then((response) => {
+        this.dispatch('NotificationsManager/setNotificationStatus', {type: response.type, text: response.message});
+       });
+  },
+  usersessions({commit, dispatch}, params) {
+      return APIService.getUserSessions(params)
+        .then((sessions) => {
+          commit('SET_USERSESSIONS', sessions);
+          // this.dispatch('NotificationsManager/setNotificationStatus', message);
+        });
+  },
 
   clientprojects({commit, dispatch}, params) {
     return APIService.getClientProjects(params)
@@ -116,7 +141,8 @@ const getters = {
   users_role: state => state.users_role,
   clients_role: state => state.clients_role,
   admins_role: state => state.admins_role,
-  projects: state => state.projects
+  projects: state => state.projects,
+  sessions: state => state.sessions
 
 };
 

@@ -32,12 +32,17 @@ class AuthController extends Controller
      if (Auth::attempt($request->only(['email', 'password']))) {
        $open_sessions = Session::where('user_id', Auth::user()->id)->where('active', true)->get();
        foreach ($open_sessions as $open_session){
-         $open_session->delete();
+         $open_session->end_time = $open_session->last_alive;
+         $open_session->duration = \Carbon\Carbon::parse($open_session->start_time)->diffInSeconds(\Carbon\Carbon::parse($open_session->end_time));
+         $open_session->active = false;
+         $open_session->save();
+         // $open_session->delete();
        }
        $session = New Session;
        $session->user_id = Auth::user()->id;
        $session->start_time = \Carbon\Carbon::now();
        $session->active = true;
+       $session->last_alive = \Carbon\Carbon::now();
        $session->save();
         // Auth::user()->last_login = \Carbon\Carbon::now();
         return response()->json([ "success" => true, "user" => Auth::user() ], 200);

@@ -20,6 +20,7 @@ class CreateSessionsTable extends Migration
             $table->timestamp('end_time')->nullable();
             $table->boolean('active');
             $table->integer('duration')->nullable();
+            $table->timestamp('last_alive')->nullable();
         });
     }
 

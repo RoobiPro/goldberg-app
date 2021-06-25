@@ -73,6 +73,21 @@ const routes = [
           },
         },
         {
+          name: 'User Sessions',
+          path: 'management/sessions',
+          component: () => import(/* webpackChunkName: "projectmanagement" */'@/views/dashboard/pages/admin/SessionTracking'),
+          props: true,
+          meta: {
+            requiresAuth: true,
+            breadcrumb: [
+              {
+                text: 'User Sessions',
+                to: { name: 'User Sessions' }
+              }
+            ],
+          },
+        },
+        {
           name: 'User Profile',
           path: '/pages/user',
           component: () => import(/* webpackChunkName: "userprofile" */'@/views/dashboard/pages/UserProfile'),

@@ -40,6 +40,8 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::middleware('auth:sanctum')->group(function () {
   Route::post('/goodbye', [AuthController::class, 'goodbye']);
   Route::post('/logout', [AuthController::class, 'logout']);
+  Route::get('/deleteallsessions', [UserController::class,'deleteAllSessions']);
+  Route::get('/deleteusersessions/{id}', [UserController::class,'deleteUserSessions']);
 });
 
 Route::middleware(['auth:sanctum', 'checksession'])->group(function () {
@@ -48,6 +50,7 @@ Route::middleware(['auth:sanctum', 'checksession'])->group(function () {
   Route::get('/getClients', [UserController::class, 'getClients']);
   Route::get('/getAdmins', [UserController::class, 'getAdmins']);
   Route::get('/getClientProjects/{id}', [UserController::class, 'getClientProjects']);
+  Route::get('/getUserSessions/{id}', [UserController::class, 'getUserSessions']);
   Route::get('/getUserProjects/{id}', [UserController::class, 'getUserProjects']);
   Route::get('/getProjectSpatials/{id}', [ProjectController::class, 'getProjectSpatials']);
   Route::post('/assignuser', [ProjectController::class, 'assignUser']);

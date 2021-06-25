@@ -24,6 +24,14 @@ class CheckSessionStatus
       $response = $next($request);
 
       if(Auth::check()){
+        if(Auth::user()->sessions->count()==0){
+          $session = New Session;
+          $session->user_id = Auth::user()->id;
+          $session->start_time = \Carbon\Carbon::now();
+          $session->active = true;
+          $session->last_alive = \Carbon\Carbon::now();
+          $session->save();
+        }
         $last_session = Session::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
         if(\Carbon\Carbon::now()->diffInSeconds(\Carbon\Carbon::parse($last_session->end_time))<5){
           $last_session->end_time=null;
@@ -41,6 +49,10 @@ class CheckSessionStatus
             $session->save();
           }
         }
+        $active_session = Session::where('user_id', Auth::user()->id)->where('active', true)->orderBy('id', 'desc')->first();
+        $active_session->last_alive = \Carbon\Carbon::now();
+        $active_session->save();
+
       }
 
       return $response;

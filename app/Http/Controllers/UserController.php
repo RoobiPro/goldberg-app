@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Models\Session;
 use App\Models\Project;
-use Illuminate\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
@@ -23,6 +24,62 @@ class UserController extends Controller
     public function index(Request $request)
     {
       return UserResource::collection(User::all());
+    }
+
+
+    public function deleteAllSessions(){
+      if(Auth::user()->role!=2){
+        return response()->json([ "success" => false, "type" => 'red', "message" => "Not authorized!"], 200);
+      }
+      $currentSession= Session::where('user_id', Auth::user()->id)->where('active', true)->get()->first();
+      $allsession = Session::all();
+      foreach ($allsession as $session) {
+        if($session->id!=$currentSession->id){
+          $session->delete();
+        }
+      }
+      return response()->json([ "success" => true, "type" => 'green', "message" => "All session logs deleted!"], 200);
+    }
+
+    public function deleteUserSessions($id){
+      if(Auth::user()->role!=2){
+        return response()->json([ "success" => false, "type" => 'red', "message" => "Not authorized!"], 200);
+      }
+      $user = User::find($id);
+      $sessions = $user->sessions;
+      if(Auth::user()->id == $id){
+        foreach ($sessions as $session){
+          if($session->active!=1){
+            $session->delete();
+          }
+        }
+      }
+      else{
+        foreach ($sessions as $session){
+          $session->delete();
+        }
+      }
+
+      return response()->json([ "success" => true, "type" => 'green', "message" => "All session logs of user deleted!"], 200);
+    }
+
+    public function getUserSessions($id){
+      $user = User::find($id);
+      $sessions = $user->sessions;
+      foreach ($sessions as $session){
+        $session->start_time = \Carbon\Carbon::parse($session->start_time)->format('(d.m.Y) h:i:s');
+        if($session->end_time!=null)
+        $session->end_time = \Carbon\Carbon::parse($session->end_time)->format('(d.m.Y) h:i:s');
+        if($session->duration!=null)
+        $session->duration_in_s = $session->duration;
+        if($session->duration!=null)
+        $session->duration = gmdate("H:i:s", $session->duration);
+        if($session->last_alive!=null)
+        $session->last_alive = \Carbon\Carbon::parse($session->last_alive)->format('(d.m.Y) h:i:s');
+
+      }
+      return response()->json($sessions, 200);
+
     }
 
     public function getUsers(Request $request){

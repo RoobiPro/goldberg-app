@@ -55,7 +55,7 @@ class User extends Authenticatable
 
     public function sessions()
     {
-        return $this->hasMany(Session::class);
+        return $this->hasMany(Session::class)->orderBy('id', 'DESC');
     }
 
 }
