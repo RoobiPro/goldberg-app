@@ -354,28 +354,23 @@ const router = new Router({
   routes
 })
 
-
-
-
-
-
 router.beforeEach(async (to, from, next) => {
   await store.dispatch("AuthManager/refresh")
   const authUser = store.getters["AuthManager/authenticated"];
   const reqAuth = to.matched.some((record) => record.meta.requiresAuth);
   const loginQuery = { path: "/login", query: { redirect: to.fullPath } };
   if (reqAuth && !authUser) {
-    next(
+    return next(
          {path: '/login'}
        );
   }
   else if(!reqAuth && authUser){
-    next(
+    return next(
       {path: '/dashboard'}
     );
   }
   else {
-    next(); // make sure to always call next()!
+    return next(); // make sure to always call next()!
   }
 });
 export default router

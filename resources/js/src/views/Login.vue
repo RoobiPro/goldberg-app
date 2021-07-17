@@ -17,7 +17,7 @@
           <div class="mycard-info">
             <!-- <p name="header">Canyons</p> -->
             <v-img name="header" src="/images/HighResGoldberg.png" width="150" />
-            <v-img name="content" src="/images/goldberg_font.png" width="150" style="margin-top: 10px;" />
+            <v-img name="content" src="/images/Goldberg_font.png" width="150" style="margin-top: 10px;" />
             <!-- <p name="content">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p> -->
           </div>
         </div>
@@ -171,7 +171,7 @@ export default {
           this.loading=false;
         }
         else{
-          this.$router.replace({ path: '/dashboard' })
+          this.$router.push({ path: '/dashboard' })
           // this.loading=false;
         }
       }
