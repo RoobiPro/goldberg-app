@@ -163,8 +163,7 @@ export default {
           password: this.password
         }
         await this.$store.dispatch('AuthManager/signIn', data)
-        var login = this.$store.getters['AuthManager/user']
-        if(login ==null){
+        if(this.$store.getters['AuthManager/user'] == null){
           this.showerror= true;
           setTimeout(() => this.showerror = false, 3500);
           // this.$store.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: 'Invalid login credentials!'});
