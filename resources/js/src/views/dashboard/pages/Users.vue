@@ -94,7 +94,6 @@
                           :append-icon="hidePw ? 'mdi-eye' : 'mdi-eye-off'"
                           :type="hidePw ? 'text' : 'password'"
                           name="input-10-1"
-                          hint="At least 8 characters"
                           counter
                           @click:append="hidePw = !hidePw"
                           required
@@ -108,7 +107,6 @@
                           :type="hidePwRepeat ? 'text' : 'password'"
                           name="input-10-2"
                           label="Password confirmation"
-                          hint="At least 8 characters"
                           class="input-group--focused"
                           @click:append="hidePwRepeat = !hidePwRepeat"
                           required
