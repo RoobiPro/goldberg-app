@@ -94,6 +94,7 @@
                           :append-icon="hidePw ? 'mdi-eye' : 'mdi-eye-off'"
                           :type="hidePw ? 'text' : 'password'"
                           name="input-10-1"
+                          hint="At least 8 characters"
                           counter
                           @click:append="hidePw = !hidePw"
                           required
@@ -107,6 +108,7 @@
                           :type="hidePwRepeat ? 'text' : 'password'"
                           name="input-10-2"
                           label="Password confirmation"
+                          hint="At least 8 characters"
                           class="input-group--focused"
                           @click:append="hidePwRepeat = !hidePwRepeat"
                           required
@@ -220,10 +222,10 @@
                         <v-col cols="12" sm="12" md="12">
                         <v-text-field
                           label="Password"
-                          v-model="user.password"
-                          :error-messages="passwordErrors"
-                          @input="$v.user.password.$touch()"
-                          @blur="$v.user.password.$touch()"
+                          v-model="newPassword"
+                          :error-messages="newPasswordErrors"
+                          @input="$v.newPassword.$touch()"
+                          @blur="$v.newPassword.$touch()"
                           :append-icon="hidePw ? 'mdi-eye' : 'mdi-eye-off'"
                           :type="hidePw ? 'text' : 'password'"
                           name="input-10-1"
@@ -236,10 +238,10 @@
                         <v-col cols="12" sm="12" md="12">
                         <v-text-field
                           :append-icon="hidePwRepeat ? 'mdi-eye' : 'mdi-eye-off'"
-                          v-model="user.repeatPassword"
-                          :error-messages="repeatPasswordErrors"
-                          @input="$v.user.repeatPassword.$touch()"
-                          @blur="$v.user.repeatPassword.$touch()"
+                          v-model="newRepeatPassword"
+                          :error-messages="newRepeatPasswordErrors"
+                          @input="$v.newRepeatPassword.$touch()"
+                          @blur="$v.newRepeatPassword.$touch()"
                           :type="hidePwRepeat ? 'text' : 'password'"
                           name="input-10-2"
                           label="Password confirmation"
@@ -320,6 +322,8 @@ export default {
       newPasswordDialog: false,
       dialogDelete: false,
       editedIndex: -1,
+      newPassword:'',
+      newRepeatPassword:''
     }),
     validations: {
       user:{
@@ -330,6 +334,11 @@ export default {
           required,
           sameAsPassword: sameAs('password')
         }
+      },
+      newPassword: { required, minLength: minLength(8) },
+      newRepeatPassword: {
+        required,
+        sameAsPassword: sameAs('newPassword')
       }
     },
     computed: {
@@ -358,6 +367,20 @@ export default {
         if (!this.$v.user.repeatPassword.$dirty) return errors
         !this.$v.user.repeatPassword.required && errors.push('Password is required')
         !this.$v.user.repeatPassword.sameAsPassword && errors.push('Must match password')
+        return errors
+      },
+      newPasswordErrors () {
+        const errors = []
+        if (!this.$v.newPassword.$dirty) return errors
+        !this.$v.newPassword.minLength && errors.push('Must have at least 8 characters')
+        !this.$v.newPassword.required && errors.push('Password is required')
+        return errors
+      },
+      newRepeatPasswordErrors () {
+        const errors = []
+        if (!this.$v.newRepeatPassword.$dirty) return errors
+        !this.$v.newRepeatPassword.required && errors.push('Password is required')
+        !this.$v.newRepeatPassword.sameAsPassword && errors.push('Must match password')
         return errors
       },
       headers () {
@@ -426,12 +449,13 @@ export default {
         })
       },
       saveNewPassword(){
-        this.$v.user.password.$touch()
-        this.$v.user.repeatPassword.$touch()
-        if(this.$v.user.password.$invalid ||
-          this.$v.user.repeatPassword.$invalid){
+        this.$v.newPassword.$touch()
+        this.$v.newRepeatPassword.$touch()
+        if(this.$v.newPassword.$invalid ||
+          this.$v.newRepeatPassword.$invalid){
         }
         else{
+          this.user.password = this.newPassword
           this.$store.dispatch('UsersManager/update', this.user)
           this.newPasswordDialog = false
           this.user = this.userDefaultState()
