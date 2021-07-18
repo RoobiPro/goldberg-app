@@ -24,7 +24,7 @@ if ( process.env.APP_ENV == 'production' ) {
     Vue.config.silent = true;
     Vue.config.productionTip = false;
     Vue.config.devtools = false;
-    axios.defaults.baseURL = 'http://phplaravel-524047-1884759.cloudwaysapps.com'
+    axios.defaults.baseURL = 'https://app.goldbergresources.com'
 } else {
   axios.defaults.baseURL = ''
 }
