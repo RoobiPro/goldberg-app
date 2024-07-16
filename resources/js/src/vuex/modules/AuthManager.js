@@ -31,27 +31,38 @@ const mutations = {
 }
 
 const actions =  {
-  async signIn({ commit }, credentials) {
-      try {
-          const csrfResponse = await AuthAPI.csrfToken();
+    async signIn({ commit }, credentials) {
+        try {
+            console.log("Starting signIn process...");
 
-          const loginResponse = await AuthAPI.login(credentials);
+            // Get CSRF token
+            console.log("Requesting CSRF token...");
+            const csrfResponse = await AuthAPI.csrfToken();
+            console.log("CSRF token response:", csrfResponse);
 
-          if (loginResponse.data && loginResponse.data.user) {
-              commit('SET_AUTHENTICATED', true);
-              commit('SET_USER', loginResponse.data.user);
-          } else {
-              commit('SET_AUTHENTICATED', false);
-              commit('SET_USER', null);
-              this.dispatch('NotificationsManager/setNotificationStatus', { type: 'red', text: 'Invalid login credentials!' });
-          }
-      } catch (error) {
-          console.error('Login error:', error);
-          commit('SET_AUTHENTICATED', false);
-          commit('SET_USER', null);
-          this.dispatch('NotificationsManager/setNotificationStatus', { type: 'red', text: 'Invalid login credentials!' });
-      }
-  },
+            // Attempt login with credentials
+            console.log("Attempting login with credentials:", credentials);
+            const loginResponse = await AuthAPI.login(credentials);
+            console.log("Login response:", loginResponse);
+
+            // Check if login was successful
+            if (loginResponse.data && loginResponse.data.user) {
+                console.log("Login successful. User data:", loginResponse.data.user);
+                commit('SET_AUTHENTICATED', true);
+                commit('SET_USER', loginResponse.data.user);
+            } else {
+                console.log("Login failed. Invalid credentials.");
+                commit('SET_AUTHENTICATED', false);
+                commit('SET_USER', null);
+                this.dispatch('NotificationsManager/setNotificationStatus', { type: 'red', text: 'Invalid login credentials!' });
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            commit('SET_AUTHENTICATED', false);
+            commit('SET_USER', null);
+            this.dispatch('NotificationsManager/setNotificationStatus', { type: 'red', text: 'Invalid login credentials!' });
+        }
+    },
 
   async signOut({ commit }) {
       try {
