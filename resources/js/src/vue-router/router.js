@@ -355,28 +355,38 @@ const router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
-  console.log("Navigation triggered from:", from.fullPath, "to:", to.fullPath);
-  
-  await store.dispatch("AuthManager/refresh");
-  console.log("AuthManager refresh called");
+  try {
+    console.log("Navigation triggered from:", from.fullPath, "to:", to.fullPath);
+    
+    // Refresh authentication status
+    await store.dispatch("AuthManager/refresh");
+    console.log("AuthManager refresh called");
 
-  const authUser = store.getters["AuthManager/authenticated"];
-  console.log("Authenticated user:", authUser);
+    // Get authenticated user status from the store
+    const authUser = store.getters["AuthManager/authenticated"];
+    console.log("Authenticated user:", authUser);
 
-  const reqAuth = to.matched.some((record) => record.meta.requiresAuth);
-  console.log("Route requires authentication:", reqAuth);
+    // Check if the route requires authentication
+    const reqAuth = to.matched.some((record) => record.meta.requiresAuth);
+    console.log("Route requires authentication:", reqAuth);
 
-  const loginQuery = { path: "/login", query: { redirect: to.fullPath } };
+    const loginQuery = { path: "/login", query: { redirect: to.fullPath } };
 
-  if (reqAuth && !authUser) {
-    console.log("Authentication required and user not authenticated. Redirecting to login.");
-    return next(loginQuery);
-  } else if (!reqAuth && authUser) {
-    console.log("Route does not require authentication but user is authenticated. Redirecting to dashboard.");
-    return next({ path: '/dashboard' });
-  } else {
-    console.log("Proceeding to the route:", to.fullPath);
-    return next(); // make sure to always call next()!
+    // Handle redirection based on authentication status
+    if (reqAuth && !authUser) {
+      console.log("Authentication required and user not authenticated. Redirecting to login.");
+      return next(loginQuery);
+    } else if (!reqAuth && authUser) {
+      console.log("Route does not require authentication but user is authenticated. Redirecting to dashboard.");
+      return next({ path: '/dashboard' });
+    } else {
+      console.log("Proceeding to the route:", to.fullPath);
+      return next(); // Always call next() to proceed to the route
+    }
+  } catch (error) {
+    console.error("Error in navigation guard:", error);
+    // Handle error case
+    return next({ path: '/error' }); // Optional: redirect to an error page or handle appropriately
   }
 });
 
