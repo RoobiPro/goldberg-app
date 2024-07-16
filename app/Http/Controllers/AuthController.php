@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Models\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log; // Add this line
+
 
 class AuthController extends Controller
 {
@@ -27,30 +29,43 @@ class AuthController extends Controller
 
 
   }
+ 
   public function login(Request $request)
   {
-     if (Auth::attempt($request->only(['email', 'password']))) {
-       $open_sessions = Session::where('user_id', Auth::user()->id)->where('active', true)->get();
-       foreach ($open_sessions as $open_session){
-         $open_session->end_time = $open_session->last_alive;
-         $open_session->duration = \Carbon\Carbon::parse($open_session->start_time)->diffInSeconds(\Carbon\Carbon::parse($open_session->end_time));
-         $open_session->active = false;
-         $open_session->save();
-         // $open_session->delete();
-       }
-       $session = New Session;
-       $session->user_id = Auth::user()->id;
-       $session->start_time = \Carbon\Carbon::now();
-       $session->active = true;
-       $session->last_alive = \Carbon\Carbon::now();
-       $session->save();
-        // Auth::user()->last_login = \Carbon\Carbon::now();
-        return response()->json([ "success" => true, "user" => Auth::user() ], 200);
-         // return response(["success" => Auth::user()], 200);
-     } else {
-         return response(["success" => false], 403);
-     }
+      Log::info('Login attempt:', ['email' => $request->email]);
+  
+      if (Auth::attempt($request->only(['email', 'password']))) {
+          Log::info('Login successful:', ['user_id' => Auth::user()->id]);
+  
+          $open_sessions = Session::where('user_id', Auth::user()->id)->where('active', true)->get();
+          Log::info('Open sessions found:', ['count' => $open_sessions->count()]);
+  
+          foreach ($open_sessions as $open_session) {
+              $open_session->end_time = $open_session->last_alive;
+              $open_session->duration = \Carbon\Carbon::parse($open_session->start_time)->diffInSeconds(\Carbon\Carbon::parse($open_session->end_time));
+              $open_session->active = false;
+              $open_session->save();
+              Log::info('Closed session:', ['session_id' => $open_session->id]);
+              // $open_session->delete();
+          }
+  
+          $session = new Session;
+          $session->user_id = Auth::user()->id;
+          $session->start_time = \Carbon\Carbon::now();
+          $session->active = true;
+          $session->last_alive = \Carbon\Carbon::now();
+          $session->save();
+          Log::info('New session started:', ['session_id' => $session->id]);
+  
+          // Auth::user()->last_login = \Carbon\Carbon::now();
+          return response()->json(["success" => true, "user" => Auth::user()], 200);
+          // return response(["success" => Auth::user()], 200);
+      } else {
+          Log::warning('Login failed:', ['email' => $request->email]);
+          return response(["success" => false], 403);
+      }
   }
+  
 
   // Logout Function
   public function logout(Request $request)
@@ -78,14 +93,26 @@ class AuthController extends Controller
 
 
   // Refresh the User
-  public function refresh(Request $request){
-    if(Auth::user()){
-      return response()->json([ "success" => true, "user" => Auth::user() ], 200);
-    }
-    return response()->json([ "success" => false ], 200);
-
-
+  public function refresh(Request $request)
+  {
+      try {
+          if (Auth::check()) {
+              $user = Auth::user();
+              Log::info('Refresh successful', ['user_id' => $user->id, 'user_email' => $user->email]);
+              return response()->json(["success" => true, "user" => $user], 200);
+          } else {
+              Log::info('Refresh failed: user not authenticated');
+              return response()->json(["success" => false], 200);
+          }
+      } catch (\Exception $e) {
+          Log::error('Refresh error: ' . $e->getMessage(), [
+              'trace' => $e->getTraceAsString(),
+              'request' => $request->all()
+          ]);
+          return response()->json(["success" => false, "message" => "Internal Server Error"], 500);
+      }
   }
+  
 
   public function register(Request $request)
   {

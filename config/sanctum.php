@@ -18,6 +18,8 @@ return [
         'localhost,localhost:3000,127.0.0.1,127.0.0.1:8000,::1,'.parse_url(env('APP_URL'), PHP_URL_HOST)
     )),
 
+    'guard' => ['web'],
+
     /*
     |--------------------------------------------------------------------------
     | Expiration Minutes

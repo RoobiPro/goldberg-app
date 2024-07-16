@@ -1,9 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-use App\Http\Controllers\UserController;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Models\Session;
@@ -21,47 +19,58 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request){
       return UserResource::collection(User::all());
     }
 
 
     public function deleteAllSessions(){
-      if(Auth::user()->role!=2){
-        return response()->json([ "success" => false, "type" => 'red', "message" => "Not authorized!"], 200);
+      $user = Auth::user();
+      if ($user->role != 2) {
+          return response()->json([ "success" => false, "type" => 'red', "message" => "Not authorized!"], 200);
       }
-      $currentSession= Session::where('user_id', Auth::user()->id)->where('active', true)->get()->first();
+      
+      $currentSession = Session::where('user_id', $user->id)->where('active', true)->first();
+      if (!$currentSession) {
+          return response()->json([ "success" => false, "type" => 'red', "message" => "No active session found!"], 200);
+      }
+      
       $allsession = Session::all();
       foreach ($allsession as $session) {
-        if($session->id!=$currentSession->id){
-          $session->delete();
-        }
+          if ($session->id != $currentSession->id) {
+              $session->delete();
+          }
       }
       return response()->json([ "success" => true, "type" => 'green', "message" => "All session logs deleted!"], 200);
     }
-
-    public function deleteUserSessions($id){
-      if(Auth::user()->role!=2){
-        return response()->json([ "success" => false, "type" => 'red', "message" => "Not authorized!"], 200);
+  
+  public function deleteUserSessions($id){
+      $user = Auth::user();
+      if ($user->role != 2) {
+          return response()->json([ "success" => false, "type" => 'red', "message" => "Not authorized!"], 200);
       }
-      $user = User::find($id);
-      $sessions = $user->sessions;
-      if(Auth::user()->id == $id){
-        foreach ($sessions as $session){
-          if($session->active!=1){
-            $session->delete();
+      
+      $targetUser = User::find($id);
+      if (!$targetUser) {
+          return response()->json([ "success" => false, "type" => 'red', "message" => "User not found!"], 200);
+      }
+      
+      $sessions = $targetUser->sessions;
+      if ($user->id == $id) {
+          foreach ($sessions as $session) {
+              if ($session->active != 1) {
+                  $session->delete();
+              }
           }
-        }
+      } else {
+          foreach ($sessions as $session) {
+              $session->delete();
+          }
       }
-      else{
-        foreach ($sessions as $session){
-          $session->delete();
-        }
-      }
-
+  
       return response()->json([ "success" => true, "type" => 'green', "message" => "All session logs of user deleted!"], 200);
-    }
+  }
+  
 
     public function getUserSessions($id){
       $user = User::find($id);

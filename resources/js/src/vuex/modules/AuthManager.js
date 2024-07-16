@@ -1,9 +1,6 @@
 import AuthAPI from '@/vuex/API/AuthAPI'
 import Notifications from '@/vuex/modules/NotificationsManager'
 
-// We need to remove Axios here
-
-
 const state =  {
     authenticated: false,
     user: false
@@ -17,7 +14,6 @@ const getters = {
     user (state) {
       return state.user
     },
-
 }
 
 const mutations = {
@@ -31,70 +27,85 @@ const mutations = {
 
     SET_USERAVATAR (state, avatar) {
       state.user.avatar = avatar
-
     }
 }
 
 const actions =  {
-    signIn ({ commit }, credentials) {
-    AuthAPI.csrfToken().then((response) => {
-    });
-      return AuthAPI.login(credentials).then((response) => {
-        commit('SET_AUTHENTICATED', true)
-        commit('SET_USER', response.data.user)
-      }).catch(() => {
-        commit('SET_AUTHENTICATED', false)
-        commit('SET_USER', null)
-        this.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: 'Invalid login credentials!'});
+  async signIn({ commit }, credentials) {
+      try {
+          const csrfResponse = await AuthAPI.csrfToken();
+          console.log('CSRF token set:', csrfResponse);
 
+          const loginResponse = await AuthAPI.login(credentials);
+          console.log('Login response:', loginResponse);
 
-      })
-
-
+          if (loginResponse.data && loginResponse.data.user) {
+              commit('SET_AUTHENTICATED', true);
+              commit('SET_USER', loginResponse.data.user);
+          } else {
+              commit('SET_AUTHENTICATED', false);
+              commit('SET_USER', null);
+              this.dispatch('NotificationsManager/setNotificationStatus', { type: 'red', text: 'Invalid login credentials!' });
+          }
+      } catch (error) {
+          console.error('Login error:', error);
+          commit('SET_AUTHENTICATED', false);
+          commit('SET_USER', null);
+          this.dispatch('NotificationsManager/setNotificationStatus', { type: 'red', text: 'Invalid login credentials!' });
+      }
   },
-   signOut ({ commit }) {
-     return AuthAPI.logout().then((response) => {
-        commit('SET_AUTHENTICATED', false)
-        commit('SET_USER', null)
-      })
-    },
 
-    update({commit, dispatch}, params) {
-      return AuthAPI.update(params)
-        .then((response) => {
-          if(response.data.success){
-            commit('SET_USER', response.data.user);
-            this.dispatch('NotificationsManager/setNotificationStatus', {type: 'green', text: response.data.msg});
+  async signOut({ commit }) {
+      try {
+          const response = await AuthAPI.logout();
+          console.log('Logout response:', response);
+          commit('SET_AUTHENTICATED', false);
+          commit('SET_USER', null);
+      } catch (error) {
+          console.error('Logout error:', error);
+      }
+  },
+
+  async update({ commit, dispatch }, params) {
+      try {
+          const response = await AuthAPI.update(params);
+          console.log('Update response:', response);
+
+          if (response.data.success) {
+              commit('SET_USER', response.data.user);
+              this.dispatch('NotificationsManager/setNotificationStatus', { type: 'green', text: response.data.msg });
+          } else {
+              this.dispatch('NotificationsManager/setNotificationStatus', { type: 'red', text: response.data.msg });
           }
-          else{
-            this.dispatch('NotificationsManager/setNotificationStatus', {type: 'red', text: response.data.msg});
+      } catch (error) {
+          console.error('Update error:', error);
+      }
+  },
+
+  async refresh({ commit }) {
+      try {
+          const response = await AuthAPI.getAuthStatus();
+          console.log('Auth status response:', response);
+
+          if (response.data.success) {
+              commit('SET_AUTHENTICATED', true);
+              commit('SET_USER', response.data.user);
+          } else {
+              commit('SET_AUTHENTICATED', false);
+              commit('SET_USER', null);
           }
-         });
-    },
-
-    refresh ({ commit }) {
-      return AuthAPI.getAuthStatus().then((response) => {
-        if(response.data.success==true){
-          commit('SET_AUTHENTICATED', true)
-          commit('SET_USER', response.data.user)
-        }
-        else{
-          commit('SET_AUTHENTICATED', false)
-          commit('SET_USER', null)
-        }
-
-      }).catch(() => {
-        commit('SET_AUTHENTICATED', false)
-        commit('SET_USER', null)
-      })
-    }
-
-}
+      } catch (error) {
+          console.error('Auth status error:', error);
+          commit('SET_AUTHENTICATED', false);
+          commit('SET_USER', null);
+      }
+  }
+};
 
 export default {
-  namespaced: true,
-  state,
-  getters,
-  mutations,
-  actions
-}
+namespaced: true,
+state,
+getters,
+mutations,
+actions
+};
