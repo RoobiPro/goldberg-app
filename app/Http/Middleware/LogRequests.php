@@ -45,12 +45,12 @@ class LogRequests
         // }
 
         // Check and log authentication status
-        if (Auth::check()) {
-            $user = Auth::user();
-            Log::info('User is authenticated:', ['user_id' => $user->id, 'user_name' => $user->name]);
-        } else {
-            Log::warning('User is not authenticated.');
-        }
+        // if (Auth::check()) {
+        //     $user = Auth::user();
+        //     Log::info('User is authenticated:', ['user_id' => $user->id, 'user_name' => $user->name]);
+        // } else {
+        //     Log::warning('User is not authenticated.');
+        // }
 
         return $next($request);
     }

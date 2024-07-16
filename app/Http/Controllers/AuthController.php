@@ -96,19 +96,22 @@ class AuthController extends Controller
   public function refresh(Request $request)
   {
       try {
+          Log::info('Session data', ['session' => $request->session()->all()]);
+          Log::info('Cookies', ['cookies' => $request->cookies->all()]);
+  
           if (Auth::check()) {
               $user = Auth::user();
-              // Log::info('Refresh successful', ['user_id' => $user->id, 'user_email' => $user->email]);
+              Log::info('Refresh successful', ['user_id' => $user->id, 'user_email' => $user->email]);
               return response()->json(["success" => true, "user" => $user], 200);
           } else {
-              // Log::info('Refresh failed: user not authenticated');
+              Log::info('Refresh failed: user not authenticated');
               return response()->json(["success" => false], 200);
           }
       } catch (\Exception $e) {
-          // Log::error('Refresh error: ' . $e->getMessage(), [
-          //     'trace' => $e->getTraceAsString(),
-          //     'request' => $request->all()
-          // ]);
+          Log::error('Refresh error: ' . $e->getMessage(), [
+              'trace' => $e->getTraceAsString(),
+              'request' => $request->all()
+          ]);
           return response()->json(["success" => false, "message" => "Internal Server Error"], 500);
       }
   }

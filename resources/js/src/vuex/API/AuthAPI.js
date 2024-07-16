@@ -3,7 +3,11 @@ import axios from 'axios';
 
 
 
-function update(user) { return axios.patch('/api/users/'+user.id, user) }
+async function update(user) { 
+  const response = axios.patch('/api/users/'+user.id, user) 
+  console.log('Update user:', response);
+  return response;
+};
 
 async function csrfToken() {
   const response = await axios.get('/sanctum/csrf-cookie');

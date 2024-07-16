@@ -5,7 +5,7 @@
 switch( process.env.APP_ENV ){
   case 'production':
     // var AUTH_API = 'https://goldbergresources.com/api';
-    var API_URL = 'https://goldbergresources.com/';
+    var API_URL = '/';
     // var APIV1 = 'https://goldbergresources.com/api/v1';
   break;
   case 'development':
