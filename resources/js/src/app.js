@@ -24,12 +24,11 @@ if ( process.env.APP_ENV == 'production' ) {
     Vue.config.silent = true;
     Vue.config.productionTip = false;
     Vue.config.devtools = false;
-    axios.defaults.baseURL = 'https://app.goldbergresources.com'
-} else {
-  axios.defaults.baseURL = ''
-}
+} 
 
-axios.defaults.withCredentials = true
+axios.defaults.baseURL = process.env.APP_ENV;
+
+axios.defaults.withCredentials = true;
 
 let api_url = process.env.APP_ENV;
 
