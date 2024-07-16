@@ -83,23 +83,27 @@ const actions =  {
   },
 
   async refresh({ commit }) {
-      try {
-          const response = await AuthAPI.getAuthStatus();
-          console.log('Auth status response:', response);
+    try {
+            console.log('Calling AuthAPI.getAuthStatus...');
+            const response = await AuthAPI.getAuthStatus();
+            console.log('Auth status response:', response);
 
-          if (response.data.success) {
-              commit('SET_AUTHENTICATED', true);
-              commit('SET_USER', response.data.user);
-          } else {
-              commit('SET_AUTHENTICATED', false);
-              commit('SET_USER', null);
-          }
-      } catch (error) {
-          console.error('Auth status error:', error);
-          commit('SET_AUTHENTICATED', false);
-          commit('SET_USER', null);
-      }
-  }
+            if (response.data.success) {
+                console.log('Authentication successful. Setting authenticated state and user.');
+                commit('SET_AUTHENTICATED', true);
+                commit('SET_USER', response.data.user);
+            } else {
+                console.log('Authentication failed. Setting authenticated state to false and user to null.');
+                commit('SET_AUTHENTICATED', false);
+                commit('SET_USER', null);
+            }
+        } catch (error) {
+            console.error('Auth status error:', error);
+            commit('SET_AUTHENTICATED', false);
+            commit('SET_USER', null);
+        }
+    }
+
 };
 
 export default {

@@ -355,22 +355,29 @@ const router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
-  await store.dispatch("AuthManager/refresh")
+  console.log("Navigation triggered from:", from.fullPath, "to:", to.fullPath);
+  
+  await store.dispatch("AuthManager/refresh");
+  console.log("AuthManager refresh called");
+
   const authUser = store.getters["AuthManager/authenticated"];
+  console.log("Authenticated user:", authUser);
+
   const reqAuth = to.matched.some((record) => record.meta.requiresAuth);
+  console.log("Route requires authentication:", reqAuth);
+
   const loginQuery = { path: "/login", query: { redirect: to.fullPath } };
+
   if (reqAuth && !authUser) {
-    return next(
-         {path: '/login'}
-       );
-  }
-  else if(!reqAuth && authUser){
-    return next(
-      {path: '/dashboard'}
-    );
-  }
-  else {
+    console.log("Authentication required and user not authenticated. Redirecting to login.");
+    return next(loginQuery);
+  } else if (!reqAuth && authUser) {
+    console.log("Route does not require authentication but user is authenticated. Redirecting to dashboard.");
+    return next({ path: '/dashboard' });
+  } else {
+    console.log("Proceeding to the route:", to.fullPath);
     return next(); // make sure to always call next()!
   }
 });
+
 export default router

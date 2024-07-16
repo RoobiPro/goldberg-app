@@ -32,20 +32,20 @@ class AuthController extends Controller
  
   public function login(Request $request)
   {
-      Log::info('Login attempt:', ['email' => $request->email]);
+      // Log::info('Login attempt:', ['email' => $request->email]);
   
       if (Auth::attempt($request->only(['email', 'password']))) {
-          Log::info('Login successful:', ['user_id' => Auth::user()->id]);
+          // Log::info('Login successful:', ['user_id' => Auth::user()->id]);
   
           $open_sessions = Session::where('user_id', Auth::user()->id)->where('active', true)->get();
-          Log::info('Open sessions found:', ['count' => $open_sessions->count()]);
+          // Log::info('Open sessions found:', ['count' => $open_sessions->count()]);
   
           foreach ($open_sessions as $open_session) {
               $open_session->end_time = $open_session->last_alive;
               $open_session->duration = \Carbon\Carbon::parse($open_session->start_time)->diffInSeconds(\Carbon\Carbon::parse($open_session->end_time));
               $open_session->active = false;
               $open_session->save();
-              Log::info('Closed session:', ['session_id' => $open_session->id]);
+              // Log::info('Closed session:', ['session_id' => $open_session->id]);
               // $open_session->delete();
           }
   
@@ -55,13 +55,13 @@ class AuthController extends Controller
           $session->active = true;
           $session->last_alive = \Carbon\Carbon::now();
           $session->save();
-          Log::info('New session started:', ['session_id' => $session->id]);
+          // Log::info('New session started:', ['session_id' => $session->id]);
   
           // Auth::user()->last_login = \Carbon\Carbon::now();
           return response()->json(["success" => true, "user" => Auth::user()], 200);
           // return response(["success" => Auth::user()], 200);
       } else {
-          Log::warning('Login failed:', ['email' => $request->email]);
+          // Log::warning('Login failed:', ['email' => $request->email]);
           return response(["success" => false], 403);
       }
   }
@@ -98,17 +98,17 @@ class AuthController extends Controller
       try {
           if (Auth::check()) {
               $user = Auth::user();
-              Log::info('Refresh successful', ['user_id' => $user->id, 'user_email' => $user->email]);
+              // Log::info('Refresh successful', ['user_id' => $user->id, 'user_email' => $user->email]);
               return response()->json(["success" => true, "user" => $user], 200);
           } else {
-              Log::info('Refresh failed: user not authenticated');
+              // Log::info('Refresh failed: user not authenticated');
               return response()->json(["success" => false], 200);
           }
       } catch (\Exception $e) {
-          Log::error('Refresh error: ' . $e->getMessage(), [
-              'trace' => $e->getTraceAsString(),
-              'request' => $request->all()
-          ]);
+          // Log::error('Refresh error: ' . $e->getMessage(), [
+          //     'trace' => $e->getTraceAsString(),
+          //     'request' => $request->all()
+          // ]);
           return response()->json(["success" => false, "message" => "Internal Server Error"], 500);
       }
   }
