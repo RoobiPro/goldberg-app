@@ -34,10 +34,8 @@ const actions =  {
   async signIn({ commit }, credentials) {
       try {
           const csrfResponse = await AuthAPI.csrfToken();
-          console.log('CSRF token set:', csrfResponse);
 
           const loginResponse = await AuthAPI.login(credentials);
-          console.log('Login response:', loginResponse);
 
           if (loginResponse.data && loginResponse.data.user) {
               commit('SET_AUTHENTICATED', true);
@@ -58,7 +56,6 @@ const actions =  {
   async signOut({ commit }) {
       try {
           const response = await AuthAPI.logout();
-          console.log('Logout response:', response);
           commit('SET_AUTHENTICATED', false);
           commit('SET_USER', null);
       } catch (error) {
@@ -86,8 +83,7 @@ const actions =  {
     try {
             console.log('Calling AuthAPI.getAuthStatus...');
             const response = await AuthAPI.getAuthStatus();
-            console.log('Auth status response:', response);
-
+            console.log('REFRESH response:', response);
             if (response.data.success) {
                 console.log('Authentication successful. Setting authenticated state and user.');
                 commit('SET_AUTHENTICATED', true);

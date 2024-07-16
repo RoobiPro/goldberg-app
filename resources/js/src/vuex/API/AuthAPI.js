@@ -5,14 +5,29 @@ import axios from 'axios';
 
 function update(user) { return axios.patch('/api/users/'+user.id, user) }
 
-async function csrfToken(){ return await axios.get('/sanctum/csrf-cookie') }
+async function csrfToken() {
+  const response = await axios.get('/sanctum/csrf-cookie');
+  // console.log('CSRF token response:', response);
+  return response;
+}
 
-async function login(credentials){ return await axios.post('/api/login', credentials) }
+async function login(credentials) {
+  const response = await axios.post('/api/login', credentials);
+  // console.log('Login response:', response);
+  return response;
+}
 
-async function logout(){ return await axios.post('/api/logout') }
+async function logout() {
+  const response = await axios.post('/api/logout');
+  // console.log('Logout response:', response);
+  return response;
+}
 
-// Need to find logical name for function !IMPORTANTE
-async function getAuthStatus(){ return await axios.get('/api/refresh') }
+async function getAuthStatus() {
+  const response = await axios.get('/api/refresh');
+  // console.log('Auth status response:', response);
+  return response;
+}
 
 
 
