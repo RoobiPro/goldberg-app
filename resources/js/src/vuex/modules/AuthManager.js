@@ -54,6 +54,7 @@ const actions =  {
             
             // Check if login was successful
             if (loginResponse.data && loginResponse.data.user) {
+                console.log("Login response: ", loginResponse)
                 console.log("Login successful. User data:", loginResponse.data.user);
                 commit('SET_AUTHENTICATED', true);
                 commit('SET_USER', loginResponse.data.user);
