@@ -29,6 +29,6 @@ class CreateElementsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chemical_elements');
+        Schema::dropIfExists('elements');
     }
 }

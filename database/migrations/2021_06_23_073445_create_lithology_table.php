@@ -34,6 +34,6 @@ class CreateLithologyTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lithology_data');
+        Schema::dropIfExists('lithologies');
     }
 }

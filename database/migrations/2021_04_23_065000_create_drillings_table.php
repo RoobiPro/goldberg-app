@@ -38,6 +38,24 @@ class CreateDrillingsTable extends Migration
      */
     public function down()
     {
+        if (Schema::hasTable('alterations')) {
+            Schema::table('alterations', function (Blueprint $table) {
+                $table->dropForeign(['drilling_id']);
+            });
+        }
+
+        if (Schema::hasTable('drilling_mineralizations')) {
+            Schema::table('drilling_mineralizations', function (Blueprint $table) {
+                $table->dropForeign(['drilling_id']);
+            });
+        }
+
+        if (Schema::hasTable('drilling_sample_lists')) {
+            Schema::table('drilling_sample_lists', function (Blueprint $table) {
+                $table->dropForeign(['drilling_id']);
+            });
+        }
+
         Schema::dropIfExists('drillings');
     }
 }

@@ -35,6 +35,12 @@ class CreateHandSamplesTable extends Migration
      */
     public function down()
     {
+        if (Schema::hasTable('hand_sample_sample_lists')) {
+            Schema::table('hand_sample_sample_lists', function (Blueprint $table) {
+                $table->dropForeign(['hand_sample_id']);
+            });
+        }
+
         Schema::dropIfExists('hand_samples');
     }
 }

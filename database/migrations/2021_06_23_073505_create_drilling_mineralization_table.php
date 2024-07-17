@@ -34,6 +34,10 @@ class CreateDrillingMineralizationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mineralization_data');
+        Schema::table('drilling_mineralizations', function (Blueprint $table) {
+            $table->dropForeign(['drilling_id']);
+        });
+
+        Schema::dropIfExists('drilling_mineralizations');
     }
 }

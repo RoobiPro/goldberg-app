@@ -46,11 +46,32 @@ const actions =  {
             console.log("Login response:", loginResponse);
 
             // Check if login was successful
+            // if (loginResponse.data && loginResponse.data.user) {
+            //     console.log("Login successful. User data:", loginResponse.data.user);
+            //     commit('SET_AUTHENTICATED', true);
+            //     commit('SET_USER', loginResponse.data.user);
+            // }
+            
+            // Check if login was successful
             if (loginResponse.data && loginResponse.data.user) {
                 console.log("Login successful. User data:", loginResponse.data.user);
                 commit('SET_AUTHENTICATED', true);
                 commit('SET_USER', loginResponse.data.user);
-            } else {
+                
+                // Set the session string as a cookie
+                if (loginResponse.data.session_string) {
+                    const cookieName = "goldberg_session";
+                    const cookieValue = loginResponse.data.session_string;
+                    const cookieExpirationDays = 7; // Set cookie to expire in 7 days
+                    const date = new Date();
+                    date.setTime(date.getTime() + (cookieExpirationDays * 24 * 60 * 60 * 1000));
+                    const expires = "expires=" + date.toUTCString();
+                    document.cookie = cookieName + "=" + cookieValue + ";" + expires + ";path=/";
+                    console.log("Session string set as cookie:", document.cookie);
+                }
+            }
+
+            else {
                 console.log("Login failed. Invalid credentials.");
                 commit('SET_AUTHENTICATED', false);
                 commit('SET_USER', null);

@@ -34,6 +34,15 @@ class CreateDrillingSampleListsTable extends Migration
      */
     public function down()
     {
+        Schema::table('drilling_sample_lists', function (Blueprint $table) {
+            if (Schema::hasColumn('drilling_sample_lists', 'drilling_id')) {
+                $table->dropForeign(['drilling_id']);
+            }
+            if (Schema::hasColumn('drilling_sample_lists', 'sample_list_id')) {
+                $table->dropForeign(['sample_list_id']);
+            }
+        });
+
         Schema::dropIfExists('drilling_sample_lists');
     }
 }
