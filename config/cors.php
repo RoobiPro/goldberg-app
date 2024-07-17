@@ -15,26 +15,13 @@ return [
     |
     */
 
-    'paths' => [
-      'api/*',
-      '/login',
-      '/logout',
-      '/sanctum/csrf-cookie'
-    ],
+  'paths' => ['api/*', 'sanctum/csrf-cookie'],
+  'allowed_methods' => ['*'],
+  'allowed_origins' => ['http://goldberg.local', 'https://phpstack-524047-4731190.cloudwaysapps.com/'],
+  'allowed_headers' => ['*'],
+  'exposed_headers' => [],
+  'max_age' => 0,
+  'supports_credentials' => true,
 
-    'allowed_methods' => ['*'],
-
-    'allowed_origins' => ['*'],
-
-    'allowed_origins_patterns' => [],
-
-    'allowed_headers' => ['*'],
-
-    'exposed_headers' => [],
-
-    'max_age' => 0,
-
-    // 'supports_credentials' => false,
-    'supports_credentials' => true,
 
 ];
