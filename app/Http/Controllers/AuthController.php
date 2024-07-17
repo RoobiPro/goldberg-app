@@ -29,80 +29,42 @@ class AuthController extends Controller
 
 
   }
-
-  public function login(Request $request)
-{
-    // Log::info('Login attempt:', ['email' => $request->email]);
-
-    if (Auth::attempt($request->only(['email', 'password']))) {
-        // Log::info('Login successful:', ['user_id' => Auth::user()->id]);
-
-        $open_sessions = Session::where('user_id', Auth::user()->id)->where('active', true)->get();
-        // Log::info('Open sessions found:', ['count' => $open_sessions->count()]);
-
-        foreach ($open_sessions as $open_session) {
-            $open_session->end_time = $open_session->last_alive;
-            $open_session->duration = \Carbon\Carbon::parse($open_session->start_time)->diffInSeconds(\Carbon\Carbon::parse($open_session->end_time));
-            $open_session->active = false;
-            $open_session->save();
-            // Log::info('Closed session:', ['session_id' => $open_session->id]);
-            // $open_session->delete();
-        }
-
-        $session = new Session;
-        $session->user_id = Auth::user()->id;
-        $session->start_time = \Carbon\Carbon::now();
-        $session->active = true;
-        $session->last_alive = \Carbon\Carbon::now();
-        $session->session_string = bin2hex(random_bytes(16)); // Generate a random session string
-        $session->save();
-        // Log::info('New session started:', ['session_id' => $session->id]);
-
-        // Auth::user()->last_login = \Carbon\Carbon::now();
-        return response()->json(["success" => true, "user" => Auth::user(), "session_string" => $session->session_string], 200);
-        // return response(["success" => Auth::user()], 200);
-    } else {
-        // Log::warning('Login failed:', ['email' => $request->email]);
-        return response(["success" => false], 403);
-    }
-}
-
  
-  // public function login(Request $request)
-  // {
-  //     // Log::info('Login attempt:', ['email' => $request->email]);
+  public function login(Request $request)
+  {
+      // Log::info('Login attempt:', ['email' => $request->email]);
   
-  //     if (Auth::attempt($request->only(['email', 'password']))) {
-  //         // Log::info('Login successful:', ['user_id' => Auth::user()->id]);
+      if (Auth::attempt($request->only(['email', 'password']))) {
+          // Log::info('Login successful:', ['user_id' => Auth::user()->id]);
   
-  //         $open_sessions = Session::where('user_id', Auth::user()->id)->where('active', true)->get();
-  //         // Log::info('Open sessions found:', ['count' => $open_sessions->count()]);
+          $open_sessions = Session::where('user_id', Auth::user()->id)->where('active', true)->get();
+          // Log::info('Open sessions found:', ['count' => $open_sessions->count()]);
   
-  //         foreach ($open_sessions as $open_session) {
-  //             $open_session->end_time = $open_session->last_alive;
-  //             $open_session->duration = \Carbon\Carbon::parse($open_session->start_time)->diffInSeconds(\Carbon\Carbon::parse($open_session->end_time));
-  //             $open_session->active = false;
-  //             $open_session->save();
-  //             // Log::info('Closed session:', ['session_id' => $open_session->id]);
-  //             // $open_session->delete();
-  //         }
+          foreach ($open_sessions as $open_session) {
+              $open_session->end_time = $open_session->last_alive;
+              $open_session->duration = \Carbon\Carbon::parse($open_session->start_time)->diffInSeconds(\Carbon\Carbon::parse($open_session->end_time));
+              $open_session->active = false;
+              $open_session->save();
+              // Log::info('Closed session:', ['session_id' => $open_session->id]);
+              // $open_session->delete();
+          }
   
-  //         $session = new Session;
-  //         $session->user_id = Auth::user()->id;
-  //         $session->start_time = \Carbon\Carbon::now();
-  //         $session->active = true;
-  //         $session->last_alive = \Carbon\Carbon::now();
-  //         $session->save();
-  //         // Log::info('New session started:', ['session_id' => $session->id]);
+          $session = new Session;
+          $session->user_id = Auth::user()->id;
+          $session->start_time = \Carbon\Carbon::now();
+          $session->active = true;
+          $session->last_alive = \Carbon\Carbon::now();
+          $session->save();
+          // Log::info('New session started:', ['session_id' => $session->id]);
   
-  //         // Auth::user()->last_login = \Carbon\Carbon::now();
-  //         return response()->json(["success" => true, "user" => Auth::user()], 200);
-  //         // return response(["success" => Auth::user()], 200);
-  //     } else {
-  //         // Log::warning('Login failed:', ['email' => $request->email]);
-  //         return response(["success" => false], 403);
-  //     }
-  // }
+          // Auth::user()->last_login = \Carbon\Carbon::now();
+          return response()->json(["success" => true, "user" => Auth::user()], 200);
+          // return response(["success" => Auth::user()], 200);
+      } else {
+          // Log::warning('Login failed:', ['email' => $request->email]);
+          return response(["success" => false], 403);
+      }
+  }
   
 
   // Logout Function
