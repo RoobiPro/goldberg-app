@@ -20,11 +20,11 @@ class LogRequests
     public function handle(Request $request, Closure $next)
     {
         // Log all request headers
-        // foreach ($request->headers->all() as $header => $values) {
-        //     foreach ($values as $value) {
-        //         Log::info("Request Header: $header - $value");
-        //     }
-        // }
+        foreach ($request->headers->all() as $header => $values) {
+            foreach ($values as $value) {
+                Log::info("Request Header: $header - $value");
+            }
+        }
 
         // Extract and log the bearer token from the request
         // $token = $request->bearerToken();
